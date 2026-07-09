@@ -61,40 +61,54 @@ header { position: sticky; top: 0; background: rgba(29, 53, 87, 0.9); backdrop-f
 .toast { position: fixed; top: 20px; right: 20px; background: #25D366; color: white; padding: 16px 20px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); z-index: 9999; font-weight: 600; opacity: 0; transform: translateX(400px); transition: all 0.3s ease; max-width: 320px; line-height: 1.5; }
 .toast.show { opacity: 1; transform: translateX(0); }
 
+/* STYLING POP OUT MODAL ENKA */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; justify-content: center; align-items: center; z-index: 10000; opacity: 0; pointer-events: none; transition: 0.3s ease; }
+.modal-overlay.show { opacity: 1; pointer-events: auto; }
+.modal-content { background: var(--card); color: var(--text); padding: 24px; border-radius: 16px; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); transform: scale(0.8); transition: 0.3s ease; border: 1px solid var(--border); }
+.modal-overlay.show .modal-content { transform: scale(1); }
+.modal-title { font-weight: 700; font-size: 1.25rem; margin-bottom: 12px; color: var(--accent); }
+.modal-body { background: rgba(0,0,0,0.05); padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: left; font-size: 14px; }
+[data-theme="dark"] .modal-body { background: rgba(255,255,255,0.05); }
+.modal-body p { margin-bottom: 6px; }
+.modal-body p:last-child { margin-bottom: 0; }
+.modal-actions { display: flex; gap: 10px; }
+.modal-btn { flex: 1; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; }
+.modal-btn-primary { background: #25D366; color: white; }
+.modal-btn-secondary { background: var(--muted); color: white; }
+
+/* STYLING HISTORI PESANAN */
+.history-title { font-size: 1.1rem; font-weight: 700; margin-top: 25px; margin-bottom: 10px; border-top: 1px dashed var(--border); padding-top: 20px; color: var(--text); }
+.history-list { display: grid; gap: 8px; max-height: 250px; overflow-y: auto; padding-right: 4px; }
+.history-item { background: var(--bg); border: 1px solid var(--border); padding: 10px 14px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
+.history-item:hover { border-color: var(--accent); background: rgba(69, 123, 157, 0.05); }
+.history-info { font-size: 13px; text-align: left; }
+.history-id { font-weight: 700; color: var(--primary); }
+[data-theme="dark"] .history-id { color: var(--accent); }
+.history-game { font-size: 11px; color: var(--muted); }
+.history-btn { background: var(--accent); color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
+
 /* RESPONSIVE HP - VERSI RINGAN */
 @media (max-width: 768px) {
-    /* MATIIN EFEK BERAT DI HP */
-    body { background-attachment: scroll; } /* fixed -> scroll biar ga ngelag */
-    body::before { backdrop-filter: none; } /* matiin blur */
-    header { backdrop-filter: none; } /* matiin blur header */
-    #searchBarGenshin, #searchBarHsr { backdrop-filter: none; } /* matiin blur search */
-    .catalog-card:hover, .ad-banner-text:hover { transform: none; } /* matiin animasi */
-
+    body { background-attachment: scroll; }
+    body::before { backdrop-filter: none; }
+    header { backdrop-filter: none; }
+    #searchBarGenshin, #searchBarHsr { backdrop-filter: none; }
+    .catalog-card:hover, .ad-banner-text:hover { transform: none; }
     .header-wrap { grid-template-columns: 1fr; gap: 8px; }
     .header-wrap h1 { justify-self: center; font-size: 1.1rem; }
     .header-wrap .header-actions:first-child, 
     .header-wrap .header-actions:last-child { justify-self: center; flex-wrap: wrap; gap: 6px; }
     .icon-btn { padding: 6px 10px; font-size: 12px; }
-
-    .calculator { 
-        flex-direction: column; gap: 10px; padding: 12px;
-        bottom: 10px; width: calc(100% - 20px); box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
+    .calculator { flex-direction: column; gap: 10px; padding: 12px; bottom: 10px; width: calc(100% - 20px); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
     .calculator > div:first-child { width: 100%; }
-    .calculator div[style*="display:flex"] {
-        flex-direction: column !important; gap: 8px !important; width: 100%;
-    }
-    .calculator input {
-        min-width: 100% !important; width: 100% !important; font-size: 14px;
-    }
+    .calculator div[style*="display:flex"] { flex-direction: column !important; gap: 8px !important; width: 100%; }
+    .calculator input { min-width: 100% !important; width: 100% !important; font-size: 14px; }
     .calculator .btn { width: 100%; }
-
-    .service-list { margin-bottom: 200px !important; } /* kasih ruang biar ga ketutup */
+    .service-list { margin-bottom: 200px !important; }
     .floating-wa { bottom: 260px; z-index: 98; }
     .hero h2 { font-size: 1.8rem; }
     .subheader h2 { font-size: 1.5rem; }
 }
-
     </style>
 </head>
 <body>
@@ -155,7 +169,7 @@ header { position: sticky; top: 0; background: rgba(29, 53, 87, 0.9); backdrop-f
             </div>
             <div id="noResultGenshin" class="no-result">Segera Hadir</div>
         </main>
-        <div class="calculator"><div><div style="font-size: 12px; opacity: 0.8;">Total Estimasi</div><div class="total" id="totalPriceGenshin">Rp 0</div><div style="margin-top:8px; display:flex; gap:8px; align-items:center;"><input id="uid_genshin" placeholder="UID" style="padding:8px 10px; border-radius:8px; border:none; min-width:140px;"><input id="wa_genshin" placeholder="WA: 62812..." style="padding:8px 10px; border-radius:8px; border:none; min-width:160px;"></div></div><button class="btn" onclick="generateOrder('genshin')">Buat Pesanan</button></div>
+        <div class="calculator"><div><div style="font-size: 12px; opacity: 0.8;">Total Estimasi</div><div class="total" id="totalPriceGenshin">Rp 0</div><div style="margin-top:8px; display:flex; gap:8px; align-items:center;"><input id="uid_genshin" placeholder="UID" style="padding:8px 10px; border-radius:8px; border:none; min-width:140px;"><input id="name_genshin" placeholder="NAMA" style="padding:8px 10px; border-radius:8px; border:none; min-width:160px;"></div></div><button class="btn" id="btn_genshin" onclick="generateOrder('genshin')">Buat Pesanan</button></div>
         <a href="https://wa.me/6285150886538" target="_blank" class="floating-wa"> Chat CS</a>
     </div>
 
@@ -171,27 +185,67 @@ header { position: sticky; top: 0; background: rgba(29, 53, 87, 0.9); backdrop-f
             </div>
             <div id="noResultHsr" class="no-result">Segera Hadir</div>
         </main>
-        <div class="calculator"><div><div style="font-size: 12px; opacity: 0.8;">Total Estimasi</div><div class="total" id="totalPriceHsr">Rp 0</div><div style="margin-top:8px; display:flex; gap:8px; align-items:center;"><input id="uid_hsr" placeholder="UID" style="padding:8px 10px; border-radius:8px; border:none; min-width:140px;"><input id="wa_hsr" placeholder="WA: 62812..." style="padding:8px 10px; border-radius:8px; border:none; min-width:160px;"></div></div><button class="btn" onclick="generateOrder('hsr')">Buat Pesanan</button></div>
+        <div class="calculator"><div><div style="font-size: 12px; opacity: 0.8;">Total Estimasi</div><div class="total" id="totalPriceHsr">Rp 0</div><div style="margin-top:8px; display:flex; gap:8px; align-items:center;"><input id="uid_hsr" placeholder="UID" style="padding:8px 10px; border-radius:8px; border:none; min-width:140px;"><input id="name_hsr" placeholder="NAMA" style="padding:8px 10px; border-radius:8px; border:none; min-width:160px;"></div></div><button class="btn" id="btn_hsr" onclick="generateOrder('hsr')">Buat Pesanan</button></div>
         <a href="https://wa.me/6285150886538" target="_blank" class="floating-wa"> Chat CS</a>
     </div>
 
     <!-- PAGE 4: CEK PESAN -->
     <div id="cekPage" class="page">
-        <main class="container"><div class="subheader"><h2>Cek Status Pesanan</h2><p>Masukkan ID Pesanan yang dikasih pas order</p></div><div class="card" style="max-width:500px; margin:0 auto;"><input id="inputOrderId" placeholder="Contoh: GENS123456" style="width:100%; padding:14px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text); margin-bottom:12px;"><button class="btn" onclick="cekStatus()" style="width:100%; background:var(--primary); color:white;">Cek Sekarang</button><div id="hasilCek" style="margin-top:20px;"></div></div></main>
+        <main class="container">
+            <div class="subheader"><h2>Cek Status Pesanan</h2><p>Masukkan ID Pesanan yang dikasih pas order</p></div>
+            <div class="card" style="max-width:500px; margin:0 auto;">
+                <input id="inputOrderId" placeholder="Contoh: GI123456 atau HSR123456" style="width:100%; padding:14px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text); margin-bottom:12px;">
+                <button class="btn" onclick="cekStatus()" style="width:100%; background:var(--primary); color:white;">Cek Sekarang</button>
+                <div id="hasilCek" style="margin-top:20px;"></div>
+                
+                <!-- BAGIAN HISTORI PESANAN BARU -->
+                <div class="history-title">🕒 Histori Pesanan Anda</div>
+                <div class="history-list" id="localHistoryList">
+                    <!-- List histori di-inject lewat JS -->
+                </div>
+            </div>
+        </main>
     </div>
 
-     <!-- TOAST NOTIFIKASI -->
+    <!-- TOAST NOTIFIKASI -->
     <div id="toast" class="toast"></div>
 
+    <!-- POP OUT CUSTOM MODAL ENKA -->
+    <div id="enkaModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-title">🎮 Data Diterima!</div>
+            <div class="modal-body" id="enkaModalBody">
+                <!-- Data profil akan di-inject lewat JavaScript -->
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-secondary" onclick="closeEnkaModal()">Batal</button>
+                <button class="modal-btn modal-btn-primary" id="modalConfirmBtn">Lanjutkan Pembayaran</button>
+            </div>
+        </div>
+    </div>
 <script>
 let totals = { genshin: 0, hsr: 0 };
 const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbxL3kVn_10-yypGSc8wnH9QzRxOZ2c_gXEmf2HzOV6-hOgcTaLzD-PSlVTFn3EHzYc3/exec';
+let pendingOrderCallback = null; 
 
 function showPage(pageId) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(pageId).classList.add('active');
-    document.getElementById('backButton').style.display = pageId === 'homePage'? 'none' : 'block';
+    document.getElementById('backButton').style.display = pageId === 'homePage' ? 'none' : 'block';
+    if(pageId === 'cekPage') { loadLocalHistory(); } 
     window.scrollTo(0,0);
+}
+
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.innerHTML = message;
+    toast.classList.add('show');
+    setTimeout(() => { toast.classList.remove('show'); }, 4000);
+}
+
+function closeEnkaModal() {
+    document.getElementById('enkaModal').classList.remove('show');
+    pendingOrderCallback = null;
 }
 
 function updateTotal(game) {
@@ -200,78 +254,244 @@ function updateTotal(game) {
     totals[game] = total;
     document.getElementById(`totalPrice${game.charAt(0).toUpperCase() + game.slice(1)}`).textContent = `Rp ${total.toLocaleString('id-ID')}`;
 }
-document.querySelectorAll('.area-item input').forEach(cb => { cb.addEventListener('change', (e) => { const game = e.target.closest('.page').id.replace('Page', ''); updateTotal(game); }) });
+
+function saveOrderToHistory(orderId, gameName) {
+    let history = JSON.parse(localStorage.getItem('emu_order_history')) || [];
+    if(!history.some(item => item.id === orderId)) {
+        history.unshift({ id: orderId, game: gameName, time: new Date().toLocaleDateString('id-ID') });
+        localStorage.setItem('emu_order_history', JSON.stringify(history));
+    }
+}
+
+function loadLocalHistory() {
+    const historyListEl = document.getElementById('localHistoryList');
+    let history = JSON.parse(localStorage.getItem('emu_order_history')) || [];
+    
+    if(history.length === 0) {
+        historyListEl.innerHTML = `<p style="font-size:12px; color:var(--muted); text-align:center;">Belum ada riwayat pesanan di perangkat ini.</p>`;
+        return;
+    }
+
+    // MEMPERBARUI TOMBOL: Mengubah tombol "Batal" menjadi "Hapus"
+    historyListEl.innerHTML = history.map(item => `
+        <div class="history-item">
+            <div class="history-info" onclick="autoCheckOrder('${item.id}')">
+                <div class="history-id">#${item.id}</div>
+                <div class="history-game">${item.game} • ${item.time}</div>
+            </div>
+            <div class="history-actions">
+                <button class="history-btn" onclick="autoCheckOrder('${item.id}')">Cek</button>
+                <button class="history-btn" style="background:#ff6b6b;" onclick="hapusHistoriPesanan('${item.id}')">Hapus</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// MEMPERBAIKI FUNGSI HAPUS: Menyesuaikan key dengan 'emu_order_history'
+function hapusHistoriPesanan(orderId) {
+    if(!confirm(`Yakin ingin menghapus pesanan #${orderId} dari histori lokal Anda?`)) return;
+
+    // Menggunakan key yang sama seperti saveOrderToHistory yaitu 'emu_order_history'
+    let history = JSON.parse(localStorage.getItem('emu_order_history')) || [];
+    
+    // Filter menggunakan properti 'id' sesuai struktur objek simpanan Anda
+    history = history.filter(item => item.id !== orderId);
+    
+    // Simpan kembali ke localStorage
+    localStorage.setItem('emu_order_history', JSON.stringify(history));
+
+    showToast(`✅ Histori #${orderId} berhasil dihapus.`);
+    
+    // Bersihkan tampilan pencarian atas
+    document.getElementById('hasilCek').innerHTML = '';
+    document.getElementById('inputOrderId').value = '';
+
+    // Refresh list agar langsung hilang dari layar
+    loadLocalHistory();
+}
+function autoCheckOrder(orderId) {
+    document.getElementById('inputOrderId').value = orderId;
+    cekStatus();
+}
 
 function generateOrder(game) {
     let selected = [];
     document.querySelectorAll(`#${game}Page .area-item input:checked`).forEach(i => { 
-        selected.push({ name: i.dataset.name, price: parseInt(i.dataset.price) }); 
+        selected.push({ name: i.dataset.name, price: parseInt(i.dataset.price) || 0 }); 
     });
     
     if (selected.length === 0) return showToast('⚠️ Pilih minimal 1 layanan');
 
-    const orderId = `${game.toUpperCase()}${Date.now().toString().slice(-6)}`;
-    const total = selected.reduce((s, it) => s + it.price, 0);
-    const itemsText = selected.map(it => `${it.name}`).join(', ');
-
     const uidVal = document.getElementById(`uid_${game}`).value.trim();
-    const waVal = document.getElementById(`wa_${game}`).value.trim();
+    const nameVal = document.getElementById(`name_${game}`).value.trim(); 
 
-    if(!uidVal ||!waVal) return showToast("⚠️ UID dan WA wajib diisi!");
+    if(!uidVal || !nameVal) return showToast("⚠️ UID dan NAMA wajib diisi!");
+    if(isNaN(uidVal) || (uidVal.length !== 9 && uidVal.length !== 10)) return showToast("⚠️ UID harus 9 atau 10 digit angka");
 
-    const payload = {
-        orderId, 
-        game: game === 'genshin'? 'Genshin' : 'HSR', 
-        uid: uidVal,
-        items: itemsText, 
-        total: total, 
-        wa: waVal, 
-        status: 'Baru'
+    const gameTitle = game === 'genshin' ? 'Genshin Impact' : 'Honkai: Star Rail';
+    const profileUrl = game === 'genshin' ? `https://akasha.cv/profile/${uidVal}` : `https://enka.network/?hsr&uid=${uidVal}`;
+    const siteName = game === 'genshin' ? 'Akasha.cv' : 'Enka.network';
+
+    const modalBody = document.getElementById('enkaModalBody');
+    modalBody.innerHTML = `
+        <p><b>Game:</b> ${gameTitle}</p>
+        <p><b>UID:</b> <span style="color:#457b9d; font-weight:700;">${uidVal}</span></p>
+        <p><b>Nama:</b> ${nameVal}</p>
+        <p style="font-size: 13px; color: var(--muted); margin-top: 5px;">Mohon pastikan Informasi yang anda masukan benar, untuk melanjutkan proses Pembayaran. Anda juga dapat melihat profile akun di bawah ini.</p>
+        <hr style="margin:10px 0; border:0; border-top:1px dashed var(--border);">
+        <a href="${profileUrl}" target="_blank" style="color:var(--accent); font-size:12px; text-decoration:underline; display:block; text-align:center;">Cek Profile Account ${siteName}  ↗</a>
+    `;
+    
+    document.getElementById('enkaModal').classList.add('show');
+
+    pendingOrderCallback = function() {
+        closeEnkaModal();
+        
+        const prefix = game === 'genshin' ? 'GI' : 'HSR';
+        const orderId = `${prefix}${Date.now().toString().slice(-6)}`;
+        
+        const total = selected.reduce((s, it) => s + it.price, 0);
+        const itemsText = selected.map(it => it.name).join(', ');
+        const gameNameDisplay = game === 'genshin' ? 'Genshin' : 'HSR';
+        
+        // Memasukkan payload ke Google Apps Script / Backend
+        const payload = {
+            orderId, 
+            game: gameNameDisplay, 
+            uid: uidVal, 
+            nickname: nameVal, 
+            items: itemsText, 
+            total: total, 
+            wa: nameVal, // Mengikuti struktur lama Anda yang mengganti wa dengan nameVal
+            status: 'Menunggu Pembayaran'
+        };
+
+        saveOrderToHistory(orderId, gameNameDisplay);
+
+        fetch(WEB_APP_URL, {method: 'POST', mode: 'no-cors', body: JSON.stringify(payload)});
+
+        const waMessage = `Halo Admin EMU Joki 👋\nOrder Baru Masuk!\n\n*ID Pesanan:* #${orderId}\n*Game:* ${payload.game}\n*UID:* ${uidVal}\n*Nama Customer:* ${nameVal}\n\n*Detail Layanan:*\n${selected.map(it => `• ${it.name} - Rp ${it.price.toLocaleString('id-ID')}`).join('\n')}\n\n*Total:* Rp ${total.toLocaleString('id-ID')}\n\nMohon segera diproses ya 🙏`;
+
+        const adminWA = "6285150886538";
+        
+        setTimeout(() => { window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(waMessage)}`, '_blank'); }, 500);
+        showToast(`✅ Pesanan Berhasil!<br>ID: #${orderId}`);
+
+        document.querySelectorAll(`#${game}Page .area-item input`).forEach(i => i.checked = false);
+        document.getElementById(`uid_${game}`).value = "";
+        document.getElementById(`name_${game}`).value = "";
+        if (typeof updateTotal === 'function') updateTotal(game);
     };
 
-    fetch(WEB_APP_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify(payload)
-    });
-
-    const waMessage = `Halo Admin EMU Joki 👋
-Order Baru Masuk!
-
-*ID Pesanan:* #${orderId}
-*Game:* ${payload.game}
-*UID:* ${uidVal}
-*WA Customer:* ${waVal}
-
-*Detail:*
-${selected.map(it => `• ${it.name} - Rp ${it.price.toLocaleString('id-ID')}`).join('\n')}
-
-*Total:* Rp ${total.toLocaleString('id-ID')}
-
-Mohon segera diproses ya 🙏`;
-
-    const adminWA = "6285150886538";
-    
-    setTimeout(() => {
-        window.open(`https://wa.me/${adminWA}?text=${encodeURIComponent(waMessage)}`, '_blank');
-    }, 5000);
-
-    showToast(`✅ Pesanan Berhasil!<br>ID: #${orderId}<br>Total: Rp ${total.toLocaleString('id-ID')}<br>Data masuk Sheet & diarahkan ke WA`);
-
-    document.querySelectorAll(`#${game}Page .area-item input`).forEach(i => i.checked = false);
-    document.getElementById(`uid_${game}`).value = "";
-    document.getElementById(`wa_${game}`).value = "";
-    updateTotal(game);
+    document.getElementById('modalConfirmBtn').onclick = function() {
+        if (typeof pendingOrderCallback === 'function') {
+            pendingOrderCallback();
+        }
+    };
 }
+
+// =================================================================
+// BAGIAN PERBAIKAN: Fungsi Cek Status Order (Terpisah agar tidak Error)
+// =================================================================
+function tampilkanHasilCek(data, tombolAksiHtml = '') {
+    const hasilCekEl = document.getElementById('hasilCek');
+    if (!hasilCekEl) return;
+
+    hasilCekEl.innerHTML = `
+        <div style="background:var(--bg); padding:15px; border-radius:8px; border:1px solid var(--border); text-align:left;">
+            <p><b>ID:</b> ${data.orderId}</p>
+            <p><b>Game:</b> ${data.game}</p>
+            <p><b>Item:</b> ${data.items}</p>
+            <p><b>Total:</b> Rp ${data.total ? parseInt(data.total).toLocaleString('id-ID') : '0'}</p>
+            <p><b>Status:</b> <span style="color:${data.status === 'Dibatalkan' ? '#ff6b6b' : '#25D366'}; font-weight:700;">${data.status}</span></p>
+            ${tombolAksiHtml}
+        </div>
+    `;
+}
+
+// Contoh penanganan fetch untuk cek status order agar .catch tidak error
+function cekStatusOrder(orderId) {
+    fetch(`${WEB_APP_URL}?orderId=${orderId}`)
+        .then(res => res.json())
+        .then(data => {
+            let tombolAksiHtml = ''; 
+            tampilkanHasilCek(data, tombolAksiHtml);
+        })
+        .catch(err => { 
+            console.error(err);
+            const hasilCekEl = document.getElementById('hasilCek');
+            if (hasilCekEl) {
+                hasilCekEl.innerHTML = `<p style="color:red;">Error mengambil data</p>`; 
+            }
+        });
+}
+
 function cekStatus() {
     const orderId = document.getElementById('inputOrderId').value.trim();
-    if(!orderId) return alert('Masukkan ID Pesanan dulu');
+    if(!orderId) return showToast('Masukkan ID Pesanan dulu');
     document.getElementById('hasilCek').innerHTML = 'Mencari...';
-    fetch(WEB_APP_URL + '?orderId=' + orderId).then(res => res.json()).then(data => {
-        if(data.status === 'tidak ditemukan') { document.getElementById('hasilCek').innerHTML = `<p style="color:red;">ID Pesanan tidak ditemukan</p>`; } 
-        else { document.getElementById('hasilCek').innerHTML = `<div style="background:var(--bg); padding:15px; border-radius:8px; border:1px solid var(--border);"><p><b>ID:</b> ${data.orderId}</p><p><b>Game:</b> ${data.game}</p><p><b>Item:</b> ${data.items}</p><p><b>Total:</b> Rp ${parseInt(data.total).toLocaleString('id-ID')}</p><p><b>Status:</b> <span style="color:#25D366; font-weight:700;">${data.status}</span></p></div>`; }
-    }).catch(err => { document.getElementById('hasilCek').innerHTML = `<p style="color:red;">Error: ${err}</p>`; });
+    
+    fetch(WEB_APP_URL + '?orderId=' + orderId)
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === 'tidak ditemukan') { 
+                document.getElementById('hasilCek').innerHTML = `<p style="color:red;">ID Pesanan tidak ditemukan</p>`; 
+            } else { 
+                let tombolAksiHtml = '';
+                
+                // Kembalikan ke fungsi pembatalan sistem Google Sheet jika statusnya Menunggu Pembayaran
+                if (data.status === 'Menunggu Pembayaran') {
+                    tombolAksiHtml = `<button onclick="batalkanPesanan('${data.orderId}')" style="width:100%; background:#ff6b6b; color:white; border:none; padding:10px; border-radius:6px; margin-top:12px; font-weight:600; cursor:pointer;">❌ Batalkan Pesanan</button>`;
+                } else if (data.status !== 'Dibatalkan') {
+                    const noWhatsApp = "6285150886538"; 
+                    const pesanWa = encodeURIComponent(`Halo Emu, saya mau tanya status pesanan #${data.orderId}`);
+                    const linkWa = `https://wa.me/${noWhatsApp}?text=${pesanWa}`;
+                    tombolAksiHtml = `<a href="${linkWa}" target="_blank" style="text-decoration:none;"><button style="width:100%; background:#25D366; color:white; border:none; padding:10px; border-radius:6px; margin-top:12px; font-weight:600; cursor:pointer;">💬 Hubungi Penjual</button></a>`;
+                }
+
+                let statusColor = data.status === 'Dibatalkan' ? '#ff6b6b' : data.status === 'Menunggu Pembayaran' ? '#ffa94d' : '#25D366';
+
+                document.getElementById('hasilCek').innerHTML = `
+                    <div style="background:var(--bg); padding:15px; border-radius:8px; border:1px solid var(--border); text-align:left;">
+                        <p><b>ID Pesanan:</b> ${data.orderId}</p>
+                        <p><b>Game:</b> ${data.game}</p>
+                        <p><b>Item/Paket:</b> ${data.items}</p>
+                        <p><b>Total Bayar:</b> Rp ${data.total ? parseInt(data.total).toLocaleString('id-ID') : '0'}</p>
+                        <p><b>Status:</b> <span style="color:${statusColor}; font-weight:700;">${data.status}</span></p>
+                        ${tombolAksiHtml}
+                    </div>
+                `; 
+            }
+        })
+        .catch(err => { 
+            document.getElementById('hasilCek').innerHTML = `<p style="color:red;">Error mengambil data</p>`; 
+        });
 }
+
+// Fungsi pembatalan asli yang mengirimkan data ke Google Apps Script/Sheet
+function batalkanPesanan(orderId) {
+    if(!confirm(`Yakin mau membatalkan pesanan #${orderId}?`)) return;
+
+    document.getElementById('hasilCek').innerHTML = 'Memproses pembatalan...';
+    showToast('⏳ Memproses pembatalan...');
+
+    fetch(WEB_APP_URL + `?action=cancel&orderId=${orderId}`)
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === "success" || data.result === "success") {
+            showToast(`✅ Pesanan #${orderId} berhasil dibatalkan!`);
+        } else {
+            showToast(`❌ Gagal membatalkan pesanan.`);
+        }
+        cekStatus(); // Me-refresh tampilan hasil cek status di layar
+        if (typeof loadLocalHistory === 'function') loadLocalHistory(); // Me-refresh komponen list bawah
+    })
+    .catch(err => {
+        showToast('❌ Terjadi kesalahan koneksi saat membatalkan.');
+        cekStatus(); // Tetap refresh untuk mengembalikan tampilan asal jika fetch gagal
+    });
+}
+
 
 function filterCat(el, game) {
     const cat = el.getAttribute('data-cat');
@@ -280,7 +500,9 @@ function filterCat(el, game) {
     document.getElementById(`searchBar${game.charAt(0).toUpperCase() + game.slice(1)}`).value = '';
     applyFilter(game);
 }
+
 function searchService(game) { applyFilter(game); }
+
 function applyFilter(game) {
     const activeTab = document.querySelector(`#${game}Page .tab.active`);
     const cat = activeTab.getAttribute('data-cat');
@@ -290,29 +512,31 @@ function applyFilter(game) {
         const matchCat = item.dataset.cat === cat;
         const matchSearch = item.innerText.toLowerCase().includes(search);
         const show = matchCat && matchSearch;
-        item.style.display = show? 'block' : 'none';
+        item.style.display = show ? 'block' : 'none';
         if(show) found++;
     })
-    document.getElementById(`noResult${game.charAt(0).toUpperCase() + game.slice(1)}`).style.display = found === 0? 'block' : 'none';
+    document.getElementById(`noResult${game.charAt(0).toUpperCase() + game.slice(1)}`).style.display = found === 0 ? 'block' : 'none';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
-    document.querySelector('.header-actions .icon-btn:last-child').textContent = savedTheme === 'dark'? '☀️' : '🌙';
+    document.querySelector('.header-actions .icon-btn:last-child').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    
+    document.querySelectorAll('.area-item input').forEach(cb => { 
+        cb.addEventListener('change', (e) => { 
+            const game = e.target.closest('.page').id.replace('Page', ''); 
+            updateTotal(game); 
+        }) 
+    });
 })
+
 function toggleTheme() {
     const html = document.documentElement;
-    const newTheme = html.getAttribute('data-theme') === 'dark'? 'light' : 'dark';
+    const newTheme = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', newTheme);
-    document.querySelector('.header-actions .icon-btn:last-child').textContent = newTheme === 'dark'? '☀️' : '🌙';
+    document.querySelector('.header-actions .icon-btn:last-child').textContent = newTheme === 'dark' ? '☀️' : '🌙';
     localStorage.setItem('theme', newTheme);
-}
-function showToast(message) {
-    const toast = document.getElementById('toast');
-    toast.innerHTML = message;
-    toast.classList.add('show');
-    setTimeout(() => { toast.classList.remove('show'); }, 4000);
 }
 </script>
 </body>
