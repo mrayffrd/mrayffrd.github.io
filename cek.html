@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EMU | Cek Pesanan</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+    .history-title{ font-weight:700; margin:20px 0 10px 0; font-size:15px; }
+    .history-item{
+        display:flex; justify-content:space-between; align-items:center;
+        padding:10px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px;
+        background: var(--card-bg, #fff);
+    }
+    [data-theme="dark"] .history-item{ background: #2a2a2a; }
+    .history-info{ cursor:pointer; flex:1; }
+    .history-id{ font-weight:700; font-size:14px; }
+    .history-game{ font-size:12px; opacity:0.7; }
+    .history-btn{ padding:6px 12px; border:none; border-radius:6px; cursor:pointer; font-size:12px; font-weight:600; margin-left:6px; }
+    .btn-primary{ background:var(--primary); color:#fff; }
+    .btn-danger{ background:#ff6b6b; color:#fff; }
+    .card{ background: var(--card-bg, #fff); padding:20px; border-radius:12px; border:1px solid var(--border); }
+    [data-theme="dark"] .card{ background: #2a2a2a; }
+</style>
+</head>
+<body>
+<header>
+  <div class="container header-wrap">
+    <div class="header-actions">
+      <a href="https://www.instagram.com/emuriceee/" target="_blank" class="icon-btn">IG</a>
+      <a href="https://x.com/" target="_blank" class="icon-btn">X</a>
+      <a href="https://youtube.com/" target="_blank" class="icon-btn">YT</a>
+      <button class="icon-btn" onclick="toggleTheme()">🌙</button>
+    </div>
+    <h1><a href="index.html">EMU | Jasa Joki</a></h1>
+    <div class="header-actions"><a href="index.html" class="icon-btn">← Beranda</a></div>
+  </div>
+</header>
+
+<main class="container" id="cekPage">
+  <div class="subheader">
+    <h2>Cek Status Pesanan</h2>
+    <p>Masukkan ID Pesanan yang dikasih pas order</p>
+  </div>
+  <div class="card" style="max-width:500px; margin:0 auto;">
+    <input id="inputOrderId" placeholder="Contoh: GI123456 atau HSR123456" style="width:100%; padding:14px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text); margin-bottom:12px;">
+    <button class="btn btn-primary" onclick="cekStatus()" style="width:100%;">Cek Sekarang</button>
+    <div id="hasilCek" style="margin-top:20px;"></div>
+    <div class="history-title">🕒 Histori Pesanan Anda</div>
+    <div class="history-list" id="localHistoryList"></div>
+  </div>
+</main>
+
+<div id="toast" class="toast"></div>
+<script src="script.js"></script>
+</body></html>
