@@ -1,5 +1,63 @@
 <!DOCTYPE html><html lang="id" data-theme="light"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>EMU | Jasa Joki Game</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body>
+<style>
+header { 
+    background: rgba(1, 105, 208, 0.25) !important; 
+    backdrop-filter: blur(12px) !important; 
+    padding: 8px 0 !important; 
+    position: sticky !important; 
+    top: 0 !important; 
+    z-index: 999 !important; 
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.header-wrap { 
+    display: flex; 
+    justify-content: space-between;
+    align-items: center; 
+    max-width: 1200px; 
+    margin: 0 auto; 
+    padding: 0 20px; 
+}
+header h1 { 
+    margin: 0; 
+    font-size: 18px; 
+    font-weight: 700;
+}
+header h1 a { 
+    color: #fff !important; 
+    text-decoration: none; 
+}
+.header-actions { 
+    display: flex; 
+    gap: 8px; 
+    align-items: center;
+}
+.icon-btn { 
+    background: rgba(255,255,255,0.05); 
+    border: 1px solid rgba(255,255,255,0.2); 
+    color: #fff !important; 
+    padding: 6px 10px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-size: 13px; 
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s;
+    text-align: center;
+}
+.icon-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+}
 
+/* INI CUMA KENA KE SOSMED DOANG */
+.icon-btn.social { font-size: 0; min-width: 32px; } /* sembunyiin text */
+.icon-btn.social::before { font-size: 13px; } /* munculin lewat ::before */
+
+/* ISI ICON SOSMED */
+.icon-btn.ig::before { content: "IG"; }
+.icon-btn.x::before { content: "X"; }
+.icon-btn.yt::before { content: "YT"; }
+</style>
 <!-- TOMBOL M KIRI -->
 <a href="admin.html" style="
     position: fixed;
@@ -34,7 +92,23 @@
     border: 3px solid rgb(255, 255, 255);
 ">>u<</a>
 
-<header><div class="container header-wrap"><div class="header-actions"><a href="https://www.instagram.com/emuriceee/" target="_blank" class="icon-btn">IG</a><a href="https://x.com/" target="_blank" class="icon-btn">X</a><a href="https://youtube.com/" target="_blank" class="icon-btn">YT</a><button class="icon-btn" onclick="toggleTheme()">🌙</button></div><h1><a href="index.html" style="color:white; text-decoration:none;">EMU | Jasa Joki</a></h1><div class="header-actions"><a href="cek.html" class="icon-btn">Cek Pesanan</a></div></div></header>
+<header>
+  <div class="header-wrap">
+    
+    <!-- KIRI: LOGO -->
+    <h1><a href="index.html">EMU | Jasa Joki</a></h1>
+
+    <!-- KAN: MENU -->
+    <div class="header-actions">
+      <a href="https://www.instagram.com/emuriceee/" target="_blank" class="icon-btn">IG</a>
+      <a href="https://x.com/" target="_blank" class="icon-btn">X</a>
+      <a href="https://youtube.com/" target="_blank" class="icon-btn">YT</a>
+      <a href="cek.html" class="icon-btn">Cek Pesanan</a>
+      <button class="icon-btn theme-btn" onclick="toggleTheme()"></button> <!-- INI TOMBOL BULAN -->
+    </div>
+
+  </div>
+</header>
 
 <main class="container">
   <section class="hero"><h2>Joki Game Cepat & Aman</h2><p>Privasi terjaga. Proses cepat. Harga bersahabat.</p></section>
