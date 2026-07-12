@@ -1,1 +1,112 @@
-comingsoon
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Portal | EMU Joki</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{ --biru:#0169D0; --ungu:#8B5CF6; }
+body{ 
+    font-family: 'Inter', sans-serif; margin:0; color:#E5E7EB; 
+    background: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg') no-repeat center fixed;
+    background-size: cover;
+}
+body::before{
+    content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(11, 17, 32, 0.75); backdrop-filter: blur(6px); z-index: -1;
+}
+
+.container{ max-width: 700px; margin: 0 auto; padding: 20px; text-align: center; }
+header{ padding: 40px 0 20px; }
+header h1{ 
+    font-size: 34px; font-weight: 900; margin: 0; 
+    background: linear-gradient(90deg, var(--biru), var(--ungu)); 
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+}
+header p{ color: #D1D5DB; }
+
+.menu-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 30px; }
+.menu-btn{ 
+    padding: 28px 10px; border-radius: 20px; text-decoration: none; color: #fff; 
+    border: 1px solid rgba(255,255,255,0.25); transition: 0.3s; font-weight: 700; font-size: 15px;
+    position: relative; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    background-size: cover; background-position: center;
+}
+.menu-btn::before{ /* overlay gelap */
+    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); transition: 0.3s;
+}
+.menu-btn:hover::before{ background: rgba(139,92,246,0.6); }
+.menu-btn:hover{ transform: translateY(-5px) scale(1.03); }
+.menu-btn .icon, .menu-btn span:last-child{ position: relative; z-index: 2; }
+.menu-btn .icon{ font-size: 36px; display: block; margin-bottom: 10px; }
+
+/* LINK BACKGROUND TIAP TOMBOL - GANTI DI SINI */
+.btn-sosmed { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
+.btn-game { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
+.btn-inven { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
+.btn-cek { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
+.btn-saran { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
+.btn-sayem { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
+.btn-snk { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
+.btn-tentang { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>⚡PORTAL</h1>
+    <p>Fitur lainnya ada disini</p>
+  </header>
+
+  <div class="menu-grid">
+    <!-- 1. Sosial Media -->
+    <a href="#" class="menu-btn btn-sosmed">
+      <span class="icon">🌐</span>
+      <span>Sosial Media</span>
+    </a>
+    <!-- 2. Mini Game -->
+    <a href="#" class="menu-btn btn-game">
+      <span class="icon">🎮</span>
+      <span>Mini Game</span>
+    </a>
+    <!-- 3. Inventori -->
+    <a href="#" class="menu-btn btn-inven">
+      <span class="icon">🎒</span>
+      <span>Inventori</span>
+    </a>
+    <!-- 3,5. Diskon Shop -->
+    <a href="#" class="menu-btn btn-inven">
+      <span class="icon">💎</span>
+      <span>Shop</span>
+    </a>
+    <!-- 4. Cek Pesanan -->
+    <a href="cek.html" class="menu-btn btn-cek">
+      <span class="icon">📦</span>
+      <span>Cek Pesanan</span>
+    </a>
+    <!-- 5. Kotak Saran Produk -->
+    <a href="admin.html" class="menu-btn btn-saran">
+      <span class="icon">💡</span>
+      <span>Kotak Saran Produk</span>
+    </a>
+    <!-- 6. Sayembara -->
+    <a href="#" class="menu-btn btn-sayem">
+      <span class="icon">🏆</span>
+      <span>Sayembara</span>
+    </a>
+    <!-- 7. Syarat dan Ketentuan -->
+    <a href="#" class="menu-btn btn-snk">
+      <span class="icon">📜</span>
+      <span>Syarat dan Ketentuan</span>
+    </a>
+    <!-- 8. Tentang -->
+    <a href="#" class="menu-btn btn-tentang">
+      <span class="icon">ℹ️</span>
+      <span>Tentang</span>
+    </a>
+  </div>
+</div>
+</body>
+</html>
