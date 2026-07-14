@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <link rel="icon" href="logo.png" type="https://imgur.com/a/RFCnis6">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Block Blast Master - Hard Edition</title>
+    <style>
+        :root {
+            --bg-color: #0f0f12;
+            --container-bg: #16161e;
+            --grid-bg: #1f1f2a;
+            --cell-empty: #2a2a38;
+            --accent-color: #ffc107;
+            /* Ukuran dinamis agar konsisten di PC dan HP */
+            --game-width: min(100vw - 20px, 420px);
+            --cell-size: calc((var(--game-width) - 40px) / 7);
+        }
+
+        * {
+            box-sizing: border-box;
+            touch-action: none; /* Mencegah layar HP scroll saat drag balok */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 10px;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .game-container {
+            background: var(--container-bg);
+            width: var(--game-width);
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            margin: 0;
+            color: var(--accent-color);
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+
+        #score-board {
+            font-size: 18px;
+            font-weight: bold;
+            background: rgba(255,255,255,0.08);
+            padding: 6px 15px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Papan Grid Utama */
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(7, var(--cell-size));
+            grid-template-rows: repeat(7, var(--cell-size));
+            gap: 4px;
+            background-color: var(--grid-bg);
+            padding: 6px;
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        .cell {
+            width: var(--cell-size);
+            height: var(--cell-size);
+            background-color: var(--cell-empty);
+            border-radius: 6px;
+            transition: background-color 0.15s ease;
+        }
+
+        /* Warna Blok Terisi */
+        .cell.filled {
+            background-color: #0288d1;
+            box-shadow: inset 0 0 0px rgba(255,255,255,0.4);
+        }
+
+       /* Efek Hover Pratinjau - dibikin transparan + beda warna */
+.cell.hover-valid { 
+    background-color: rgba(76, 175, 80, 0.4) !important; /* Hijau transparan */
+    border: 2px dashed #4CAF50 !important; 
+}
+.cell.hover-invalid { 
+    background-color: rgba(244, 67, 54, 0.4) !important; /* Merah transparan */
+    border: 2px dashed #F44336 !important;
+}
+        /* Animasi Ledakan Blast */
+        .cell.blast {
+            animation: blastAnim 0.35s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+        }
+
+        @keyframes blastAnim {
+            0% { transform: scale(1); background-color: #ff5722; }
+            50% { transform: scale(1.1); background-color: #ffeb3b; }
+            100% { transform: scale(0); background-color: var(--cell-empty); }
+        }
+
+        /* Rak Penampung Balok di Bawah */
+        #dock {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            height: 110px;
+            margin-top: 15px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            padding: 5px;
+        }
+
+        .dock-slot {
+            width: 30%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Komponen Balok yang Bisa Di-drag */
+        .piece {
+            display: grid;
+            gap: 2px;
+            position: absolute;
+            cursor: grab;
+            transform: scale(0.55); /* Diperkecil saat di rak agar muat */
+            transform-origin: center center;
+            transition: transform 0.2s ease;
+        }
+
+        /* Ketika balok sedang diseret aktif */
+        .piece.dragging {
+            cursor: grabbing;
+            transform: scale(1.05) translateY(-40px); /* Membesar seukuran grid asli & bergeser ke atas jari */
+            z-index: 100;
+            pointer-events: none; /* Menghindari deteksi pointer menghalangi grid */
+        }
+
+        .piece-cell {
+            width: var(--cell-size);
+            height: var(--cell-size);
+        }
+
+        .piece-cell.filled {
+            background-color: #e91e63;
+            border-radius: 6px;
+            box-shadow: inset 0 0 4px rgba(255,255,255,0.4);
+        }
+
+        /* Layar Game Over */
+        #game-over-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 15, 18, 0.95);
+            border-radius: 20px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #game-over-screen h2 {
+            color: #f44336;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        #game-over-screen button {
+            background: var(--accent-color);
+            color: #000;
+            border: none;
+            padding: 10px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="game-container">
+        <header>
+            <h1>BLOCK MASTER</h1>
+            <div id="score-board">SKOR: <span id="score">0</span></div>
+        </header>
+
+        <div id="grid"></div>
+        <div id="dock">
+            <div class="dock-slot" data-slot="0"></div>
+            <div class="dock-slot" data-slot="1"></div>
+            <div class="dock-slot" data-slot="2"></div>
+        </div>
+
+        <div id="game-over-screen">
+            <h2>GAME OVER</h2>
+            <p>Skor Akhir Anda: <span id="final-score">0</span></p>
+            <button onclick="resetGame()">Main Lagi</button>
+        </div>
+    </div>
+
+    <script>
+        const GRID_SIZE = 7; // Diperkecil menjadi 7x7 agar lebih sulit
+        const gridElement = document.getElementById('grid');
+        const scoreElement = document.getElementById('score');
+        const dockSlots = document.querySelectorAll('.dock-slot');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const finalScoreElement = document.getElementById('final-score');
+
+        let score = 0;
+        let grid = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0));
+        
+        // Kumpulan bentuk balok level sulit (Hard Pool)
+        const HARD_PIECES = [
+            { shape: [[1,1,1,1]], cols: 4, rows: 1 }, // Garis Panjang 4
+            { shape: [[1],[1],[1],[1]], cols: 1, rows: 4 }, // Vertikal Panjang 4
+            { shape: [[1,1,1],[0,1,0],[0,1,0]], cols: 3, rows: 3 }, // Huruf T Besar
+            { shape: [[1,1],[1,1]], cols: 2, rows: 2 }, // Kotak 2x2
+            { shape: [[1,1,1],[1,0,0],[1,0,0]], cols: 3, rows: 3 }, // L Besar
+            { shape: [[1,1,0],[0,1,1]], cols: 3, rows: 2 }, // Balok Z
+            { shape: [[0,1,1],[1,1,0]], cols: 3, rows: 2 }, // Balok S
+            { shape: [[1,0],[1,1]], cols: 2, rows: 2 }, // L Kecil
+            { shape: [[1,1,1]], cols: 3, rows: 1 }
+        ];
+
+        let activeDrag = null;
+
+        // 1. Inisialisasi Papan Grid
+        function initGrid() {
+            gridElement.innerHTML = '';
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+                    gridElement.appendChild(cell);
+                }
+            }
+        }
+
+        function drawGridDOM() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                const r = parseInt(cell.dataset.row);
+                const c = parseInt(cell.dataset.col);
+                cell.className = 'cell'; // Reset kelas animasi/hover
+                if (grid[r][c] === 1) cell.classList.add('filled');
+            });
+        }
+
+        // 2. Spawn Balok Baru ke dalam 3 Slot Rak Bawah
+        function spawnPieces() {
+            dockSlots.forEach(slot => {
+                if (slot.children.length === 0) {
+                    const pieceData = HARD_PIECES[Math.floor(Math.random() * HARD_PIECES.length)];
+                    createPieceElement(slot, pieceData);
+                }
+            });
+            checkGameOverCondition();
+        }
+
+        function createPieceElement(parent, data) {
+            const pieceDiv = document.createElement('div');
+            pieceDiv.classList.add('piece');
+            pieceDiv.style.gridTemplateColumns = `repeat(${data.cols}, var(--cell-size))`;
+            
+            data.shape.forEach(row => {
+                row.forEach(val => {
+                    const cell = document.createElement('div');
+                    cell.classList.add('piece-cell');
+                    if (val === 1) cell.classList.add('filled');
+                    pieceDiv.appendChild(cell);
+                });
+            });
+
+            // Atur Event Pointer untuk Dragging Mulus PC & HP
+            pieceDiv.addEventListener('pointerdown', (e) => startDrag(e, pieceDiv, data));
+            parent.appendChild(pieceDiv);
+        }
+
+        // 3. Sistem Drag and Drop Kustom Menggunakan PointerEvents
+     function startDrag(e, element, data) {
+    e.preventDefault();
+    element.setPointerCapture(e.pointerId);
+    element.classList.add('dragging');
+    element.style.opacity = '0';
+
+    const parentSlot = element.parentElement; // <-- TAMBAH INI
+
+    activeDrag = {
+        element: element,
+        data: data,
+        startX: e.clientX,
+        startY: e.clientY,
+        parentSlot: parentSlot, // <-- TAMBAH INI: simpen slot asal
+        pointerId: e.pointerId
+    };
+
+    updateDragPosition(e.clientX, e.clientY);
+    element.addEventListener('pointermove', onDragMove);
+    element.addEventListener('pointerup', onDragEnd);
+}
+
+        function onDragMove(e) {
+            if (!activeDrag) return;
+            updateDragPosition(e.clientX, e.clientY);
+            highlightGridIntersect(e.clientX, e.clientY);
+        }
+
+        function updateDragPosition(clientX, clientY) {
+            const dx = clientX - activeDrag.startX;
+            const dy = clientY - activeDrag.startY;
+            activeDrag.element.style.transform = `translate(${dx}px, ${dy}px) scale(1.05) translateY(-40px)`;
+        }
+
+        // Mengukur sel mana di grid utama yang sejajar dengan letak balok yang di-drag
+        function getIntersectingGridCell(clientX, clientY) {
+    const rect = activeDrag.element.getBoundingClientRect(); // ambil ukuran blok
+    const targetX = clientX - 25 + (rect.height / 3); // tengah horizontal
+    const targetY = clientY - 75 + (rect.height / 4); // jari -40px + setengah tinggi blok
+
+            
+            // Sembunyikan elemen sementara agar elementFromPoint mendeteksi sel grid di bawahnya
+            activeDrag.element.style.display = 'none';
+            const hitElement = document.elementFromPoint(clientX, targetY);
+            activeDrag.element.style.display = 'grid';
+
+            if (hitElement && hitElement.classList.contains('cell')) {
+                return {
+                    row: parseInt(hitElement.dataset.row),
+                    col: parseInt(hitElement.dataset.col)
+                };
+            }
+            return null;
+        }
+
+        function highlightGridIntersect(clientX, clientY) {
+            clearHoverEffects();
+            const cellPos = getIntersectingGridCell(clientX, clientY);
+            if (!cellPos) return;
+
+            const { row, col } = cellPos;
+            const { shape, rows, cols } = activeDrag.data;
+            let isValid = canPlacePiece(row, col, shape, rows, cols);
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (shape[r][c] === 1) {
+                        const cell = document.querySelector(`.cell[data-row='${row + r}'][data-col='${col + c}']`);
+                        if (cell) {
+                            cell.classList.add(isValid ? 'hover-valid' : 'hover-invalid');
+                        }
+                    }
+                }
+            }
+        }
+
+        function clearHoverEffects() {
+            document.querySelectorAll('.cell').forEach(c => c.classList.remove('hover-valid', 'hover-invalid'));
+        }
+    
+    function onDragEnd(e) {
+    if (!activeDrag) return;
+    const element = activeDrag.element;
+    element.removeEventListener('pointermove', onDragMove);
+    element.removeEventListener('pointerup', onDragEnd);
+    element.releasePointerCapture(e.pointerId); // <-- tambahin ini biar aman di HP
+
+    const cellPos = getIntersectingGridCell(e.clientX, e.clientY);
+    let placed = false;
+
+    if (cellPos) {
+        const { row, col } = cellPos;
+        const { shape, rows, cols } = activeDrag.data;
+
+        if (canPlacePiece(row, col, shape, rows, cols)) {
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (shape[r][c] === 1) grid[row + r][col + c] = 1;
+                }
+            }
+            score += 1;
+            element.remove();
+            placed = true;
+
+            drawGridDOM();
+            checkLinesAndBlast();
+
+            const remainingPieces = Array.from(dockSlots).some(slot => slot.children.length > 0);
+            if (!remainingPieces) spawnPieces();
+            else checkGameOverCondition();
+        }
+    }
+
+    if (!placed) {
+        // Balikin semua style ke awal
+        element.classList.remove('dragging');
+        element.style.transform = 'scale(0.65)';
+        element.style.opacity = '1'; // <-- INI PENTING
+        activeDrag.parentSlot.appendChild(element);
+    }
+
+    clearHoverEffects();
+    activeDrag = null;
+}
+
+        // 4. Validasi Aturan Game
+        function canPlacePiece(startRow, startCol, shape, rows, cols) {
+            if (startRow + rows > GRID_SIZE || startCol + cols > GRID_SIZE) return false;
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (shape[r][c] === 1 && grid[startRow + r][startCol + c] === 1) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        // 5. Efek Penghancuran Garis Penuh (Blast)
+        function checkLinesAndBlast() {
+            let rowsToBlast = [];
+            let colsToBlast = [];
+
+            for (let r = 0; r < GRID_SIZE; r++) {
+                if (grid[r].every(val => val === 1)) rowsToBlast.push(r);
+            }
+
+            for (let c = 0; c < GRID_SIZE; c++) {
+                let colFull = true;
+                for (let r = 0; r < GRID_SIZE; r++) {
+                    if (grid[r][c] === 0) colFull = false;
+                }
+                if (colFull) colsToBlast.push(c);
+            }
+
+            if (rowsToBlast.length > 0 || colsToBlast.length > 0) {
+                rowsToBlast.forEach(r => {
+                    for (let c = 0; c < GRID_SIZE; c++) {
+                        document.querySelector(`.cell[data-row='${r}'][data-col='${c}']`).classList.add('blast');
+                    }
+                    grid[r] = Array(GRID_SIZE).fill(0);
+                    score += 150; // Skor bonus tinggi untuk mode sulit
+                });
+
+                colsToBlast.forEach(c => {
+                    for (let r = 0; r < GRID_SIZE; r++) {
+                        document.querySelector(`.cell[data-row='${r}'][data-col='${c}']`).classList.add('blast');
+                        grid[r][c] = 0;
+                    }
+                    score += 150;
+                });
+
+                scoreElement.textContent = score;
+                setTimeout(drawGridDOM, 350); // Reset visual papan sesudah animasi meledak kelar
+            }
+        }
+
+        // 6. Deteksi Logika Game Over Otomatis
+        function checkGameOverCondition() {
+    // Ambil semua balok yg masih ada di dock
+    let currentPiecesInDock = [];
+    dockSlots.forEach(slot => {
+        if (slot.children.length > 0) {
+            const pieceElement = slot.firstChild;
+            // Cari shape nya berdasarkan grid yg ada
+            const cols = parseInt(pieceElement.style.gridTemplateColumns.split(' ').length);
+            const filledCells = pieceElement.querySelectorAll('.filled');
+            const shapeData = [];
+            const rows = Math.ceil(filledCells.length / cols);
+            
+            // Cari di HARD_PIECES mana yg bentuknya sama
+            for(let p of HARD_PIECES){
+                if(p.cols === cols && p.shape.flat().filter(x=>x==1).length === filledCells.length){
+                    currentPiecesInDock.push(p);
+                    break;
+                }
+            }
+        }
+    });
+
+    if (currentPiecesInDock.length === 0) return;
+
+    // Cek: ada gak 1 pun balok yg bisa ditaruh di grid
+    let anyMovePossible = false;
+
+    for (let pData of currentPiecesInDock) {
+        for (let r = 0; r < GRID_SIZE; r++) {
+            for (let c = 0; c < GRID_SIZE; c++) {
+                if (canPlacePiece(r, c, pData.shape, pData.rows, pData.cols)) {
+                    anyMovePossible = true;
+                    break;
+                }
+            }
+            if (anyMovePossible) break;
+        }
+        if (anyMovePossible) break;
+    }
+
+    // Kalau gak ada yg bisa ditaruh = GAME OVER
+    if (!anyMovePossible) {
+        setTimeout(() => {
+            finalScoreElement.textContent = score;
+            gameOverScreen.style.display = 'flex';
+        }, 300);
+    }
+}
+
+        function resetGame() {
+            score = 0;
+            scoreElement.textContent = '0';
+            grid = Array(GRID_SIZE).fill().map(() => Array(GRID_SIZE).fill(0));
+            gameOverScreen.style.display = 'none';
+            dockSlots.forEach(slot => slot.innerHTML = '');
+            initGrid();
+            drawGridDOM();
+            spawnPieces();
+        }
+
+        // Memulai Permainan Utama
+        initGrid();
+        spawnPieces();
+    </script>
+</body>
+</html>
