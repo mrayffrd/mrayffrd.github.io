@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="icon.png" type="image/png">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="theme-color" content="#03030a">
+<title>Sayembara</title>
+<style>
+/* ============ PENGATURAN TAMPILAN (UBAH SESUKA HATI) ============ */
+:root{
+  /* >>> BACKGROUND DESKTOP: gambar diatur di bagian KONFIGURASI (BG_FILES) pada JavaScript. Ini hanya cadangan jika gambar tidak ketemu <<< */
+  --bg-desktop: linear-gradient(135deg,#0b1020,#591b1b 55%,#812e2e);
+  /* >>> UBAH WARNA TASKBAR & MENU DI SINI (tidak terpengaruh tema) <<< */
+  --bg-taskbar: rgba(20,24,40,.55);
+  --bg-startmenu: rgba(48, 24, 24, 0.88);
+  --fg-desk:#fff;--fg-bar:#fff;--fg-menu:#fff;--txt-shadow:0 1px 4px #000a;--hover:rgba(255,255,255,.2);
+  /* >>> UBAH WARNA BAR JUDUL JENDELA DI SINI <<< */
+  --bg-titlebar: linear-gradient(90deg,#ff0000,#830000 55%,#030000);
+  /* ---- TEMA TERANG JENDELA (bawaan) ---- */
+  /* >>> UBAH BACKGROUND ISI JENDELA TERANG DI SINI <<< */
+  --bg-window: rgba(255,255,255,.94);
+  --text-window: #331e1e;
+  --accent:#f16363;--card:#fff;--border:#e3e6f5;--chip:#eef0ff;--muted:rgb(119, 102, 102);
+}
+/* ---- TEMA GELAP JENDELA (aktif saat tombol icon.png diklik) ---- */
+html[data-theme="dark"]{
+  /* >>> UBAH BACKGROUND ISI JENDELA GELAP DI SINI <<< */
+  --bg-window: rgba(54, 28, 28, 0.95);
+  --text-window: #e8eaf6;
+  --accent:#fca5a5;--card:#482323;--border:#663636;--chip:#2d3260;--muted:#d0aaaa;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;font-family:"Inter","Segoe UI",system-ui,sans-serif}
+#desktop{position:fixed;inset:0;background:var(--bg-desktop);background-size:cover;background-position:center}
+#icons{display:flex;flex-direction:column;flex-wrap:wrap;gap:8px;padding:14px;height:calc(100% - 80px);align-content:flex-start}
+.dicon{width:96px;padding:10px 4px;text-align:center;color:var(--fg-desk);font-size:12px;font-weight:500;border-radius:16px;cursor:pointer;user-select:none;text-shadow:var(--txt-shadow);transition:.2s}
+.dicon:hover{background:var(--hover);backdrop-filter:blur(8px);transform:translateY(-2px)}
+.dicon img{width:54px;height:54px;object-fit:cover;border-radius:16px;display:block;margin:0 auto 6px;box-shadow:0 6px 16px #0006}
+.dicon span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* Jendela */
+.win{position:absolute;display:flex;flex-direction:column;background:var(--bg-window);color:var(--text-window);border-radius:20px;border:1px solid rgba(255,255,255,.5);box-shadow:0 24px 70px rgba(5,8,30,.55);min-width:280px;min-height:200px;resize:both;overflow:hidden;backdrop-filter:blur(20px);animation:pop .28s cubic-bezier(.2,.9,.3,1.2);transition:opacity .22s,transform .22s}
+.win.anim{transition:left .32s ease,top .32s ease,width .32s ease,height .32s ease,opacity .22s,transform .22s}
+@keyframes pop{from{opacity:0;transform:scale(.88) translateY(20px)}}
+.win.max{inset:12px 12px 82px 12px!important;width:auto!important;height:auto!important;resize:none}
+.win.min{opacity:0;visibility:hidden;pointer-events:none;transform:scale(.85) translateY(60px)}
+.tb{display:flex;align-items:center;gap:10px;background:var(--bg-titlebar);color:#fff;padding:0 12px;height:46px;cursor:move;user-select:none;flex:none;touch-action:none}
+.tb img{width:24px;height:24px;border-radius:8px;object-fit:cover}
+.tb .t{flex:1;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb button{width:28px;height:28px;border:0;border-radius:50%;background:rgba(255,255,255,.22);color:#fff;font-size:13px;cursor:pointer;transition:.15s;display:grid;place-items:center;padding:0}
+.tb button:hover{background:rgba(255,255,255,.4);transform:scale(1.12)}
+.tb .x:hover{background:#ef4444}
+.body{flex:1;overflow:auto;padding:20px;line-height:1.7;font-size:15px}
+.body img.foto{width:100%;max-height:300px;object-fit:cover;border-radius:16px;margin-bottom:16px;display:block;box-shadow:0 8px 24px #0002}
+.body h2{margin:0 0 6px;font-size:24px;line-height:1.25;letter-spacing:-.4px}
+.tgl{display:inline-block;background:var(--chip);color:var(--accent);font-size:12px;font-weight:600;padding:3px 12px;border-radius:99px;margin-bottom:14px}
+.vid{width:100%;aspect-ratio:16/9;border:0;border-radius:16px;background:#000;margin-bottom:14px;box-shadow:0 8px 24px #0003}
+.prev{display:flex;gap:14px;border:1px solid var(--border);border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;margin-top:18px;background:var(--card);transition:.2s}
+.prev:hover{transform:translateY(-3px);box-shadow:0 10px 26px #6366f133;border-color:var(--accent)}
+.prev img{width:140px;object-fit:cover}
+.prev div{padding:12px 14px;font-size:13px;color:var(--muted)}.prev b{display:block;margin-bottom:4px;color:var(--text-window);font-size:14px}.prev small{color:var(--accent)}
+.body::-webkit-scrollbar{width:8px}.body::-webkit-scrollbar-thumb{background:#c7cbe8;border-radius:9px}
+/* Taskbar (dock melayang) */
+#taskbar{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;max-width:calc(100% - 24px);min-width:min(420px,calc(100% - 24px));height:56px;background:var(--bg-taskbar);backdrop-filter:blur(24px) saturate(160%);border:1px solid rgba(255,255,255,.4);border-radius:22px;box-shadow:0 12px 40px rgba(0,0,0,.35);display:flex;align-items:center;gap:6px;padding:0 10px;z-index:99999}
+.tbtn{width:42px;height:42px;border:0;background:transparent;border-radius:14px;cursor:pointer;padding:5px;color:var(--fg-bar);font-size:20px;flex:none;transition:.2s}
+.tbtn:hover{background:var(--hover);transform:translateY(-3px) scale(1.08)}
+.tbtn img{width:100%;height:100%;object-fit:contain}
+#tasks{flex:1;display:flex;gap:6px;overflow:hidden}
+.tk{position:relative;display:flex;align-items:center;gap:7px;max-width:150px;height:40px;padding:0 12px;border-radius:14px;color:var(--fg-bar);font-size:12px;font-weight:500;cursor:pointer;transition:.2s}
+.tk:hover{background:var(--hover)}
+.tk img{width:22px;height:22px;border-radius:7px;object-fit:cover;flex:none}
+.tk span{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.tk.open::after{content:"";position:absolute;bottom:3px;left:50%;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#a5b4fc}
+.tk.active{background:var(--hover)}.tk.active::after{width:18px;margin-left:-9px;border-radius:9px;background:#a5b4fc}
+#clock{color:var(--fg-bar);font-size:11px;text-align:right;padding:0 6px;line-height:1.35;font-weight:500;flex:none}
+#menu{position:fixed;left:50%;transform:translateX(-50%) translateY(12px);bottom:80px;width:min(340px,92vw);max-height:60vh;overflow:auto;background:var(--bg-startmenu);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.18);border-radius:22px;padding:12px;opacity:0;pointer-events:none;transition:.22s;z-index:99998}
+#menu.show{opacity:1;pointer-events:auto;transform:translateX(-50%)}
+#menu h4{color:#a5b4fc;margin:6px 10px 10px;font-size:11px;letter-spacing:1px;font-weight:700}
+.mi{display:flex;align-items:center;gap:12px;color:var(--fg-menu);padding:9px 10px;border-radius:14px;font-size:14px;cursor:pointer;transition:.15s}
+.mi:hover{background:var(--hover)}
+.mi img{width:34px;height:34px;border-radius:11px;object-fit:cover}
+@media(max-width:700px){.dicon{width:80px}}
+</style>
+</head>
+<body>
+<div id="desktop"><div id="icons"></div></div>
+<div id="menu"><h4>SEMUA BERITA SAYEMBARA</h4><div id="menuList"></div></div>
+<div id="taskbar">
+  <button id="saran" class="tbtn" title="Ganti tema terang / gelap"><img id="logo" src="icon.png" alt="Ganti tema"></button>
+  <button id="start" class="tbtn" title="Daftar berita">&#9638;</button>
+  <button id="tile" class="tbtn" title="Rapikan jendela otomatis">&#9636;</button>
+  <div id="tasks"></div>
+  <div id="clock"></div>
+</div>
+
+<script>
+/* ============ KONFIGURASI ============ */
+// 1) Tempel URL Web App Google Apps Script kamu di sini (lihat panduan). Kosong = pakai data contoh.
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyxuzwnY24Tl7FyuJFicDzo7BYvhMtRjtt8G146vKglqEkU2YJGd7KEuO5WhOGRVZF3/exec";
+// 2) Logo tombol ganti tema terang/gelap (ganti file icon.png di folder yang sama)
+const LOGO = "icon.png";
+// 3) Judul & isi jendela "Beranda"
+const BERANDA = {judul:"Tentang", isi:"Selamat datang di portal <b>Berita</b>!<br>Klik dua kali ikon di desktop atau buka menu Start untuk membaca berita terbaru."};
+// Background desktop: daftar nama file gambar (dicoba berurutan, yang pertama ketemu dipakai)
+const BG_FILES = ["ronova.jpeg","ronova.jpg","ronova.png","ronova.JPG","ronova.JPEG","ronova.PNG","ronova.jpeg.jpg"];
+const BG_OVERLAY = 0.3; // 0 = tanpa lapisan gelap, 1 = hitam penuh
+// 4) Refresh otomatis data (ms). 0 = mati
+const REFRESH_MS = 60000;
+
+/* ============ DATA CONTOH (dipakai jika SCRIPT_URL kosong) ============ */
+const DEMO = [
+ {judul:"Sayembara Desain Logo",artikel:"Terbuka untuk umum.\nHadiah total 10 juta rupiah.",foto:"",video:"https://www.youtube.com/watch?v=dQw4w9WgXcQ",link:"",icon:"",tanggal:"2026-09-28"}
+];
+
+/* ============ KODE PROGRAM ============ */
+const $=s=>document.querySelector(s);
+const esc=t=>String(t||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+$("#logo").src=LOGO;
+(function(){let i=0;const tryNext=()=>{if(i>=BG_FILES.length){console.warn("Gambar background tidak ditemukan. Taruh file di folder yang sama dengan sayembara.html");return}
+ const f=BG_FILES[i++],im=new Image();im.onload=()=>{$("#desktop").style.background=`linear-gradient(rgba(0,0,0,${BG_OVERLAY}),rgba(0,0,0,${BG_OVERLAY})),url("${f}") center/cover no-repeat`};im.onerror=tryNext;im.src=f};tryNext()})();
+const wins={};let z=10,cascade=0;
+
+const svgIcon=(e,c)=>"data:image/svg+xml,"+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='${c}'/><text x='32' y='44' font-size='34' text-anchor='middle'>${e}</text></svg>`);
+const driveId=u=>(u.match(/[-\w]{25,}/)||[])[0];
+function imgUrl(u){if(!u)return"";if(/drive\.google\.com/.test(u)){const id=driveId(u);if(id)return`https://drive.google.com/thumbnail?id=${id}&sz=w1200`}return u}
+function iconOf(n,i){return n.icon?imgUrl(n.icon):svgIcon("📰",["#2563eb","#dc2626","#059669","#d97706","#7c3aed"][i%5])}
+function videoHtml(u){
+  if(!u)return"";
+  let m=u.match(/(?:youtu\.be\/|v=|embed\/|shorts\/)([\w-]{11})/);
+  if(m)return`<iframe class="vid" src="https://www.youtube.com/embed/${m[1]}" allowfullscreen></iframe>`;
+  if(/drive\.google\.com/.test(u)&&driveId(u))return`<iframe class="vid" src="https://drive.google.com/file/d/${driveId(u)}/preview" allowfullscreen></iframe>`;
+  return`<video class="vid" src="${esc(u)}" controls></video>`;
+}
+function previewHtml(n){
+  if(!n.link)return"";
+  const p=n.preview||{};
+  return`<a class="prev" href="${esc(n.link)}" target="_blank" rel="noopener">${p.image?`<img src="${esc(p.image)}" alt="">`:""}<div><b>${esc(p.title||n.link)}</b>${esc(p.description||"")}<br><small>${esc(p.site||n.link)}</small></div></a>`;
+}
+function bodyOf(n){
+  return `${n.foto?`<img class="foto" src="${esc(imgUrl(n.foto))}" alt="">`:""}
+  <h2>${esc(n.judul)}</h2><div class="tgl">${esc(n.tanggal)}</div>
+  ${videoHtml(n.video)}<div>${esc(n.artikel).replace(/\n/g,"<br>")}</div>${previewHtml(n)}`;
+}
+
+function openWin(id,title,icon,html){
+  if(wins[id]){const w=wins[id],was=w.el.classList.contains("min");w.el.classList.remove("min");if(was)tile();focus(id);return}
+  const el=document.createElement("div");el.className="win";
+  const off=(cascade++%8)*28;
+  el.style.cssText=`left:${110+off}px;top:${30+off}px;width:min(560px,90vw);height:min(460px,70vh)`;
+  el.innerHTML=`<div class="tb"><img src="${esc(icon)}"><div class="t">${esc(title)}</div>
+   <button class="bmin" title="Minimize">&#8212;</button><button class="bmax" title="Zoom">&#9744;</button><button class="x" title="Tutup">&#10005;</button></div>
+   <div class="body">${html}</div>`;
+  $("#desktop").appendChild(el);
+  const tk=document.createElement("div");tk.className="tk open";
+  tk.innerHTML=`<img src="${esc(icon)}"><span>${esc(title)}</span>`;$("#tasks").appendChild(tk);
+  wins[id]={el,tk};
+  if(innerWidth<700)el.classList.add("max");
+  el.addEventListener("pointerdown",()=>focus(id));
+  el.querySelector(".bmin").onclick=()=>{el.classList.add("min");tk.classList.remove("active");tile()};
+  el.querySelector(".bmax").onclick=()=>{el.classList.toggle("max");tile()};
+  el.querySelector(".x").onclick=()=>{el.remove();tk.remove();delete wins[id];tile()};
+  tk.onclick=()=>{if(el.classList.contains("min")){el.classList.remove("min");tile();focus(id)}else if(!tk.classList.contains("active"))focus(id);else{el.classList.add("min");tk.classList.remove("active");tile()}};
+  const tb=el.querySelector(".tb");
+  tb.ondblclick=e=>{if(!e.target.closest("button")){el.classList.toggle("max");tile()}};
+  tb.onpointerdown=e=>{
+    if(e.target.closest("button")||el.classList.contains("max"))return;
+    const sx=e.clientX-el.offsetLeft,sy=e.clientY-el.offsetTop;tb.setPointerCapture(e.pointerId);
+    tb.onpointermove=m=>{el.style.left=Math.max(-el.offsetWidth+80,m.clientX-sx)+"px";el.style.top=Math.max(0,Math.min(innerHeight-90,m.clientY-sy))+"px"};
+    tb.onpointerup=()=>{tb.onpointermove=null};
+  };
+  tile();focus(id);
+}
+/* Susun otomatis semua jendela yang terbuka (tidak minimize/zoom). Pengguna tetap bebas geser & ubah ukuran setelahnya. */
+function tile(){
+  if(innerWidth<700)return;
+  const list=Object.values(wins).map(w=>w.el).filter(e=>!e.classList.contains("min")&&!e.classList.contains("max"));
+  const n=list.length;if(!n)return;
+  const ic=[...document.querySelectorAll("#icons .dicon")];
+  const left=ic.length?Math.min(Math.max(...ic.map(i=>i.getBoundingClientRect().right))+10,innerWidth*.35):12;
+  const G=12,top=12,aw=innerWidth-left-12,ah=innerHeight-82-top;
+  const cols=n===1?1:Math.ceil(Math.sqrt(n)),rows=Math.ceil(n/cols),ch=(ah-G*(rows-1))/rows;
+  list.forEach((el,i)=>{
+    const r=Math.floor(i/cols),c=i%cols,inRow=r===rows-1?n-cols*(rows-1):cols;
+    let w=(aw-G*(inRow-1))/inRow,x=left+c*(w+G);
+    if(n===1){w=Math.min(aw,780);x=left+(aw-w)/2}
+    el.classList.add("anim");
+    Object.assign(el.style,{left:x+"px",top:(top+r*(ch+G))+"px",width:w+"px",height:ch+"px"});
+    clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove("anim"),380);
+  });
+}
+function focus(id){
+  Object.values(wins).forEach(w=>w.tk.classList.remove("active"));
+  const w=wins[id];if(!w)return;
+  w.el.classList.remove("min");w.el.style.zIndex=++z;w.tk.classList.add("active");
+}
+
+function render(list){
+  const home={judul:BERANDA.judul,icon:svgIcon("?","#830000")};
+  const items=[{id:"home",title:home.judul,icon:home.icon,html:`<h2>${esc(BERANDA.judul)}</h2><p>${BERANDA.isi}</p>`}]
+   .concat(list.map((n,i)=>({id:"n"+i+n.judul,title:n.judul,icon:iconOf(n,i),html:bodyOf(n)})));
+  $("#icons").innerHTML="";$("#menuList").innerHTML="";
+  items.forEach(it=>{
+    const d=document.createElement("div");d.className="dicon";
+    d.innerHTML=`<img src="${esc(it.icon)}" alt=""><span>${esc(it.title)}</span>`;
+    d.ondblclick=()=>openWin(it.id,it.title,it.icon,it.html);
+    d.onclick=()=>{if(innerWidth<700)openWin(it.id,it.title,it.icon,it.html)};
+    $("#icons").appendChild(d);
+    const m=document.createElement("div");m.className="mi";
+    m.innerHTML=`<img src="${esc(it.icon)}" alt=""><span>${esc(it.title)}</span>`;
+    m.onclick=()=>{openWin(it.id,it.title,it.icon,it.html);$("#menu").classList.remove("show")};
+    $("#menuList").appendChild(m);
+  });
+  if(!Object.keys(wins).length)openWin(items[0].id,items[0].title,items[0].icon,items[0].html);
+}
+
+async function load(){
+  try{
+    if(!SCRIPT_URL){render(DEMO);return}
+    const r=await fetch(SCRIPT_URL);const d=await r.json();
+    render(d.berita||d);
+  }catch(e){console.error(e);render(DEMO)}
+}
+function setTheme(t){document.documentElement.setAttribute("data-theme",t);try{localStorage.setItem("tema",t)}catch(e){}}
+try{setTheme(localStorage.getItem("tema")||"light")}catch(e){setTheme("light")}
+$("#saran").onclick=()=>setTheme(document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark");
+$("#tile").onclick=()=>tile();
+let _rz;addEventListener("resize",()=>{clearTimeout(_rz);_rz=setTimeout(tile,150)});
+$("#start").onclick=e=>{e.stopPropagation();$("#menu").classList.toggle("show")};
+document.addEventListener("pointerdown",e=>{if(!e.target.closest("#menu,#start"))$("#menu").classList.remove("show")});
+setInterval(()=>{const d=new Date();$("#clock").innerHTML=d.toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"})+"<br>"+d.toLocaleDateString("id-ID")},1000);
+load();if(REFRESH_MS)setInterval(load,REFRESH_MS);
+</script>
+</body>
+</html>

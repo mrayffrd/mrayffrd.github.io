@@ -1,116 +1,1158 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    
-    <link rel="icon" href="icon.png" type="image/png">
-<meta name="theme-color" content="#ffc107">
-    
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<link rel="icon" href="icon.png" type="image/png">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="theme-color" content="#03030a">
 <title>Portal | EMU Joki</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{ --biru:#0169D0; --ungu:#8B5CF6; }
-body{ 
-    font-family: 'Inter', sans-serif; margin:0; color:#E5E7EB; 
-    background: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg') no-repeat center fixed;
-    background-size: cover;
+/* ===== TEMA BERSAMA EMU ===== */
+/* =====================================================================
+   EMU JOKI — TEMA BERSAMA  (emu.css)
+   Diturunkan dari beranda.html "Multiverse": ruang gelap #03030a, font
+   monospace, cahaya indigo, panel kaca, kontrol segmented + tab bergaris
+   neon. Dipakai oleh index / genshin / hsr / portal (dan halaman lain).
+   ===================================================================== */
+:root{
+  color-scheme: dark;
+  --ac-rgb: 148,168,255;                 /* warna aksen aktif (diganti lewat panel ◉) */
+  --ac: rgb(var(--ac-rgb));
+  --gold-rgb: 255,220,150;
+  --ok-rgb: 87,224,168;
+  --bad-rgb: 255,110,120;
+  --bg: #03030a;
+  --panel: rgba(5,7,18,.86);
+  --panel-2: rgba(12,15,36,.78);
+  --line: rgba(110,125,215,.32);
+  --line-hi: rgba(var(--ac-rgb),.75);
+  --tx: #dfe4ff;
+  --tx-2: #9aa4d8;
+  --tx-3: #6f79b4;
+  --mono: Consolas, "DejaVu Sans Mono", "Courier New", ui-monospace, monospace;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --r-lg: 16px; --r-md: 11px; --r-sm: 8px;
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
 }
-body::before{
-    content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(11, 17, 32, 0.75); backdrop-filter: blur(6px); z-index: -1;
+*{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+body{
+  margin:0; min-height:100vh; background:var(--bg); color:var(--tx);
+  font-family:var(--mono); font-size:14px; line-height:1.6;
+  -webkit-tap-highlight-color:transparent; overflow-x:hidden;
+}
+body.locked{ overflow:hidden; }
+a{ color:inherit; }
+img{ max-width:100%; }
+::selection{ background:rgba(var(--ac-rgb),.35); color:#fff; }
+::-webkit-scrollbar{ width:9px; height:9px; }
+::-webkit-scrollbar-thumb{ background:rgba(110,125,215,.35); border-radius:9px; }
+::-webkit-scrollbar-track{ background:transparent; }
+:focus-visible{ outline:2px solid var(--ac); outline-offset:2px; border-radius:6px; }
+.sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+.wrap{ width:100%; max-width:1200px; margin:0 auto; padding:0 20px; }
+.sans{ font-family:var(--sans); }
+.muted{ color:var(--tx-2); }
+.dim{ color:var(--tx-3); }
+
+/* ---------- LATAR: gambar + nebula + bintang + vinyet ---------- */
+#emu-img{ position:fixed; inset:0; z-index:-5; background:#03030a center/cover no-repeat; opacity:.22; transition:opacity .5s; }
+.emu-nebula{ position:fixed; inset:-10%; z-index:-4; pointer-events:none;
+  background:
+    radial-gradient(38% 34% at 18% 22%, rgba(var(--ac-rgb),.20), transparent 70%),
+    radial-gradient(34% 30% at 82% 30%, rgba(160,90,255,.13), transparent 70%),
+    radial-gradient(46% 38% at 60% 92%, rgba(var(--ac-rgb),.14), transparent 72%);
+  animation:nebDrift 46s ease-in-out infinite alternate; }
+@keyframes nebDrift{ from{ transform:translate3d(-1.5%,-1%,0) scale(1); } to{ transform:translate3d(2%,1.5%,0) scale(1.08); } }
+#emu-stars{ position:fixed; inset:0; z-index:-3; pointer-events:none; }
+.emu-veil{ position:fixed; inset:0; z-index:-2; pointer-events:none;
+  background:radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(3,3,10,.78) 100%),
+             linear-gradient(180deg, rgba(3,3,10,.55), rgba(3,3,10,.25) 30%, rgba(3,3,10,.6)); }
+.emu-cursor{ position:fixed; left:0; top:0; width:340px; height:340px; margin:-170px 0 0 -170px; z-index:-1; pointer-events:none;
+  background:radial-gradient(circle, rgba(var(--ac-rgb),.16), transparent 62%); opacity:0; transition:opacity .4s; will-change:transform; }
+.emu-cursor.on{ opacity:1; }
+
+/* ---------- BOOT & WARP ---------- */
+#emu-boot{ position:fixed; inset:0; z-index:9000; background:#03030a; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px;
+  letter-spacing:3px; font-size:14px; color:#9aa4d8; transition:opacity .45s ease; }
+#emu-boot.off{ opacity:0; pointer-events:none; }
+#emu-boot b{ font-size:21px; letter-spacing:6px; color:#e6ecff; text-shadow:0 0 22px rgba(var(--ac-rgb),.7); }
+#emu-boot i{ display:block; width:180px; height:2px; overflow:hidden; border-radius:2px; background:rgba(120,140,220,.18); }
+#emu-boot i::after{ content:""; display:block; width:40%; height:100%; background:linear-gradient(90deg,transparent,var(--ac),transparent); animation:bootbar 1.1s ease-in-out infinite; }
+@keyframes bootbar{ from{ transform:translateX(-100%); } to{ transform:translateX(260%); } }
+.emu-warp{ position:fixed; inset:0; z-index:8900; pointer-events:none; opacity:0; transition:opacity .26s ease;
+  background:radial-gradient(circle at 50% 50%, rgba(var(--ac-rgb),.35), #03030a 62%); }
+body.leaving .emu-warp{ opacity:1; }
+body.leaving main{ transform:scale(1.03); filter:blur(3px); transition:transform .26s, filter .26s; }
+
+/* ---------- HEADER ---------- */
+.emu-header{ position:sticky; top:0; z-index:900; padding:calc(10px + var(--safe-t)) 0 10px;
+  background:rgba(5,7,18,.72); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line); }
+.emu-header::after{ content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(var(--ac-rgb),.8),transparent); opacity:.55; }
+.header-wrap{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.brand{ display:flex; align-items:center; gap:10px; text-decoration:none; color:#fff; font-weight:700; letter-spacing:5px; font-size:16px; white-space:nowrap; }
+.brand .dot{ width:9px; height:9px; border-radius:50%; background:var(--ac); box-shadow:0 0 12px var(--ac), 0 0 26px rgba(var(--ac-rgb),.6); animation:pulse 2.4s ease-in-out infinite; }
+.brand small{ letter-spacing:2px; color:var(--tx-3); font-weight:400; font-size:11px; }
+@keyframes pulse{ 50%{ opacity:.45; transform:scale(.8); } }
+.header-actions{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
+
+/* ---------- TOMBOL ---------- */
+.icon-btn,.btn{ appearance:none; font:inherit; font-size:12px; letter-spacing:1px; text-decoration:none; cursor:pointer; color:#dfe4ff;
+  padding:8px 13px; border-radius:var(--r-md); background:rgba(18,22,48,.85); border:1px solid rgba(96,110,190,.5);
+  transition:background .2s, border-color .2s, box-shadow .2s, transform .2s; display:inline-flex; align-items:center; justify-content:center; gap:7px;
+  touch-action:manipulation; user-select:none; -webkit-user-select:none; }
+.icon-btn:hover,.btn:hover{ background:rgba(70,90,190,.45); border-color:var(--line-hi); box-shadow:0 0 16px rgba(var(--ac-rgb),.3); transform:translateY(-1px); }
+.icon-btn:active,.btn:active{ transform:scale(.97); }
+.icon-btn.on{ background:rgba(var(--ac-rgb),.22); border-color:var(--line-hi); color:#fff; }
+.btn{ padding:11px 18px; font-size:13px; font-weight:700; }
+.btn-primary{ background:linear-gradient(180deg,rgba(var(--ac-rgb),.42),rgba(var(--ac-rgb),.2)); border-color:rgba(var(--ac-rgb),.9); color:#fff; box-shadow:0 0 18px rgba(var(--ac-rgb),.3), inset 0 0 10px rgba(255,255,255,.06); }
+.btn-primary:hover{ background:linear-gradient(180deg,rgba(var(--ac-rgb),.6),rgba(var(--ac-rgb),.3)); }
+.btn-ok{ background:rgba(var(--ok-rgb),.2); border-color:rgba(var(--ok-rgb),.85); color:#c9ffe8; }
+.btn-ok:hover{ background:rgba(var(--ok-rgb),.34); box-shadow:0 0 18px rgba(var(--ok-rgb),.35); }
+.btn-ghost{ background:transparent; }
+.btn-danger{ background:rgba(var(--bad-rgb),.16); border-color:rgba(var(--bad-rgb),.7); color:#ffd1d5; }
+.btn-danger:hover{ background:rgba(var(--bad-rgb),.3); box-shadow:0 0 16px rgba(var(--bad-rgb),.3); }
+.btn-block{ width:100%; }
+.btn[disabled]{ opacity:.5; pointer-events:none; }
+.chip{ appearance:none; font:inherit; font-size:11px; letter-spacing:.8px; padding:6px 12px; border-radius:99px; cursor:pointer;
+  color:var(--tx-2); background:rgba(9,12,30,.8); border:1px solid rgba(96,110,190,.4); transition:.2s; white-space:nowrap; }
+.chip:hover{ color:#fff; border-color:var(--line-hi); }
+.chip.on{ color:#fff; background:rgba(var(--ac-rgb),.22); border-color:var(--line-hi); box-shadow:0 0 12px rgba(var(--ac-rgb),.25); }
+.chip b{ color:var(--ac); font-weight:700; margin-left:4px; }
+.tag{ display:inline-block; font-size:10px; letter-spacing:1px; padding:3px 9px; border-radius:99px; color:var(--tx-2); background:rgba(9,12,30,.85); border:1px solid rgba(96,110,190,.35); }
+.tag.gold{ color:#ffdc96; border-color:rgba(var(--gold-rgb),.5); }
+
+/* ---------- PANEL / KARTU ---------- */
+.panel{ background:var(--panel); border:1px solid var(--line); border-radius:var(--r-lg); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+  box-shadow:0 10px 40px rgba(0,0,0,.45); }
+.section-title{ text-align:center; font-size:20px; font-weight:700; letter-spacing:5px; margin:72px 0 8px; color:#eef1ff; text-transform:uppercase; }
+.section-sub{ text-align:center; margin:0 auto 28px; max-width:560px; color:var(--tx-2); font-family:var(--sans); font-size:14px; }
+.section-title::after{ content:""; display:block; width:90px; height:2px; margin:12px auto 0; background:linear-gradient(90deg,transparent,var(--ac),transparent); box-shadow:0 0 12px rgba(var(--ac-rgb),.8); }
+.tilt{ transform-style:preserve-3d; transition:transform .25s ease, border-color .25s, box-shadow .25s; will-change:transform; }
+.shine{ position:relative; overflow:hidden; }
+.shine::after{ content:""; position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity .3s;
+  background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%), rgba(var(--c, var(--ac-rgb)),.22), transparent 70%); }
+.shine:hover::after{ opacity:1; }
+
+/* ---------- INPUT ---------- */
+input,select,textarea{ font:inherit; color:var(--tx); }
+.field{ width:100%; padding:11px 14px; border-radius:var(--r-md); background:rgba(9,12,30,.92); border:1px solid rgba(96,110,190,.4); outline:none; font-size:14px; transition:.2s; }
+.field::placeholder{ color:var(--tx-3); }
+.field:focus{ border-color:var(--line-hi); box-shadow:0 0 0 3px rgba(var(--ac-rgb),.18), 0 0 18px rgba(var(--ac-rgb),.2); }
+select.field{ appearance:none; padding-right:30px; cursor:pointer; background-image:linear-gradient(45deg,transparent 50%,var(--tx-2) 50%),linear-gradient(135deg,var(--tx-2) 50%,transparent 50%); background-position:calc(100% - 17px) 50%,calc(100% - 12px) 50%; background-size:5px 5px; background-repeat:no-repeat; }
+select.field option{ background:#0a0d22; }
+.search{ position:relative; flex:1 1 260px; min-width:0; }
+.search .ico{ position:absolute; left:14px; top:50%; transform:translateY(-50%); color:var(--tx-3); pointer-events:none; }
+.search .field{ padding-left:38px; padding-right:38px; }
+.search .x{ position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; color:var(--tx-2); cursor:pointer; display:none; font-size:16px; }
+.search.has .x{ display:block; }
+.search .x:hover{ color:#fff; background:rgba(255,255,255,.08); }
+
+/* ---------- SEGMENTED + TAB (persis gaya beranda) ---------- */
+.tabs{ position:relative; display:grid; grid-auto-flow:column; grid-auto-columns:1fr; border-bottom:1px solid rgba(96,110,190,.28); }
+.tabs .tab{ appearance:none; font:inherit; background:transparent; border:0; padding:10px 6px 12px; font-size:11px; letter-spacing:2.6px; color:var(--tx-3); cursor:pointer; transition:color .2s; text-transform:uppercase; }
+.tabs .tab:hover{ color:#fff; }
+.tabs .tab.on{ color:#eaf0ff; }
+.tabs .tabline{ position:absolute; left:0; bottom:-1px; height:2px; width:calc(100% / var(--n,2)); background:linear-gradient(90deg,transparent,var(--ac) 30%,var(--ac) 70%,transparent);
+  box-shadow:0 0 10px rgba(var(--ac-rgb),.85); transform:translateX(calc(var(--t,0) * 100%)); transition:transform .3s cubic-bezier(.3,.9,.3,1); }
+.seg{ position:relative; display:grid; grid-template-columns:repeat(var(--n,3),1fr); padding:3px; border-radius:12px; background:rgba(9,12,30,.92); border:1px solid rgba(96,110,190,.32); }
+.seg .thumb{ position:absolute; top:3px; bottom:3px; left:3px; width:calc((100% - 6px) / var(--n,3)); border-radius:9px; pointer-events:none;
+  background:linear-gradient(180deg,rgba(var(--ac-rgb),.36),rgba(var(--ac-rgb),.2)); border:1px solid rgba(var(--ac-rgb),.85);
+  box-shadow:0 0 14px rgba(var(--ac-rgb),.45), inset 0 0 9px rgba(255,255,255,.1);
+  transform:translateX(calc(var(--i,0) * 100%)); transition:transform .3s cubic-bezier(.3,.9,.3,1); }
+.seg button{ position:relative; z-index:1; appearance:none; font:inherit; background:transparent; border:0; border-radius:9px; padding:9px 1px; font-size:11px; color:#7e88c0; cursor:pointer; transition:color .2s; }
+.seg button.on{ color:#fff; font-weight:700; }
+
+/* ---------- PANEL KONTROL ◉ (dock) ---------- */
+#dockBtn{ position:fixed; z-index:950; left:calc(14px + env(safe-area-inset-left,0px)); bottom:calc(20px + var(--safe-b)); width:50px; height:50px; border-radius:50%;
+  border:1px solid rgba(150,170,255,.55); color:#cfd8ff; font:inherit; font-size:19px; line-height:1; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(circle at 50% 50%, rgba(8,10,26,.96) 42%, rgba(var(--ac-rgb),.4) 72%, rgba(var(--ac-rgb),.06) 100%); box-shadow:0 0 18px rgba(var(--ac-rgb),.35); transition:box-shadow .3s; }
+#dockBtn:hover{ box-shadow:0 0 28px rgba(var(--ac-rgb),.65); }
+#dockBtn:active{ transform:scale(.94); }
+#dock{ position:fixed; z-index:949; left:calc(10px + env(safe-area-inset-left,0px)); bottom:calc(78px + var(--safe-b)); width:min(380px, calc(100vw - 20px)); max-height:min(70vh,560px); overflow-y:auto;
+  background:rgba(5,7,18,.94); border:1px solid rgba(110,125,215,.45); border-radius:14px; padding:12px 12px 14px; box-shadow:0 10px 40px rgba(0,0,0,.6); display:none; }
+#dock.on{ display:block; animation:paneIn .22s ease-out; }
+#dock .sec{ font-size:10px; letter-spacing:2px; color:var(--tx-3); margin:12px 2px 7px; text-transform:uppercase; }
+#dock .pane{ display:none; } #dock .pane.on{ display:block; animation:paneIn .22s ease-out; }
+#dock .tabs{ margin:-2px 0 6px; }
+#dock .row{ display:grid; gap:6px; grid-template-columns:repeat(var(--c,2),1fr); }
+#dock .row .btn,#dock .row .icon-btn{ padding:9px 4px; font-size:11px; }
+#dock .opt{ margin:0 0 14px; }
+#dock .opt .hd{ display:flex; justify-content:space-between; align-items:baseline; margin:0 3px 7px; }
+#dock .opt .hd span{ font-size:10px; letter-spacing:2.6px; color:#7f89c4; }
+#dock .opt .hd em{ font-style:normal; font-size:11px; color:#a9bbff; }
+#dock .opt .cap{ margin:6px 3px 0; font-size:10px; color:#565f92; }
+.swatches{ display:grid; grid-template-columns:repeat(6,1fr); gap:6px; }
+.swatch{ appearance:none; height:34px; border-radius:10px; cursor:pointer; border:1px solid rgba(255,255,255,.14); background:rgb(var(--s)); position:relative; transition:transform .2s, box-shadow .2s; }
+.swatch:hover{ transform:translateY(-2px); }
+.swatch.on{ box-shadow:0 0 0 2px #03030a, 0 0 0 4px rgb(var(--s)), 0 0 18px rgb(var(--s)); }
+.swatch-name{ text-align:center; font-size:11px; letter-spacing:1px; color:#a9bbff; margin-top:8px; }
+@keyframes paneIn{ from{ opacity:0; transform:translateY(4px); } to{ opacity:1; transform:none; } }
+.emu-reset{ position:fixed; z-index:940; left:calc(74px + env(safe-area-inset-left,0px)); bottom:calc(26px + var(--safe-b)); display:none; background:rgba(var(--bad-rgb),.25); border-color:rgba(var(--bad-rgb),.7); }
+
+/* ---------- TOAST ---------- */
+#emu-toast{ position:fixed; left:50%; bottom:calc(24px + var(--safe-b)); z-index:99999; max-width:min(420px,calc(100vw - 32px)); padding:11px 18px; border-radius:12px; font-size:13px;
+  background:rgba(5,7,18,.96); border:1px solid rgba(var(--ac-rgb),.7); color:#eef1ff; box-shadow:0 0 22px rgba(var(--ac-rgb),.3), 0 10px 30px rgba(0,0,0,.5);
+  transform:translate(-50%,30px); opacity:0; pointer-events:none; transition:transform .3s cubic-bezier(.3,.9,.3,1), opacity .3s; text-align:center; }
+#emu-toast.show{ transform:translate(-50%,0); opacity:1; }
+
+/* ---------- MODAL ---------- */
+.modal{ position:fixed; inset:0; z-index:9500; display:flex; align-items:center; justify-content:center; padding:16px; background:rgba(2,2,8,.72); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  opacity:0; visibility:hidden; transition:opacity .25s, visibility .25s; }
+.modal.show{ opacity:1; visibility:visible; }
+.modal-box{ width:100%; max-width:420px; max-height:calc(100vh - 32px); overflow-y:auto; padding:24px; border-radius:18px; background:rgba(6,8,22,.97); border:1px solid rgba(var(--ac-rgb),.55);
+  box-shadow:0 0 40px rgba(var(--ac-rgb),.22), 0 20px 60px rgba(0,0,0,.6); transform:translateY(14px) scale(.97); transition:transform .3s cubic-bezier(.3,.9,.3,1); }
+.modal.show .modal-box{ transform:none; }
+.modal-box h3{ margin:0 0 12px; font-size:16px; letter-spacing:3px; color:#eef1ff; text-transform:uppercase; }
+.modal-box p{ margin:6px 0; }
+.modal-actions{ display:flex; flex-direction:column; gap:10px; margin-top:20px; }
+.kv{ display:flex; justify-content:space-between; gap:14px; padding:8px 0; border-bottom:1px dashed rgba(96,110,190,.28); font-size:13px; }
+.kv span:first-child{ color:var(--tx-3); letter-spacing:1px; } .kv b{ text-align:right; color:#eef1ff; word-break:break-word; }
+
+/* ---------- SKELETON & KOSONG ---------- */
+.skel{ position:relative; overflow:hidden; border-radius:var(--r-lg); background:rgba(12,15,36,.7); border:1px solid rgba(96,110,190,.2); min-height:270px; }
+.skel::after{ content:""; position:absolute; inset:0; background:linear-gradient(100deg,transparent 30%,rgba(var(--ac-rgb),.14) 50%,transparent 70%); transform:translateX(-100%); animation:sk 1.4s infinite; }
+@keyframes sk{ to{ transform:translateX(100%); } }
+.empty{ text-align:center; padding:54px 20px; color:var(--tx-2); border:1px dashed var(--line); border-radius:var(--r-lg); background:rgba(5,7,18,.6); }
+.empty h4{ margin:0 0 8px; font-size:16px; letter-spacing:4px; color:#eef1ff; }
+.empty p{ margin:0 0 16px; font-family:var(--sans); }
+
+/* ---------- FLOATING ---------- */
+.btn-float{ position:fixed; right:calc(20px + env(safe-area-inset-right,0px)); bottom:calc(20px + var(--safe-b)); z-index:940; display:flex; align-items:center; gap:8px; text-decoration:none;
+  padding:13px 20px; border-radius:99px; font-weight:700; letter-spacing:2px; font-size:13px; color:#fff;
+  background:radial-gradient(circle at 30% 30%, rgba(var(--ac-rgb),.55), rgba(20,26,70,.95)); border:1px solid rgba(var(--ac-rgb),.85); box-shadow:0 0 24px rgba(var(--ac-rgb),.45); transition:.2s; }
+.btn-float:hover{ transform:scale(1.06); box-shadow:0 0 34px rgba(var(--ac-rgb),.7); }
+.btn-float.wa{ border-color:rgba(var(--ok-rgb),.85); background:radial-gradient(circle at 30% 30%, rgba(var(--ok-rgb),.5), rgba(8,40,30,.95)); box-shadow:0 0 22px rgba(var(--ok-rgb),.4); }
+
+/* ---------- FOOTER ---------- */
+footer.emu-footer{ margin-top:90px; padding:34px 20px calc(40px + var(--safe-b)); text-align:center; border-top:1px solid var(--line); color:var(--tx-3); font-size:12px; letter-spacing:1.5px; background:linear-gradient(180deg,transparent,rgba(3,3,10,.7)); }
+footer.emu-footer nav{ display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-bottom:14px; }
+footer.emu-footer nav a{ text-decoration:none; color:var(--tx-2); } footer.emu-footer nav a:hover{ color:#fff; text-shadow:0 0 10px var(--ac); }
+
+/* ---------- KEDUDUKAN MOBILE ---------- */
+@media (max-width:640px){
+  .wrap{ padding:0 14px; }
+  .brand small{ display:none; }
+  .icon-btn{ padding:7px 10px; font-size:11px; }
+  .section-title{ font-size:16px; letter-spacing:3px; margin-top:56px; }
+  #dockBtn{ width:44px; height:44px; font-size:17px; }
+  .btn-float{ padding:11px 16px; }
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.001ms!important; animation-iteration-count:1!important; transition-duration:.001ms!important; scroll-behavior:auto!important; }
 }
 
-.container{ max-width: 700px; margin: 0 auto; padding: 20px; text-align: center; }
-header{ padding: 40px 0 20px; }
-header h1{ 
-    font-size: 34px; font-weight: 900; margin: 0; 
-    background: linear-gradient(90deg, var(--biru), var(--ungu)); 
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
-}
-header p{ color: #D1D5DB; }
+/* =====================================================================
+   HALAMAN TOKO (genshin.html / hsr.html)
+   ===================================================================== */
+.page-head{ text-align:center; padding:46px 0 22px; }
+.page-head h2{ margin:0 0 8px; font-size:clamp(20px,4.6vw,32px); letter-spacing:6px; font-weight:700; color:#fff; text-transform:uppercase; text-shadow:0 0 30px rgba(var(--ac-rgb),.55); }
+.page-head p{ margin:0 0 16px; color:var(--tx-2); font-family:var(--sans); }
+.page-head .tags{ display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+.toolbar{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; padding:12px; margin-bottom:14px; }
+.toolbar select.field{ width:auto; min-width:150px; padding-top:10px; padding-bottom:10px; }
+.viewtog{ display:flex; border:1px solid rgba(96,110,190,.4); border-radius:var(--r-md); overflow:hidden; }
+.viewtog button{ appearance:none; font:inherit; border:0; background:rgba(9,12,30,.9); color:var(--tx-3); padding:9px 12px; cursor:pointer; font-size:14px; }
+.viewtog button.on{ background:rgba(var(--ac-rgb),.25); color:#fff; }
+.cat-row{ display:flex; gap:8px; overflow-x:auto; padding:2px 0 14px; scrollbar-width:none; }
+.cat-row::-webkit-scrollbar{ display:none; }
+.shop-info{ font-size:12px; letter-spacing:1px; color:var(--tx-3); margin:0 2px 12px; min-height:18px; }
+.service-list{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:16px; }
+.svc{ display:flex; flex-direction:column; border-radius:var(--r-lg); overflow:hidden; background:var(--panel-2); border:1px solid rgba(96,110,190,.32); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  transition:transform .25s, border-color .25s, box-shadow .25s; }
+.svc:hover{ transform:translateY(-4px); border-color:var(--line-hi); box-shadow:0 0 26px rgba(var(--ac-rgb),.25), 0 14px 34px rgba(0,0,0,.5); }
+.svc-img{ position:relative; height:160px; overflow:hidden; cursor:pointer; }
+.svc-img img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform .5s; }
+.svc:hover .svc-img img{ transform:scale(1.06); }
+.svc-img::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg,transparent 45%,rgba(3,3,10,.85)); pointer-events:none; }
+.svc-cat{ position:absolute; left:10px; bottom:10px; z-index:2; }
+.fav{ position:absolute; right:10px; top:10px; z-index:2; width:34px; height:34px; border-radius:50%; cursor:pointer; font-size:16px; line-height:1; color:#fff; background:rgba(5,7,18,.75); border:1px solid rgba(255,255,255,.25); transition:.2s; }
+.fav:hover{ transform:scale(1.12); }
+.fav.on{ color:#ff8fb0; border-color:#ff8fb0; box-shadow:0 0 14px rgba(255,110,160,.5); }
+.svc-info{ padding:14px; flex:1; display:flex; flex-direction:column; }
+.svc-info h3{ margin:0 0 6px; font-size:13.5px; line-height:1.45; height:39px; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; color:#eef1ff; }
+.price{ font-weight:700; font-size:17px; margin:2px 0 12px; color:var(--ac); text-shadow:0 0 14px rgba(var(--ac-rgb),.45); }
+.btn-group{ display:flex; gap:8px; margin-top:auto; }
+.btn-group .btn{ flex:1; padding:9px 6px; font-size:12px; }
+.btn-cart{ background:transparent; }
+.service-list.as-list{ grid-template-columns:1fr; gap:10px; }
+.as-list .svc{ flex-direction:row; align-items:stretch; }
+.as-list .svc-img{ width:150px; height:auto; min-height:110px; flex:none; }
+.as-list .svc-info h3{ height:auto; -webkit-line-clamp:3; line-clamp:3; }
+.as-list .btn-group{ max-width:300px; }
+@media (max-width:520px){ .as-list .svc-img{ width:110px; } .service-list{ grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:12px; } .svc-img{ height:120px; } }
+.detail-img{ width:100%; height:180px; object-fit:cover; border-radius:12px; margin-bottom:12px; border:1px solid var(--line); }
 
-.menu-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 30px; }
-.menu-btn{ 
-    padding: 28px 10px; border-radius: 20px; text-decoration: none; color: #fff; 
-    border: 1px solid rgba(255,255,255,0.25); transition: 0.3s; font-weight: 700; font-size: 15px;
-    position: relative; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-    background-size: cover; background-position: center;
-}
-.menu-btn::before{ /* overlay gelap */
-    content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5); transition: 0.3s;
-}
-.menu-btn:hover::before{ background: rgba(139,92,246,0.6); }
-.menu-btn:hover{ transform: translateY(-5px) scale(1.03); }
-.menu-btn .icon, .menu-btn span:last-child{ position: relative; z-index: 2; }
-.menu-btn .icon{ font-size: 36px; display: block; margin-bottom: 10px; }
+/* keranjang */
+.cart-fab{ position:fixed; right:calc(20px + env(safe-area-inset-right,0px)); bottom:calc(84px + var(--safe-b)); z-index:945; width:56px; height:56px; border-radius:50%; font-size:22px; cursor:pointer; color:#fff;
+  background:radial-gradient(circle at 30% 30%, rgba(var(--ac-rgb),.55), rgba(20,26,70,.95)); border:1px solid rgba(var(--ac-rgb),.85); box-shadow:0 0 22px rgba(var(--ac-rgb),.45); transition:.2s; }
+.cart-fab:hover{ transform:scale(1.07); }
+.cart-fab.bump{ animation:bump .35s; }
+@keyframes bump{ 40%{ transform:scale(1.22); } }
+.cart-fab span{ position:absolute; top:-3px; right:-3px; min-width:20px; height:20px; padding:0 5px; border-radius:99px; background:#ff4d6a; color:#fff; font-size:11px; line-height:20px; font-weight:700; display:none; box-shadow:0 0 10px rgba(255,77,106,.7); }
+.cart-popup{ position:fixed; top:0; right:0; bottom:0; z-index:9400; width:min(380px,100vw); padding:calc(18px + var(--safe-t)) 18px calc(18px + var(--safe-b)); overflow-y:auto; display:flex; flex-direction:column;
+  background:rgba(5,7,18,.97); border-left:1px solid rgba(var(--ac-rgb),.55); box-shadow:-10px 0 50px rgba(0,0,0,.6); transform:translateX(105%); transition:transform .35s cubic-bezier(.3,.9,.3,1); }
+.cart-popup.show{ transform:none; }
+.cart-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.cart-head h4{ margin:0; font-size:15px; letter-spacing:4px; text-transform:uppercase; }
+.cart-items{ flex:1 1 auto; min-height:90px; max-height:42vh; overflow-y:auto; margin-bottom:10px; }
+.ci{ display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px 0; border-bottom:1px dashed rgba(96,110,190,.28); }
+.ci-name{ font-size:12.5px; color:#eef1ff; min-width:0; } .ci-name small{ display:block; color:var(--ac); margin-top:2px; }
+.ci-ctl{ display:flex; align-items:center; gap:6px; flex:none; }
+.ci-ctl button{ appearance:none; width:26px; height:26px; border-radius:8px; cursor:pointer; color:#fff; background:rgba(18,22,48,.9); border:1px solid rgba(96,110,190,.5); font:inherit; line-height:1; }
+.ci-ctl button:hover{ border-color:var(--line-hi); background:rgba(var(--ac-rgb),.25); }
+.ci-ctl button[data-a="del"]{ color:#ff9aa8; }
+.ci-ctl span{ min-width:18px; text-align:center; font-size:13px; }
+.ci-empty{ text-align:center; padding:26px 8px; color:var(--tx-3); font-size:12.5px; line-height:1.8; }
+.cart-total{ display:flex; justify-content:space-between; align-items:baseline; padding:12px 0; margin-bottom:8px; border-top:1px solid var(--line); font-size:12px; letter-spacing:2px; color:var(--tx-3); }
+.cart-total b{ font-size:20px; letter-spacing:0; color:var(--ac); text-shadow:0 0 16px rgba(var(--ac-rgb),.5); }
+.lbl{ display:block; font-size:10px; letter-spacing:2px; color:var(--tx-3); margin:10px 2px 6px; text-transform:uppercase; }
+.hist{ display:flex; justify-content:space-between; gap:10px; align-items:flex-start; padding:10px 0; border-bottom:1px dashed rgba(96,110,190,.28); font-size:13px; }
+.hist-act{ display:flex; flex-direction:column; gap:6px; flex:none; } .hist-act .chip{ text-decoration:none; text-align:center; }
+@media (max-width:640px){ .cart-fab{ bottom:calc(76px + var(--safe-b)); right:14px; } .btn-float{ right:14px; } }
 
-/* LINK BACKGROUND TIAP TOMBOL - GANTI DI SINI */
-.btn-sosmed { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
-.btn-game { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
-.btn-inven { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
-.btn-cek { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
-.btn-saran { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
-.btn-sayem { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
-.btn-snk { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
-.btn-tentang { background-image: url('https://i.pinimg.com/originals/9f/fd/2d/9ffd2dad1bfe55d589322f9eb6b522a9.jpg'); }
+</style>
+<style>
+/* ---------- khusus portal ---------- */
+.phead{ text-align:center; padding-top:52px; }
+.ptitle{ margin:0; font-size:clamp(30px,7vw,56px); letter-spacing:12px; font-weight:700; color:#fff; padding-left:12px;
+  text-shadow:0 0 12px rgba(var(--ac-rgb),.9), 0 0 42px rgba(var(--ac-rgb),.6); }
+.psub{ margin:6px 0 22px; color:var(--tx-2); font-family:var(--sans); }
+.clock{ display:inline-flex; align-items:baseline; gap:14px; padding:10px 22px; flex-wrap:wrap; justify-content:center; }
+.clock b{ font-size:22px; letter-spacing:4px; color:#fff; text-shadow:0 0 14px rgba(var(--ac-rgb),.7); font-variant-numeric:tabular-nums; }
+.clock span{ color:var(--ac); letter-spacing:2px; font-size:12px; }
+.clock small{ color:var(--tx-3); font-size:11px; letter-spacing:1px; }
+
+.pbar{ max-width:760px; margin:30px auto 0; display:grid; gap:14px; }
+.pchips{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; }
+.recent{ max-width:760px; margin:22px auto 0; display:none; align-items:center; gap:8px; flex-wrap:wrap; justify-content:center; font-size:11px; letter-spacing:2px; color:var(--tx-3); }
+.recent a{ text-decoration:none; }
+
+.menu-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:16px; margin-top:28px; }
+.menu-btn{ position:relative; display:flex; flex-direction:column; align-items:center; text-align:center; gap:4px; padding:26px 14px 22px; border-radius:20px; text-decoration:none; color:#fff; cursor:pointer;
+  background:linear-gradient(160deg, rgba(var(--c),.16), rgba(8,10,28,.9) 62%); border:1px solid rgba(var(--c),.4); box-shadow:0 8px 28px rgba(0,0,0,.45); }
+.menu-btn:hover{ border-color:rgba(var(--c),.95); box-shadow:0 0 30px rgba(var(--c),.4), 0 14px 36px rgba(0,0,0,.5); }
+.menu-btn .icon{ width:62px; height:62px; display:grid; place-items:center; font-size:30px; border-radius:50%; margin-bottom:10px;
+  background:radial-gradient(circle at 50% 40%, rgba(var(--c),.35), rgba(var(--c),.06) 70%); border:1px solid rgba(var(--c),.6); box-shadow:0 0 20px rgba(var(--c),.4); transition:transform .3s; }
+.menu-btn:hover .icon{ transform:scale(1.12) rotate(-6deg); }
+.menu-btn strong{ font-size:14px; letter-spacing:1.5px; }
+.menu-btn small{ font-family:var(--sans); font-size:12px; color:var(--tx-2); line-height:1.5; }
+.menu-btn .badge{ position:absolute; top:12px; right:12px; font-size:9px; letter-spacing:1.5px; padding:3px 8px; border-radius:99px; color:#ffdc96; background:rgba(0,0,0,.45); border:1px solid rgba(255,220,150,.5); }
+.menu-btn.hide{ display:none; }
+.menu-btn.match{ animation:match .5s; }
+@keyframes match{ 50%{ box-shadow:0 0 44px rgba(var(--c),.8); } }
+#pEmpty{ display:none; margin-top:28px; }
+.about li{ margin:6px 0; font-family:var(--sans); font-size:13.5px; color:var(--tx-2); }
+@media (max-width:520px){ .menu-grid{ grid-template-columns:repeat(2,1fr); gap:12px; } .menu-btn{ padding:20px 10px 18px; } .menu-btn small{ display:none; } .ptitle{ letter-spacing:8px; } }
 </style>
 </head>
-<body>
-<div class="container">
-  <header>
-    <h1>⚡PORTAL</h1>
-    <p>Fitur lainnya ada disini</p>
-  </header>
+<body data-accent="nebula">
+<div id="emu-boot"><b>E M U &nbsp; J O K I</b><i></i><span>menyalakan mesin dimensi...</span></div>
 
-  <div class="menu-grid">
+<header class="emu-header">
+  <div class="wrap header-wrap">
+    <a class="brand" href="index.html"><span class="dot"></span>EMU<small>PORTAL</small></a>
+    <nav class="header-actions" aria-label="Menu utama">
+      <a href="index.html" class="icon-btn">Beranda</a>
+      <a href="genshin.html" class="icon-btn">Genshin</a>
+      <a href="hsr.html" class="icon-btn">HSR</a>
+      <button type="button" class="icon-btn" data-emu="bg">Background</button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="phead">
+    <h1 class="ptitle">⚡PORTAL</h1>
+    <p class="psub">Fitur lainnya ada disini</p>
+    <div class="panel clock"><span id="greet">Halo</span><b id="clock">--:--:--</b><small id="date"></small></div>
+  </section>
+
+  <div class="pbar">
+    <div class="search" id="pSearchWrap">
+      <span class="ico">⌕</span>
+      <input id="pSearch" class="field" placeholder="Cari fitur... (tekan /)" autocomplete="off" aria-label="Cari fitur">
+      <button class="x" id="pSearchX" type="button" aria-label="Hapus pencarian">✕</button>
+    </div>
+    <div class="pchips" id="pChips" role="group" aria-label="Filter kategori">
+      <button class="chip on" data-f="all" type="button">Semua</button>
+      <button class="chip" data-f="akun" type="button">Akun</button>
+      <button class="chip" data-f="main" type="button">Hiburan</button>
+      <button class="chip" data-f="layanan" type="button">Layanan</button>
+      <button class="chip" data-f="info" type="button">Info</button>
+    </div>
+  </div>
+
+  <div class="recent" id="recent"><span>TERAKHIR DIBUKA</span></div>
+
+  <div class="menu-grid" id="menuGrid">
     <!-- 1. Sosial Media -->
-    <a href="#" class="menu-btn btn-sosmed">
-      <span class="icon">🌐</span>
-      <span>Sosial Media</span>
+    <a href="sosmed.html" class="menu-btn" data-cat="info" style="--c:120,160,255">
+      <span class="icon">🌐</span><strong>Sosial Media</strong><small>Ikuti kabar terbaru EMU</small>
+    </a>
+    <!-- 1,2. Login -->
+    <a href="login.html" class="menu-btn" data-cat="akun" style="--c:255,170,80">
+      <span class="icon">🔑</span><strong>Login</strong><small>Masuk ke akun EMU-mu</small>
     </a>
     <!-- 2. Mini Game -->
-    <a href="#" class="menu-btn btn-game">
-      <span class="icon">🎮</span>
-      <span>Mini Game</span>
+    <a href="Game.html" class="menu-btn" data-cat="main" style="--c:60,255,140">
+      <span class="icon">🎮</span><strong>Mini Game</strong><small>Main santai sambil menunggu</small>
     </a>
     <!-- 3. Inventori -->
-    <a href="#" class="menu-btn btn-inven">
-      <span class="icon">🎒</span>
-      <span>Inventori</span>
+    <a href="Inventori.html" class="menu-btn" data-cat="akun" style="--c:255,220,150">
+      <span class="icon">🎒</span><strong>Inventori</strong><small>Lihat koleksi item milikmu</small>
     </a>
-    <!-- 3,5. Diskon Shop -->
-    <a href="#" class="menu-btn btn-inven">
-      <span class="icon">💎</span>
-      <span>Shop</span>
+    <!-- 3,5. Gacha -->
+    <a href="Gacha.html" class="menu-btn" data-cat="main" style="--c:255,110,200">
+      <span class="icon">💎</span><strong>Gacha</strong><small>Coba keberuntunganmu</small>
+    </a>
+    <!-- 3,6. Profile -->
+    <a href="Profile.html" class="menu-btn" data-cat="akun" style="--c:148,168,255">
+      <span class="icon">🧑</span><strong>Profile</strong><small>Data dan statistik akunmu</small>
     </a>
     <!-- 4. Cek Pesanan -->
-    <a href="cek.html" class="menu-btn btn-cek">
-      <span class="icon">📦</span>
-      <span>Cek Pesanan</span>
+    <a href="cek.html" class="menu-btn" data-cat="layanan" style="--c:90,255,240">
+      <span class="icon">📦</span><strong>Cek Pesanan</strong><small>Pantau progress joki</small>
+    </a>
+    <!-- 4,5. Cek Akun -->
+    <a href="https://enka.network/" class="menu-btn" data-cat="layanan" style="--c:90,255,240">
+      <span class="icon">🔎</span><strong>Cek Akun</strong><small>Periksa info akun game</small>
     </a>
     <!-- 5. Kotak Saran Produk -->
-    <a href="saran.html" class="menu-btn btn-saran">
-      <span class="icon">💡</span>
-      <span>Kotak Saran Produk</span>
+    <a href="saran.html" class="menu-btn" data-cat="layanan" style="--c:255,220,150">
+      <span class="icon">💡</span><strong>Kotak Saran Produk</strong><small>Usul layanan baru untuk kami</small>
     </a>
-    <!-- 6. Sayembara -->
-    <a href="#" class="menu-btn btn-sayem">
-      <span class="icon">🏆</span>
-      <span>Sayembara</span>
+    <!-- 6. Berita -->
+    <a href="berita.html" class="menu-btn" data-cat="main" style="--c:255,140,60">
+      <span class="icon">📰</span><strong>Berita</strong><small>Informasi menarik, Event dan sebagainya</small>
     </a>
     <!-- 7. Syarat dan Ketentuan -->
-    <a href="snk.html" class="menu-btn btn-snk">
-      <span class="icon">📜</span>
-      <span>Syarat dan Ketentuan</span>
+    <a href="snk.html" class="menu-btn" data-cat="info" style="--c:176,146,255">
+      <span class="icon">📜</span><strong>Syarat dan Ketentuan</strong><small>Aturan layanan EMU</small>
     </a>
     <!-- 8. Tentang -->
-    <a href="#" class="menu-btn btn-tentang">
-      <span class="icon">ℹ️</span>
-      <span>Tentang</span>
+    <a href="#" data-modal="aboutModal" class="menu-btn" data-cat="info" style="--c:120,160,255">
+      <span class="icon">ℹ️</span><strong>Tentang</strong><small>Kenali EMU lebih dekat</small>
+    </a>
+    <!-- Zero. ??? -->
+    <a href="#" data-soon class="menu-btn" data-cat="info" style="--c:120,160,255">
+      <span class="badge">SEGERA</span><span class="icon">?</span><strong>???</strong><small>???</small>
     </a>
   </div>
+
+  <div class="empty" id="pEmpty"><h4>TIDAK DITEMUKAN</h4><p>Tidak ada fitur yang cocok dengan pencarianmu.</p><button class="btn" id="pReset" type="button">Reset pencarian</button></div>
+</main>
+
+<!-- MODAL TENTANG -->
+<div id="aboutModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+  <div class="modal-box about">
+    <h3 id="aboutTitle">Tentang EMU</h3>
+    <p class="sans muted" style="font-size:14px">EMU Joki adalah layanan joki Genshin Impact dan Honkai: Star Rail dengan proses cepat dan privasi akun yang dijaga.</p>
+    <ul>
+      <li>Estimasi pengerjaan rata-rata 1-4 hari</li>
+      <li>Tidak ada permintaan download software atau password lewat web</li>
+      <li>Pembayaran via QRIS</li>
+      <li>Garansi telat: dana kembali 50% (Syarat &amp; Ketentuan berlaku)</li>
+    </ul>
+    <div class="modal-actions">
+      <a class="btn btn-ok" href="https://wa.me/6285150886538" target="_blank" rel="noopener">💬 Hubungi CS</a>
+      <button class="btn btn-ghost" data-close type="button">Tutup</button>
+    </div>
+  </div>
 </div>
+
+<a href="index.html" class="btn-float">🏠 Beranda</a>
+
+<footer class="emu-footer">
+  <nav aria-label="Tautan bawah"><a href="index.html">Beranda</a><a href="genshin.html">Genshin</a><a href="hsr.html">HSR</a><a href="snk.html">Syarat &amp; Ketentuan</a></nav>
+  Tips: tekan <b>/</b> untuk mencari, <b>Enter</b> untuk membuka hasil pertama.<br>© 2026 EMU Joki. All rights reserved.
+</footer>
+
+<script>
+/* ===== MESIN BERSAMA EMU ===== */
+/* =====================================================================
+   EMU JOKI — MESIN BERSAMA  (emu.js)
+   Dipakai semua halaman: layar boot, langit bintang (canvas), panel ◉,
+   ganti warna & background, toast, modal, transisi antar halaman,
+   efek tilt, dan modul toko (EMU.shop) untuk genshin.html / hsr.html.
+   ===================================================================== */
+(function () {
+'use strict';
+
+/* ------------------------------ util ------------------------------ */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, v); return true; } catch (e) { return false; } },
+  del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+  getJSON(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  setJSON(k, v) { return LS.set(k, JSON.stringify(v)); }
+};
+const SS = {
+  get(k, d) { try { const v = sessionStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
+  set(k, v) { try { sessionStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const rp  = n => 'Rp ' + (parseInt(n) || 0).toLocaleString('id-ID');
+const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const finePointer  = matchMedia('(hover:hover) and (pointer:fine)').matches;
+async function copyText(txt) {
+  try { await navigator.clipboard.writeText(txt); return true; }
+  catch (e) {
+    try { const t = document.createElement('textarea'); t.value = txt; t.style.cssText = 'position:fixed;opacity:0'; document.body.append(t); t.select(); const ok = document.execCommand('copy'); t.remove(); return ok; }
+    catch (e2) { return false; }
+  }
+}
+
+/* --------------------------- pengaturan --------------------------- */
+const DEFAULT_BG = 'LINK GAMBAR DISINI';
+const ACCENTS = {
+  nebula: { n: 'NEBULA · Aether',  rgb: '148,168,255' },
+  neon:   { n: 'NEON · Sol',       rgb: '255,110,200' },
+  ember:  { n: 'EMBER · Storm',    rgb: '255,140,60'  },
+  kristal:{ n: 'KRISTAL · Nexus',  rgb: '90,255,240'  },
+  glitch: { n: 'GLITCH · Matrix',  rgb: '60,255,140'  },
+  aurum:  { n: 'AURUM · Zero',     rgb: '255,220,150' }
+};
+const PARTS  = [{ n: 'Mati', d: 0 }, { n: 'Rendah', d: .5 }, { n: 'Sedang', d: 1 }, { n: 'Tinggi', d: 1.7 }, { n: 'Ultra', d: 2.6 }];
+const SPEEDS = [{ n: 'Pelan', v: .45 }, { n: 'Normal', v: 1 }, { n: 'Cepat', v: 2 }];
+const IMGS   = [{ n: 'Mati', o: 0 }, { n: 'Redup', o: .22 }, { n: 'Terang', o: .5 }];
+const lowEnd = (navigator.hardwareConcurrency || 8) <= 4 || (navigator.deviceMemory || 8) <= 2;
+const S = Object.assign({ accent: null, part: lowEnd ? 1 : 2, speed: 1, cursor: 1, img: 1 }, LS.getJSON('emu.set', {}));
+const saveS = () => LS.setJSON('emu.set', S);
+
+function applyAccent() {
+  const key = (S.accent && ACCENTS[S.accent]) ? S.accent : (document.body.dataset.accent || 'nebula');
+  const a = ACCENTS[key] || ACCENTS.nebula;
+  document.documentElement.style.setProperty('--ac-rgb', a.rgb);
+  let m = $('meta[name="theme-color"]'); if (m) m.content = '#03030a';
+  return key;
+}
+
+/* --------------------------- toast & modal --------------------------- */
+let toastEl, toastT;
+function toast(msg, ms = 2600) {
+  if (!toastEl) { toastEl = document.createElement('div'); toastEl.id = 'emu-toast'; toastEl.setAttribute('role', 'status'); toastEl.setAttribute('aria-live', 'polite'); document.body.append(toastEl); }
+  toastEl.textContent = msg; toastEl.classList.add('show');
+  clearTimeout(toastT); toastT = setTimeout(() => toastEl.classList.remove('show'), ms);
+}
+const Modal = {
+  open(id) { const m = typeof id === 'string' ? document.getElementById(id) : id; if (!m) return; m.classList.add('show'); document.body.classList.add('locked'); const f = $('button,[href],input', m); },
+  close(id) { const m = typeof id === 'string' ? document.getElementById(id) : id; if (!m) return; m.classList.remove('show'); if (!$('.modal.show')) document.body.classList.remove('locked'); },
+  closeAll() { $$('.modal.show').forEach(m => m.classList.remove('show')); document.body.classList.remove('locked'); }
+};
+document.addEventListener('click', e => {
+  const m = e.target.classList && e.target.classList.contains('modal') ? e.target : null;
+  if (m) Modal.close(m);
+  const c = e.target.closest && e.target.closest('[data-close]');
+  if (c) Modal.close(c.closest('.modal'));
+});
+
+/* ------------------------------ boot ------------------------------ */
+function boot() {
+  const first = !SS.get('emu.booted', false);
+  let el = document.getElementById('emu-boot');           // pakai elemen statis di HTML (anti-kedip) kalau ada
+  if (!el) { el = document.createElement('div'); el.id = 'emu-boot'; el.innerHTML = '<b>E M U &nbsp; J O K I</b><i></i><span></span>'; document.body.append(el); }
+  const sp = el.querySelector('span'); if (sp) sp.textContent = first ? 'menyalakan mesin dimensi...' : 'menembus dimensi...';
+  SS.set('emu.booted', true);
+  const done = () => { el.classList.add('off'); setTimeout(() => el.remove(), 520); };
+  const wait = first ? 850 : 260;
+  const go = () => setTimeout(done, wait);
+  if (document.readyState === 'complete') go(); else addEventListener('load', go, { once: true });
+  setTimeout(done, 3200);   // pengaman
+  const warp = document.createElement('div'); warp.className = 'emu-warp'; document.body.append(warp);
+}
+
+/* ------------------------- langit bintang ------------------------- */
+const Sky = (() => {
+  let cv, ctx, W = 0, H = 0, dpr = 1, white = [], tint = [], meteors = [], t = 0, last = 0, mx = 0, my = 0, px = 0, py = 0, nextM = 2.5, raf = 0;
+  let fN = 0, fT = 0;
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    W = innerWidth; H = innerHeight;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    cv.style.width = W + 'px'; cv.style.height = H + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    build(); if (!running()) drawStatic();
+  }
+  function build() {
+    white = []; tint = [];
+    const n = clamp(Math.round(W * H / 9500 * PARTS[S.part].d), 0, 900);
+    for (let i = 0; i < n; i++) {
+      const z = .25 + Math.random() * .75;
+      const s = { x: Math.random() * W, y: Math.random() * H, z, r: .4 + z * 1.15, tw: Math.random() * 6.28, ts: .6 + Math.random() * 1.8 };
+      (Math.random() < .28 ? tint : white).push(s);
+    }
+  }
+  const running = () => S.part > 0 && !reduceMotion && !document.hidden;
+  function paint(list, dt, sp, style) {
+    ctx.fillStyle = style;
+    for (const s of list) {
+      if (dt) { s.y += 7 * s.z * sp * dt; s.x -= 2.2 * s.z * sp * dt; if (s.y > H + 4) { s.y = -4; s.x = Math.random() * W; } if (s.x < -4) s.x = W + 4; }
+      const sx = s.x - px * 34 * s.z, sy = s.y - py * 34 * s.z;
+      ctx.globalAlpha = (.3 + .7 * s.z) * (.62 + .38 * Math.sin(t * s.ts + s.tw));
+      if (s.r < 1.05) ctx.fillRect(sx, sy, s.r * 1.7, s.r * 1.7);
+      else { ctx.beginPath(); ctx.arc(sx, sy, s.r, 0, 6.283); ctx.fill(); ctx.globalAlpha *= .22; ctx.beginPath(); ctx.arc(sx, sy, s.r * 3, 0, 6.283); ctx.fill(); }
+    }
+  }
+  function draw(dt) {
+    ctx.clearRect(0, 0, W, H);
+    const sp = SPEEDS[S.speed].v, rgb = getComputedStyle(document.documentElement).getPropertyValue('--ac-rgb').trim() || '148,168,255';
+    paint(white, dt, sp, '#dfe6ff');
+    paint(tint, dt, sp, 'rgb(' + rgb + ')');
+    ctx.globalAlpha = 1;
+    if (dt && S.part >= 2) {
+      nextM -= dt * sp;
+      if (nextM <= 0) { nextM = 3 + Math.random() * 5; meteors.push({ x: Math.random() * W * 1.1, y: -20 + Math.random() * H * .35, vx: -(420 + Math.random() * 300), vy: 230 + Math.random() * 170, life: 0 }); }
+      for (let i = meteors.length - 1; i >= 0; i--) {
+        const m = meteors[i]; m.life += dt; m.x += m.vx * dt; m.y += m.vy * dt;
+        const a = Math.max(0, 1 - m.life / 1.1);
+        if (a <= 0) { meteors.splice(i, 1); continue; }
+        const g = ctx.createLinearGradient(m.x, m.y, m.x - m.vx * .13, m.y - m.vy * .13);
+        g.addColorStop(0, 'rgba(255,255,255,' + a + ')'); g.addColorStop(1, 'rgba(' + rgb + ',0)');
+        ctx.strokeStyle = g; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(m.x - m.vx * .13, m.y - m.vy * .13); ctx.stroke();
+      }
+    }
+  }
+  function drawStatic() { if (S.part > 0) draw(0); else ctx.clearRect(0, 0, W, H); }
+  function frame(ts) {
+    raf = 0;
+    if (!running()) return;
+    raf = requestAnimationFrame(frame);
+    const dt = Math.min(.05, (ts - last) / 1000 || .016); last = ts; t += dt;
+    px += (mx - px) * .05; py += (my - py) * .05;
+    draw(dt);
+    fN++; fT += dt;
+    if (fT >= .5) { EMU.fps = Math.round(fN / fT); fN = 0; fT = 0; const e = $('#dkFps'); if (e) e.textContent = EMU.fps + ' FPS'; }
+  }
+  function start() { if (!raf && running()) { last = performance.now(); raf = requestAnimationFrame(frame); } }
+  return {
+    init() {
+      cv = document.createElement('canvas'); cv.id = 'emu-stars'; cv.setAttribute('aria-hidden', 'true');
+      document.body.prepend(cv); ctx = cv.getContext('2d');
+      resize();
+      addEventListener('resize', debounce(resize, 150));
+      addEventListener('pointermove', e => { mx = e.clientX / W - .5; my = e.clientY / H - .5; }, { passive: true });
+      document.addEventListener('visibilitychange', start);
+      start();
+    },
+    refresh() { build(); if (!running()) { drawStatic(); } start(); }
+  };
+})();
+
+function initLayers() {
+  const img = document.createElement('div'); img.id = 'emu-img'; img.setAttribute('aria-hidden', 'true');
+  const neb = document.createElement('div'); neb.className = 'emu-nebula'; neb.setAttribute('aria-hidden', 'true');
+  const veil = document.createElement('div'); veil.className = 'emu-veil'; veil.setAttribute('aria-hidden', 'true');
+  document.body.prepend(veil); document.body.prepend(neb); document.body.prepend(img);
+  Sky.init();
+  if (finePointer) {
+    const c = document.createElement('div'); c.className = 'emu-cursor'; c.style.transition = 'opacity .4s, transform .22s ease-out';
+    document.body.append(c);
+    addEventListener('pointermove', e => { c.style.transform = 'translate3d(' + e.clientX + 'px,' + e.clientY + 'px,0)'; c.classList.toggle('on', !!S.cursor); }, { passive: true });
+    document.addEventListener('mouseleave', () => c.classList.remove('on'));
+  }
+}
+
+/* ------------------------- background gambar ------------------------- */
+let resetBtn, bgInput;
+function applyBg() {
+  const custom = LS.get('customBackground', '');
+  const layer = $('#emu-img'); if (!layer) return;
+  const url = custom || DEFAULT_BG;
+  layer.style.opacity = IMGS[S.img].o;
+  if (custom) { layer.style.backgroundImage = "url('" + custom + "')"; }
+  else {
+    const test = new Image();
+    test.onload = () => { layer.style.backgroundImage = "url('" + url + "')"; };
+    test.onerror = () => { layer.style.backgroundImage = 'none'; console.warn('Gagal memuat gambar background bawaan, pakai warna solid.'); };
+    test.src = url;
+  }
+  if (resetBtn) resetBtn.style.display = custom ? 'inline-flex' : 'none';
+}
+function shrinkImage(file, maxSide = 1600, q = .82) {
+  return new Promise((res, rej) => {
+    const fr = new FileReader(); fr.onerror = rej;
+    fr.onload = () => {
+      const im = new Image(); im.onerror = rej;
+      im.onload = () => {
+        const k = Math.min(1, maxSide / Math.max(im.width, im.height));
+        const c = document.createElement('canvas'); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k);
+        c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+        res(c.toDataURL('image/jpeg', q));
+      };
+      im.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+}
+function initBg() {
+  bgInput = document.createElement('input'); bgInput.type = 'file'; bgInput.accept = 'image/*'; bgInput.id = 'bg-upload'; bgInput.hidden = true;
+  document.body.append(bgInput);
+  resetBtn = document.createElement('button'); resetBtn.id = 'reset-bg'; resetBtn.className = 'icon-btn emu-reset'; resetBtn.textContent = '↺ Reset BG';
+  document.body.append(resetBtn);
+  bgInput.addEventListener('change', async e => {
+    const f = e.target.files[0]; if (!f) return;
+    try {
+      const data = await shrinkImage(f);
+      if (!LS.set('customBackground', data)) toast('Gambar terlalu besar untuk disimpan, hanya berlaku sementara.');
+      else toast('Background diganti');
+      $('#emu-img').style.backgroundImage = "url('" + data + "')";
+      if (S.img === 0) { S.img = 1; saveS(); }
+      applyBg();
+    } catch (err) { toast('Gagal membaca gambar'); }
+    bgInput.value = '';
+  });
+  resetBtn.addEventListener('click', () => { LS.del('customBackground'); applyBg(); toast('Background dikembalikan'); });
+  document.addEventListener('click', e => { if (e.target.closest('[data-emu="bg"]')) { e.preventDefault(); bgInput.click(); } });
+  applyBg();
+}
+
+/* ---------------------------- panel ◉ ---------------------------- */
+function seg(el, labels, get, set, valEl) {
+  el.style.setProperty('--n', labels.length);
+  el.innerHTML = '<i class="thumb"></i>' + labels.map((l, i) => '<button type="button" data-i="' + i + '">' + l + '</button>').join('');
+  const sync = () => {
+    const i = get(); el.style.setProperty('--i', i);
+    $$('button', el).forEach(b => b.classList.toggle('on', +b.dataset.i === i));
+    if (valEl) valEl.textContent = labels[i].toUpperCase();
+  };
+  el.addEventListener('click', e => { const b = e.target.closest('button[data-i]'); if (!b) return; const n = +b.dataset.i; if (n === get()) return; set(n); sync(); });
+  sync(); return sync;
+}
+function initDock() {
+  const btn = document.createElement('button'); btn.id = 'dockBtn'; btn.type = 'button'; btn.setAttribute('aria-label', 'Panel kontrol'); btn.setAttribute('aria-expanded', 'false'); btn.innerHTML = '&#9673;';
+  const dock = document.createElement('div'); dock.id = 'dock'; dock.setAttribute('role', 'dialog'); dock.setAttribute('aria-label', 'Panel kontrol EMU');
+  dock.innerHTML =
+    '<div class="tabs" style="--n:2"><button class="tab on" data-tab="look" type="button">Tampilan</button><button class="tab" data-tab="gfx" type="button">Grafik</button><i class="tabline"></i></div>' +
+    '<div class="pane on" data-pane="look">' +
+      '<div class="sec">Warna dimensi</div><div class="swatches" id="dkSw"></div><div class="swatch-name" id="dkSwName"></div>' +
+      '<div class="sec">Latar</div><div class="row" style="--c:2"><button class="btn" id="dkUp" type="button">GANTI GAMBAR</button><button class="btn btn-danger" id="dkRs" type="button">RESET</button></div>' +
+      '<div class="opt" style="margin-top:16px"><div class="hd"><span>GAMBAR LATAR</span><em id="vImg"></em></div><div class="seg" id="segImg"></div><p class="cap">Kecerahan gambar di belakang bintang</p></div>' +
+    '</div>' +
+    '<div class="pane" data-pane="gfx">' +
+      '<div class="opt" style="margin-top:12px"><div class="hd"><span>PARTIKEL</span><em id="vPart"></em></div><div class="seg" id="segPart"></div><p class="cap">Jumlah bintang &amp; meteor (Tinggi ke atas = ada meteor)</p></div>' +
+      '<div class="opt"><div class="hd"><span>KECEPATAN</span><em id="vSpd"></em></div><div class="seg" id="segSpd"></div><p class="cap">Laju gerak bintang</p></div>' +
+      '<div class="opt"><div class="hd"><span>KURSOR</span><em id="vCur"></em></div><div class="seg" id="segCur"></div><p class="cap">Cahaya yang mengikuti kursor (desktop)</p></div>' +
+      '<div class="opt"><div class="hd"><span>PERFORMA</span><em id="dkFps">-</em></div><p class="cap">Perangkat lambat? Turunkan partikel ke Rendah atau Mati.</p></div>' +
+    '</div>';
+  document.body.append(btn, dock);
+  const open = v => { dock.classList.toggle('on', v); btn.setAttribute('aria-expanded', v); };
+  btn.addEventListener('click', e => { e.stopPropagation(); open(!dock.classList.contains('on')); });
+  document.addEventListener('click', e => { if (dock.classList.contains('on') && !dock.contains(e.target) && e.target !== btn) open(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { open(false); Modal.closeAll(); } });
+
+  const tabs = $('.tabs', dock);
+  $$('.tab', dock).forEach((b, i) => b.addEventListener('click', () => {
+    $$('.tab', dock).forEach(x => x.classList.toggle('on', x === b));
+    $$('.pane', dock).forEach(p => p.classList.toggle('on', p.dataset.pane === b.dataset.tab));
+    tabs.style.setProperty('--t', i);
+  }));
+
+  const sw = $('#dkSw'), swn = $('#dkSwName');
+  sw.innerHTML = Object.keys(ACCENTS).map(k => '<button type="button" class="swatch" data-k="' + k + '" style="--s:' + ACCENTS[k].rgb + '" title="' + ACCENTS[k].n + '" aria-label="' + ACCENTS[k].n + '"></button>').join('');
+  const syncSw = () => { const cur = applyAccent(); $$('.swatch', sw).forEach(b => b.classList.toggle('on', b.dataset.k === cur)); swn.textContent = ACCENTS[cur].n; };
+  sw.addEventListener('click', e => { const b = e.target.closest('.swatch'); if (!b) return; S.accent = b.dataset.k; saveS(); syncSw(); Sky.refresh(); toast('Warna: ' + ACCENTS[S.accent].n); });
+  syncSw();
+
+  $('#dkUp').addEventListener('click', () => bgInput.click());
+  $('#dkRs').addEventListener('click', () => { LS.del('customBackground'); applyBg(); toast('Background dikembalikan'); });
+  seg($('#segImg'),  IMGS.map(x => x.n),  () => S.img,    n => { S.img = n; saveS(); applyBg(); }, $('#vImg'));
+  seg($('#segPart'), PARTS.map(x => x.n), () => S.part,   n => { S.part = n; saveS(); Sky.refresh(); }, $('#vPart'));
+  seg($('#segSpd'),  SPEEDS.map(x => x.n),() => S.speed,  n => { S.speed = n; saveS(); }, $('#vSpd'));
+  seg($('#segCur'),  ['Mati', 'Nyala'],   () => S.cursor, n => { S.cursor = n; saveS(); }, $('#vCur'));
+}
+
+/* ---------------- proteksi, transisi, efek antarmuka ---------------- */
+function initGuards() {
+  // klik kanan & shortcut inspect dimatikan (input teks tetap boleh untuk paste di HP)
+  document.addEventListener('contextmenu', e => { if (e.target.closest && e.target.closest('input,textarea')) return; e.preventDefault(); });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i'))) e.preventDefault();
+  });
+}
+function initNav() {
+  const here = (location.pathname.split('/').pop() || 'index.html').toLowerCase();
+  $$('.emu-header a.icon-btn[href]').forEach(a => { if ((a.getAttribute('href') || '').toLowerCase() === here) a.classList.add('on'); });
+  document.addEventListener('click', e => {
+    const a = e.target.closest && e.target.closest('a[href]');
+    if (!a || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;
+    if (a.hasAttribute('data-soon')) { e.preventDefault(); toast('Fitur ini segera hadir'); return; }
+    const h = a.getAttribute('href') || '';
+    if (!h || h[0] === '#' || a.target === '_blank' || a.hasAttribute('download') || /^(https?:|mailto:|tel:|javascript:)/i.test(h)) return;
+    e.preventDefault(); document.body.classList.add('leaving');
+    setTimeout(() => { location.href = a.href; }, 260);
+  });
+  addEventListener('pageshow', e => { if (e.persisted) document.body.classList.remove('leaving'); });
+}
+function tilt(sel, max = 6) {
+  if (!finePointer || reduceMotion) { $$(sel).forEach(el => el.classList.add('shine')); return; }
+  $$(sel).forEach(el => {
+    el.classList.add('tilt', 'shine');
+    el.addEventListener('pointermove', e => {
+      const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
+      el.style.setProperty('--mx', (x * 100) + '%'); el.style.setProperty('--my', (y * 100) + '%');
+      el.style.transform = 'perspective(800px) rotateX(' + ((.5 - y) * max) + 'deg) rotateY(' + ((x - .5) * max) + 'deg) translateY(-4px)';
+    });
+    el.addEventListener('pointerleave', () => { el.style.transform = ''; });
+  });
+}
+function count(el, dur = 1200) {
+  const to = parseFloat(el.dataset.to || el.textContent) || 0;
+  if (reduceMotion) { el.textContent = to; return; }
+  const t0 = performance.now();
+  const step = n => { const p = clamp((n - t0) / dur, 0, 1); el.textContent = Math.round(to * (1 - Math.pow(1 - p, 3))); if (p < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+
+/* =====================================================================
+   MODUL TOKO — dipakai genshin.html & hsr.html
+   ===================================================================== */
+const API_URL = 'https://script.google.com/macros/s/AKfycbxL3kVn_10-yypGSc8wnH9QzRxOZ2c_gXEmf2HzOV6-hOgcTaLzD-PSlVTFn3EHzYc3/exec';
+const TOKEN   = 'emu118201';
+const WA_NUM  = '6285150886538';
+const PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200"><rect width="300" height="200" fill="#0a0d22"/><g fill="none" stroke="#3a4487" stroke-width="1"><circle cx="150" cy="100" r="34"/><circle cx="150" cy="100" r="58" stroke-dasharray="3 6"/></g><text x="150" y="105" text-anchor="middle" fill="#6f79b4" font-family="monospace" font-size="13" letter-spacing="5">EMU</text></svg>');
+
+function shop(cfg) {
+  const KEY = cfg.key;
+  let all = [], loaded = false, cat = 'semua', q = '', sort = 'default', favOnly = false, view = LS.get('emu.view', 'grid');
+  let cart = LS.getJSON('emu.cart.' + KEY, []);
+  let favs = new Set(LS.getJSON('emu.fav.' + KEY, []));
+  let lastOrder = null;
+
+  /* ---- markup tambahan (keranjang, modal) ---- */
+  const holder = document.createElement('div');
+  holder.innerHTML =
+    '<button id="cartFloatBtn" class="cart-fab" type="button" aria-label="Buka keranjang">🛒<span id="cartCount">0</span></button>' +
+    '<aside id="cartPopup" class="cart-popup" aria-label="Keranjang">' +
+      '<div class="cart-head"><h4>Keranjang</h4><div><button class="chip" id="cartClear" type="button">Kosongkan</button> <button class="chip" id="cartClose" type="button" aria-label="Tutup">✕</button></div></div>' +
+      '<div id="cartItemsListPopup" class="cart-items"></div>' +
+      '<div class="cart-total"><span>TOTAL</span><b id="totalPricePopup">Rp 0</b></div>' +
+      '<label class="lbl" for="uidIn">' + esc(cfg.uidLabel || 'UID') + '</label><input id="uidIn" class="field" inputmode="numeric" autocomplete="off" placeholder="' + esc(cfg.uidHint || 'Contoh: 812345678') + '">' +
+      '<label class="lbl" for="nameIn">Nama / Nickname</label><input id="nameIn" class="field" autocomplete="nickname" placeholder="Nama di dalam game">' +
+      '<button class="btn btn-primary btn-block" id="btnOrder" type="button" style="margin-top:14px">BUAT PESANAN</button>' +
+    '</aside>' +
+    '<div id="paymentPopup" class="modal" role="dialog" aria-modal="true"><div class="modal-box" style="text-align:center">' +
+      '<h3>🎉 Pesanan dibuat</h3><div id="payDetail"></div>' +
+      '<p class="muted sans" style="font-size:13px">Selesaikan pembayaran lewat WhatsApp Admin. Simpan ID pesananmu untuk cek status.</p>' +
+      '<div class="modal-actions"><button class="btn btn-ok" id="btnWA" type="button">💬 Bayar via WhatsApp</button><button class="btn" id="btnCopyId" type="button">Salin ID pesanan</button><button class="btn btn-ghost" data-close type="button">Nanti saja</button></div>' +
+    '</div></div>' +
+    '<div id="detailPopup" class="modal" role="dialog" aria-modal="true"><div class="modal-box"><h3>📦 Detail layanan</h3><div id="detailContent"></div>' +
+      '<div class="modal-actions"><button class="btn btn-primary" id="btnAddFromDetail" type="button">+ Tambah keranjang</button><button class="btn btn-ghost" data-close type="button">Tutup</button></div></div></div>' +
+    '<div id="historyPopup" class="modal" role="dialog" aria-modal="true"><div class="modal-box"><h3>🧾 Riwayat pesanan</h3><div id="historyList"></div>' +
+      '<div class="modal-actions"><button class="btn btn-danger" id="btnHistClear" type="button">Hapus riwayat</button><button class="btn btn-ghost" data-close type="button">Tutup</button></div></div></div>';
+  while (holder.firstChild) document.body.append(holder.firstChild);
+
+  const el = id => document.getElementById(id);
+  const listEl = el('shopList'), emptyEl = el('shopEmpty'), tabsEl = el('shopTabs'), qEl = el('shopQ');
+
+  /* ---- data ---- */
+  const norm = p => Object.assign({}, p, { harga: parseInt(p.harga) || 0, nama: String(p.nama || 'Tanpa nama'), kategori: String(p.kategori || '') });
+  const catKey = s => String(s).toLowerCase().trim();
+  function scoped() {
+    const hasGame = all.some(p => p.game);
+    if (hasGame) return all.filter(p => !p.game || cfg.gameRe.test(String(p.game)));
+    const ids = cfg.cats.map(c => catKey(c.id));
+    return all.filter(p => ids.includes(catKey(p.kategori)));
+  }
+  function categories() {
+    const base = cfg.cats.slice(), have = new Set(base.map(c => catKey(c.id)));
+    if (all.some(p => p.game)) scoped().forEach(p => { const k = catKey(p.kategori); if (k && !have.has(k)) { have.add(k); base.push({ id: p.kategori, label: p.kategori }); } });
+    return base;
+  }
+  function visible() {
+    let list = scoped();
+    if (cat !== 'semua') list = list.filter(p => catKey(p.kategori) === catKey(cat));
+    if (favOnly) list = list.filter(p => favs.has(p.nama));
+    if (q) { const k = q.toLowerCase(); list = list.filter(p => p.nama.toLowerCase().includes(k) || String(p.deskripsi || '').toLowerCase().includes(k)); }
+    list = list.slice();
+    if (sort === 'low') list.sort((a, b) => a.harga - b.harga);
+    else if (sort === 'high') list.sort((a, b) => b.harga - a.harga);
+    else if (sort === 'az') list.sort((a, b) => a.nama.localeCompare(b.nama, 'id'));
+    return list;
+  }
+
+  /* ---- render ---- */
+  function renderTabs() {
+    const cats = categories(), sc = scoped();
+    const n = id => id === 'semua' ? sc.length : sc.filter(p => catKey(p.kategori) === catKey(id)).length;
+    tabsEl.innerHTML = [{ id: 'semua', label: 'Semua' }].concat(cats).map(c =>
+      '<button type="button" class="chip' + (catKey(c.id) === catKey(cat) ? ' on' : '') + '" data-cat="' + esc(c.id) + '">' + esc(c.label) + '<b>' + n(c.id) + '</b></button>').join('');
+  }
+  function card(p) {
+    const i = all.indexOf(p), fav = favs.has(p.nama);
+    return '<article class="svc" data-i="' + i + '">' +
+      '<div class="svc-img"><img loading="lazy" src="' + esc(p.gambar || PLACEHOLDER) + '" alt="' + esc(p.nama) + '"><span class="tag svc-cat">' + esc(p.kategori) + '</span>' +
+      '<button type="button" class="fav' + (fav ? ' on' : '') + '" data-act="fav" aria-pressed="' + fav + '" aria-label="Favorit">' + (fav ? '♥' : '♡') + '</button></div>' +
+      '<div class="svc-info"><h3>' + esc(p.nama) + '</h3><div class="price">' + rp(p.harga) + '</div>' +
+      '<div class="btn-group"><button type="button" class="btn btn-cart" data-act="add">+ Keranjang</button><button type="button" class="btn btn-primary" data-act="detail">Detail</button></div></div></article>';
+  }
+  function render() {
+    if (!loaded) return;
+    renderTabs();
+    el('shopFavN').textContent = favs.size;
+    el('shopFav').classList.toggle('on', favOnly);
+    listEl.className = 'service-list' + (view === 'list' ? ' as-list' : '');
+    $$('#shopView button').forEach(b => b.classList.toggle('on', b.dataset.v === view));
+    const list = visible();
+    if (!list.length) {
+      listEl.innerHTML = ''; el('shopInfo').textContent = '';
+      const other = q ? scoped().filter(p => (p.nama + ' ' + (p.deskripsi || '')).toLowerCase().includes(q.toLowerCase())).length : 0;
+      let h;
+      if (!scoped().length) h = '<h4>SEGERA HADIR</h4><p>Layanan untuk ' + esc(cfg.game) + ' sedang disiapkan. Pantau terus atau hubungi CS.</p><a class="btn btn-ok" target="_blank" rel="noopener" href="https://wa.me/' + WA_NUM + '">💬 Tanya CS</a>';
+      else if (favOnly && !favs.size) h = '<h4>BELUM ADA FAVORIT</h4><p>Ketuk ♡ pada layanan untuk menyimpannya di sini.</p><button class="btn" type="button" data-reset>Lihat semua layanan</button>';
+      else h = '<h4>TIDAK DITEMUKAN</h4><p>' + (q ? 'Tidak ada hasil untuk “' + esc(q) + '”' + (cat !== 'semua' ? ' di kategori ini' : '') + '.' : 'Belum ada layanan di kategori ini.') + '</p>' +
+        (other && cat !== 'semua' ? '<button class="btn btn-primary" type="button" data-all>Cari di semua kategori (' + other + ')</button>' : '<button class="btn" type="button" data-reset>Reset filter</button>');
+      emptyEl.innerHTML = h; emptyEl.hidden = false; return;
+    }
+    emptyEl.hidden = true;
+    listEl.innerHTML = list.map(card).join('');
+    el('shopInfo').textContent = list.length + ' layanan' + (q ? ' untuk “' + q + '”' : '');
+  }
+  function skeleton() { listEl.className = 'service-list'; listEl.innerHTML = '<div class="skel"></div>'.repeat(8); emptyEl.hidden = true; }
+
+  /* ---- muat produk (cache 5 menit) ---- */
+  async function load(force) {
+    const c = SS.get('emu.products', null);
+    if (c && !force && Date.now() - c.t < 300000) { all = c.d; loaded = true; reconcileCart(); render(); return; }
+    if (!loaded) skeleton();
+    try {
+      const res = await fetch(API_URL + '?action=getProduk');
+      const data = await res.json();
+      if (!Array.isArray(data)) throw new Error('Format data tidak dikenali');
+      all = data.map(norm); loaded = true; SS.set('emu.products', { t: Date.now(), d: all });
+      reconcileCart(); render();
+    } catch (err) {
+      if (loaded) { toast('Gagal memperbarui produk'); return; }
+      listEl.innerHTML = ''; emptyEl.hidden = false;
+      emptyEl.innerHTML = '<h4>GAGAL MEMUAT</h4><p>' + esc(err.message) + '. Periksa koneksi internetmu lalu coba lagi.</p><button class="btn btn-primary" type="button" data-retry>Coba lagi</button>';
+    }
+  }
+  function reconcileCart() {
+    cart = cart.map(i => { const p = all.find(x => x.nama === i.nama); return p ? Object.assign({}, i, { harga: p.harga, gambar: p.gambar }) : i; });
+    saveCart();
+  }
+
+  /* ---- keranjang ---- */
+  const saveCart = () => { LS.setJSON('emu.cart.' + KEY, cart); paintCart(); };
+  const total = () => cart.reduce((s, i) => s + i.harga * i.qty, 0);
+  function paintCart() {
+    const n = cart.reduce((s, i) => s + i.qty, 0);
+    el('cartCount').textContent = n; el('cartCount').style.display = n ? 'block' : 'none';
+    el('totalPricePopup').textContent = rp(total());
+    el('cartItemsListPopup').innerHTML = cart.length ? cart.map((i, k) =>
+      '<div class="ci" data-k="' + k + '"><div class="ci-name">' + esc(i.nama) + '<small>' + rp(i.harga) + '</small></div>' +
+      '<div class="ci-ctl"><button type="button" data-a="dec" aria-label="Kurangi">−</button><span>' + i.qty + '</span><button type="button" data-a="inc" aria-label="Tambah">+</button><button type="button" data-a="del" aria-label="Hapus">✕</button></div></div>').join('')
+      : '<div class="ci-empty">Keranjang masih kosong.<br>Pilih layanan lalu ketuk “+ Keranjang”.</div>';
+  }
+  function add(p, silent) {
+    const f = cart.find(i => i.nama === p.nama);
+    if (f) f.qty++; else cart.push({ nama: p.nama, harga: p.harga, gambar: p.gambar, qty: 1 });
+    saveCart();
+    if (!silent) { toast('✅ ' + p.nama + ' ditambah'); }
+    el('cartFloatBtn').classList.remove('bump'); void el('cartFloatBtn').offsetWidth; el('cartFloatBtn').classList.add('bump');
+  }
+  const cartOpen = v => { el('cartPopup').classList.toggle('show', v === undefined ? !el('cartPopup').classList.contains('show') : v); };
+  function clearCart() { cart = []; saveCart(); toast('🗑️ Keranjang dikosongkan'); }
+
+  /* ---- pesanan ---- */
+  function orders() { return LS.getJSON('emu.orders', []); }
+  function generateOrder() {
+    const uid = el('uidIn').value.trim(), name = el('nameIn').value.trim();
+    if (!cart.length) return toast('⚠️ Keranjang kosong');
+    if (!uid) return toast('⚠️ ' + (cfg.uidLabel || 'UID') + ' wajib diisi!');
+    if (!/^\d{8,10}$/.test(uid)) return toast('⚠️ ' + (cfg.uidLabel || 'UID') + ' harus 8–10 digit angka');
+    if (!name) return toast('⚠️ Nama wajib diisi!');
+    const orderId = cfg.prefix + Date.now().toString().slice(-6);
+    lastOrder = {
+      orderId, uid, name, game: cfg.game, total: total(), time: Date.now(),
+      lines: cart.map(i => ({ nama: i.nama, qty: i.qty, harga: i.harga })),
+      items: cart.map(i => i.qty > 1 ? i.nama + ' x' + i.qty : i.nama).join(', ')
+    };
+    LS.set('emu.uid.' + KEY, uid); LS.set('emu.nick', name);
+    const hist = orders(); hist.unshift({ orderId, game: cfg.game, items: lastOrder.items, total: lastOrder.total, uid, name, time: lastOrder.time }); LS.setJSON('emu.orders', hist.slice(0, 30));
+    el('payDetail').innerHTML = '<div class="kv"><span>ID PESANAN</span><b>' + esc(orderId) + '</b></div><div class="kv"><span>LAYANAN</span><b>' + esc(lastOrder.items) + '</b></div><div class="kv"><span>' + esc(cfg.uidLabel || 'UID') + '</span><b>' + esc(uid) + '</b></div><div class="kv"><span>NAMA</span><b>' + esc(name) + '</b></div><div class="kv"><span>TOTAL</span><b>' + rp(lastOrder.total) + '</b></div>';
+    Modal.open('paymentPopup');
+    cart = []; saveCart(); cartOpen(false);
+  }
+  async function goToWhatsApp() {
+    if (!lastOrder) return;
+    const o = lastOrder;
+    const w = window.open('about:blank', '_blank');            // dibuka sinkron supaya tidak diblokir popup blocker
+    const fd = new FormData();
+    fd.append('token', TOKEN); fd.append('orderId', o.orderId); fd.append('game', cfg.game);
+    fd.append('uid', o.uid); fd.append('items', o.items); fd.append('total', o.total); fd.append('nickname', o.name); fd.append('status', 'Menunggu Pembayaran');
+    try { toast('⏳ Menyimpan ke database...'); await fetch(API_URL, { method: 'POST', body: fd }); toast('✅ Pesanan tersimpan! ID: ' + o.orderId); }
+    catch (err) { toast('⚠️ Gagal simpan ke sheet'); }
+    let pesan = 'Halo Admin EMU\nID: #' + o.orderId + '\nPesanan ' + cfg.game + ':\n';
+    o.lines.forEach(l => { pesan += '- ' + l.nama + (l.qty > 1 ? ' x' + l.qty : '') + ' : ' + rp(l.harga * l.qty) + '\n'; });
+    pesan += '\nTotal: ' + rp(o.total) + '\nUID: ' + o.uid + '\nNama: ' + o.name;
+    const url = 'https://wa.me/' + WA_NUM + '?text=' + encodeURIComponent(pesan);
+    if (w) w.location.href = url; else location.href = url;
+    Modal.close('paymentPopup');
+  }
+
+  /* ---- detail & riwayat ---- */
+  let detailP = null;
+  function detail(p) {
+    detailP = p;
+    el('detailContent').innerHTML =
+      '<img class="detail-img" src="' + esc(p.gambar || PLACEHOLDER) + '" alt="' + esc(p.nama) + '">' +
+      '<div class="kv"><span>NAMA</span><b>' + esc(p.nama) + '</b></div><div class="kv"><span>HARGA</span><b>' + rp(p.harga) + '</b></div><div class="kv"><span>KATEGORI</span><b>' + esc(p.kategori || '-') + '</b></div>' +
+      '<p class="muted sans" style="font-size:13px;margin-top:12px">' + esc(p.deskripsi || 'Layanan joki cepat, aman dan privasi terjaga.') + '</p>';
+    el('btnAddFromDetail').onclick = () => { add(p); Modal.close('detailPopup'); cartOpen(true); };
+    Modal.open('detailPopup');
+  }
+  function showHistory() {
+    const h = orders();
+    el('historyList').innerHTML = h.length ? h.map(o =>
+      '<div class="hist"><div><b>#' + esc(o.orderId) + '</b> <span class="tag">' + esc(o.game) + '</span><br><small class="muted">' + esc(o.items) + '</small><br><small class="dim">' + new Date(o.time).toLocaleString('id-ID') + ' · ' + rp(o.total) + '</small></div>' +
+      '<div class="hist-act"><button class="chip" data-copy="' + esc(o.orderId) + '" type="button">Salin</button><a class="chip" href="cek.html?id=' + encodeURIComponent(o.orderId) + '">Cek</a></div></div>').join('')
+      : '<div class="ci-empty">Belum ada pesanan dari perangkat ini.</div>';
+    Modal.open('historyPopup');
+  }
+
+  /* ---- event ---- */
+  qEl.addEventListener('input', debounce(() => { q = qEl.value.trim(); el('shopQwrap').classList.toggle('has', !!q); render(); }, 120));
+  el('shopQx').addEventListener('click', () => { qEl.value = ''; q = ''; el('shopQwrap').classList.remove('has'); render(); qEl.focus(); });
+  el('shopSort').addEventListener('change', e => { sort = e.target.value; render(); });
+  el('shopFav').addEventListener('click', () => { favOnly = !favOnly; render(); });
+  el('shopView').addEventListener('click', e => { const b = e.target.closest('button[data-v]'); if (!b) return; view = b.dataset.v; LS.set('emu.view', view); render(); });
+  tabsEl.addEventListener('click', e => { const b = e.target.closest('[data-cat]'); if (!b) return; cat = b.dataset.cat; history_replace(); render(); });
+  function history_replace() { try { history.replaceState(null, '', cat === 'semua' ? location.pathname : '#' + encodeURIComponent(cat)); } catch (e) {} }
+  listEl.addEventListener('click', e => {
+    const card = e.target.closest('.svc'); if (!card) return;
+    const p = all[+card.dataset.i]; if (!p) return;
+    const act = e.target.closest('[data-act]');
+    if (!act) { if (e.target.closest('.svc-img,h3')) detail(p); return; }
+    if (act.dataset.act === 'add') add(p);
+    else if (act.dataset.act === 'detail') detail(p);
+    else if (act.dataset.act === 'fav') {
+      if (favs.has(p.nama)) favs.delete(p.nama); else favs.add(p.nama);
+      LS.setJSON('emu.fav.' + KEY, Array.from(favs)); toast(favs.has(p.nama) ? '♥ Ditambah ke favorit' : 'Dihapus dari favorit'); render();
+    }
+  });
+  listEl.addEventListener('error', e => { if (e.target.tagName === 'IMG' && e.target.src !== PLACEHOLDER) e.target.src = PLACEHOLDER; }, true);
+  emptyEl.addEventListener('click', e => {
+    if (e.target.closest('[data-retry]')) load(true);
+    if (e.target.closest('[data-reset]')) { q = ''; qEl.value = ''; favOnly = false; cat = 'semua'; el('shopQwrap').classList.remove('has'); render(); }
+    if (e.target.closest('[data-all]')) { cat = 'semua'; render(); }
+  });
+  el('cartFloatBtn').addEventListener('click', () => cartOpen());
+  el('cartClose').addEventListener('click', () => cartOpen(false));
+  el('cartClear').addEventListener('click', clearCart);
+  el('cartItemsListPopup').addEventListener('click', e => {
+    const b = e.target.closest('[data-a]'); if (!b) return;
+    const k = +b.closest('.ci').dataset.k, it = cart[k]; if (!it) return;
+    if (b.dataset.a === 'inc') it.qty++;
+    else if (b.dataset.a === 'dec') { it.qty--; if (it.qty <= 0) cart.splice(k, 1); }
+    else cart.splice(k, 1);
+    saveCart();
+  });
+  el('btnOrder').addEventListener('click', generateOrder);
+  el('btnWA').addEventListener('click', goToWhatsApp);
+  el('btnCopyId').addEventListener('click', async () => { if (lastOrder) toast((await copyText(lastOrder.orderId)) ? 'ID pesanan disalin' : 'Gagal menyalin'); });
+  el('btnHistClear').addEventListener('click', () => { LS.del('emu.orders'); showHistory(); toast('Riwayat dihapus'); });
+  el('historyList').addEventListener('click', async e => { const c = e.target.closest('[data-copy]'); if (c) toast((await copyText(c.dataset.copy)) ? 'ID pesanan disalin' : 'Gagal menyalin'); });
+  document.addEventListener('click', e => { if (e.target.closest('[data-emu="history"]')) { e.preventDefault(); showHistory(); } });
+  document.addEventListener('keydown', e => {
+    const typing = /INPUT|TEXTAREA|SELECT/.test((document.activeElement || {}).tagName || '');
+    if (e.key === '/' && !typing) { e.preventDefault(); qEl.focus(); }
+    else if ((e.key === 'c' || e.key === 'C') && !typing && !e.ctrlKey && !e.metaKey) cartOpen();
+    else if (e.key === 'Escape') { cartOpen(false); if (typing) document.activeElement.blur(); }
+  });
+
+  /* ---- mulai ---- */
+  const h = decodeURIComponent((location.hash || '').slice(1));
+  if (h) cat = h;
+  el('uidIn').value = LS.get('emu.uid.' + KEY, ''); el('nameIn').value = LS.get('emu.nick', '');
+  paintCart(); load();
+}
+
+/* ------------------------------ init ------------------------------ */
+const EMU = { $, $$, LS, SS, esc, rp, toast, Modal, copy: copyText, tilt, count, shop, fps: 0, S, ACCENTS };
+window.EMU = EMU;
+function init() {
+  applyAccent();
+  boot(); initLayers(); initBg(); initDock(); initGuards(); initNav();
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+
+</script>
+<script>
+(function(){
+  const $ = EMU.$, $$ = EMU.$$;
+  const cards = $$('.menu-btn'), grid = $('#menuGrid');
+  EMU.tilt('.menu-btn', 7);
+
+  /* jam & sapaan (WIB) */
+  function tick(){
+    const d = new Date(), tz = { timeZone:'Asia/Jakarta' };
+    $('#clock').textContent = d.toLocaleTimeString('id-ID', Object.assign({ hour12:false }, tz)).replace(/\./g, ':') + ' WIB';
+    $('#date').textContent = d.toLocaleDateString('id-ID', Object.assign({ weekday:'long', day:'numeric', month:'long', year:'numeric' }, tz));
+    const h = +d.toLocaleString('en-GB', Object.assign({ hour:'2-digit', hour12:false }, tz)) % 24;
+    $('#greet').textContent = h >= 4 && h < 11 ? 'Selamat pagi' : h >= 11 && h < 15 ? 'Selamat siang' : h >= 15 && h < 18 ? 'Selamat sore' : 'Selamat malam';
+  }
+  tick(); setInterval(tick, 1000);
+
+  /* filter kategori + pencarian */
+  let f = 'all', q = '';
+  function apply(){
+    let shown = 0, first = null;
+    cards.forEach(c => {
+      const t = (c.textContent || '').toLowerCase();
+      const ok = (f === 'all' || c.dataset.cat === f) && (!q || t.includes(q));
+      c.classList.toggle('hide', !ok);
+      if (ok) { shown++; if (!first) first = c; }
+    });
+    $('#pEmpty').style.display = shown ? 'none' : 'block';
+    grid.style.display = shown ? '' : 'none';
+    return first;
+  }
+  $('#pChips').addEventListener('click', e => {
+    const b = e.target.closest('[data-f]'); if (!b) return;
+    f = b.dataset.f; $$('#pChips .chip').forEach(x => x.classList.toggle('on', x === b)); apply();
+  });
+  const inp = $('#pSearch');
+  inp.addEventListener('input', () => { q = inp.value.trim().toLowerCase(); $('#pSearchWrap').classList.toggle('has', !!q); apply(); });
+  $('#pSearchX').addEventListener('click', () => { inp.value = ''; q = ''; $('#pSearchWrap').classList.remove('has'); apply(); inp.focus(); });
+  $('#pReset').addEventListener('click', () => { inp.value = ''; q = ''; f = 'all'; $$('#pChips .chip').forEach(x => x.classList.toggle('on', x.dataset.f === 'all')); $('#pSearchWrap').classList.remove('has'); apply(); });
+  inp.addEventListener('keydown', e => {
+    if (e.key === 'Enter') { const c = apply(); if (c) { c.classList.add('match'); c.click(); } }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === '/' && document.activeElement !== inp) { e.preventDefault(); inp.focus(); }
+  });
+
+  /* terakhir dibuka */
+  function paintRecent(){
+    const r = EMU.LS.getJSON('emu.recent', []), box = $('#recent');
+    $$('a', box).forEach(a => a.remove());
+    const items = r.map(h => cards.find(c => c.getAttribute('href') === h)).filter(Boolean);
+    box.style.display = items.length ? 'flex' : 'none';
+    items.forEach(c => {
+      const a = document.createElement('a'); a.className = 'chip'; a.href = c.getAttribute('href');
+      a.textContent = c.querySelector('.icon').textContent + ' ' + c.querySelector('strong').textContent; box.append(a);
+    });
+  }
+  grid.addEventListener('click', e => {
+    const c = e.target.closest('.menu-btn'); if (!c) return;
+    if (c.dataset.modal) { e.preventDefault(); EMU.Modal.open(c.dataset.modal); return; }
+    if (c.hasAttribute('data-soon')) return;
+    const href = c.getAttribute('href');
+    const r = EMU.LS.getJSON('emu.recent', []).filter(x => x !== href); r.unshift(href); EMU.LS.setJSON('emu.recent', r.slice(0, 4));
+  });
+  paintRecent();
+})();
+</script>
 </body>
 </html>
