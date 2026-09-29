@@ -2,13 +2,13 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#03030a">
 <link rel="icon" href="icon.png" type="image/png">
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="theme-color" content="#03030a">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <title>Profile</title>
+  <title>Execute Block</title>
   <style>
 /* =====================================================================
    TEMA BERSAMA — diselaraskan dengan index.html (EMU Joki)
@@ -213,10 +213,53 @@ body::after{
 }
 
 </style>
+  <style>
+    /* ========== AREA GAME ========== */
+    #game-container {
+      position: relative;
+      max-width: 380px;
+      margin: 20px auto;
+      height: 380px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #12162e 0%, #05060f 70%);
+      border: 1px solid rgba(148,168,255,0.32);
+      box-shadow: 0 10px 40px rgba(0,0,0,.45), inset 0 0 40px rgba(148,168,255,.06);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    #main-character {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      pointer-events: none;
+      transition: transform 0.08s ease;
+      border: 3px solid rgba(255,255,255,0.2);
+    }
+
+    #main-character.clicked {
+      transform: translate(-50%, -50%) scale(0.88);
+    }
+
+    .game-hint {
+      text-align: center;
+      color: #888;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+  </style>
 <style>
 /* ===== HEADER BARU ===== */
 [hidden]{display:none!important}
-.cur-ico,img.cur-ico{width:16px!important;height:16px!important;min-width:0;object-fit:contain!important;border-radius:0!important;margin:0 1px!important;vertical-align:-3px;display:inline-block;flex:none}
+.cur-ico{width:20px;height:20px;object-fit:contain;vertical-align:middle}
 body:not([data-tab="Profile.html"]) .currency{display:none}
 #top{position:sticky;top:0;z-index:100;background:rgba(5,7,18,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:calc(8px + env(safe-area-inset-top,0px)) 12px 8px;min-height:60px}
 .bar,.tabs{display:flex;align-items:center;gap:8px;max-width:1000px;margin:auto}
@@ -289,13 +332,37 @@ body:not([data-tab="Profile.html"]) .currency{display:none}
 .gacha-buttons .btn{flex:1 1 110px}
 #result-card{max-width:1000px}#gacha-result{grid-template-columns:repeat(auto-fill,minmax(105px,1fr))}
 .result-item{background:radial-gradient(circle at 50% 0,rgba(var(--ac-rgb),.25),rgba(12,15,36,.9) 70%)!important;border-color:var(--line-hi)!important}
-.result-item .cur-ico{width:24px!important;height:24px!important}
+.result-item .cur-ico{width:36px;height:36px}
 /* PROFIL */
 body[data-tab="Profile.html"] .profile-header{padding:40px 0 22px;border:1px solid var(--line)}
 body[data-tab="Profile.html"] .profile-pic-wrap{width:112px;height:112px}
 </style></head>
-<body data-tab="Profile.html">
-<div id="emu-boot"><b>P O P &nbsp; I T</b><i></i><span>memuat profil...</span></div>
+<style>
+.eb{max-width:440px;margin:12px auto;padding:0 12px;--cs:min(11.2vw,46px);user-select:none;-webkit-user-select:none}
+.eb-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.eb-top h1{font-size:18px;letter-spacing:3px;color:var(--gold)}
+.eb-sc{display:flex;gap:10px;font-weight:700;font-size:14px;background:var(--panel-2);border:1px solid var(--line);padding:5px 14px;border-radius:99px}
+.eb-sc span{color:var(--tx-2)}
+.eb-info{font-size:12.5px;color:var(--tx-2);text-align:center;margin-bottom:10px}
+.eb-info b{color:var(--tx)}
+#ebd{position:relative}
+#board{display:grid;grid-template-columns:repeat(7,var(--cs));grid-auto-rows:var(--cs);gap:4px;padding:8px;background:var(--panel);border:1px solid var(--line);border-radius:14px;width:max-content;margin:0 auto;touch-action:none}
+.c{border-radius:6px;background:rgba(110,125,215,.13)}
+.c.f{background:var(--k);box-shadow:inset 0 0 7px rgba(255,255,255,.35)}
+.c.ok{outline:2px dashed #57e0a8;outline-offset:-2px;background:rgba(87,224,168,.38)}
+.c.no{outline:2px dashed #ff6e78;outline-offset:-2px;background:rgba(255,110,120,.35)}
+.c.bl{animation:bl .35s forwards}
+@keyframes bl{50%{transform:scale(1.15);background:#ffeb3b}to{transform:scale(0);opacity:0}}
+#edock{display:flex;justify-content:space-around;align-items:center;margin-top:14px;padding:6px;height:calc(var(--cs)*2.4 + 20px);background:rgba(0,0,0,.28);border:1px solid var(--line);border-radius:14px;touch-action:none}
+.sl{flex:1;height:100%;display:grid;place-items:center;cursor:grab;touch-action:none}
+.pc{display:grid;gap:4px}.pc i{border-radius:5px}.pc i.f{background:var(--k);box-shadow:inset 0 0 6px rgba(255,255,255,.35)}
+.fl{position:fixed;left:0;top:0;z-index:500;pointer-events:none}
+#over{position:absolute;inset:0;background:rgba(3,3,10,.93);border-radius:14px;display:none;flex-direction:column;justify-content:center;align-items:center;gap:8px;z-index:50;text-align:center}
+#over.on{display:flex}#over h2{color:var(--danger);font-size:30px;letter-spacing:2px}
+#over .row{display:flex;gap:8px;margin-top:10px}
+</style>
+<body data-tab="Game.html">
+<div id="emu-boot"><b>P O P &nbsp; I T</b><i></i><span>menyiapkan blok...</span></div>
 <script>
 (function(){
   var first = !sessionStorage.getItem('popit_booted');
@@ -309,69 +376,20 @@ body[data-tab="Profile.html"] .profile-pic-wrap{width:112px;height:112px}
 })();
 </script>
   <header id="top"></header>
-
-  <div class="card">
-    <div class="profile-header" id="profile-header">
-      <div class="banner-bg" id="banner-bg"></div>
-      <div class="content">
-        <div class="profile-pic-wrap">
-          <img id="profile-pic" src="https://via.placeholder.com/100/333/fff?text=User" alt="Profile">
-        </div>
-        <h2 id="profile-name">Username</h2>
-        <div class="currency" style="justify-content:center;">
-          <span class="mora">🪙 <span class="mora-count">0</span></span>
-          <span class="credit">💎 <span class="credit-count">0</span></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="text-center mt-10" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;">
-      <label class="btn" style="cursor:pointer;">
-        📷 Upload Foto
-        <input type="file" id="pic-input" accept="image/*" style="display:none;" onchange="changePhoto(event)">
-      </label>
-      <button class="btn btn-outline" onclick="openUrlPhoto()">🔗 Paste Link</button>
-      <button class="btn btn-outline" onclick="removeBanner()">Lepas Banner</button>
-    </div>
-  </div>
-
-  <!-- Area Pet -->
-  <div class="card">
-    <h2>🐾 Area Pet</h2>
-    <p style="color:#aaa;font-size:13px;margin-bottom:10px;">
-      Pet menghasilkan mata uang otomatis. Lihat timer di bawah.
-    </p>
-    <div class="pet-area" id="pet-area">
-      <p style="color:#666;">Belum ada pet</p>
-    </div>
-    <div class="text-center mt-10">
-      <button class="btn" onclick="manualClaimPets()">Klaim Semua Penghasilan</button>
-    </div>
-  </div>
-
-  
-
-  <div class="text-center" style="margin:24px;">
-    <button class="btn btn-outline" onclick="logout()">Keluar dari akun</button>
-  </div>
-
-  <!-- Popup Paste Link Foto -->
-  <div class="popup-overlay" id="url-photo-popup">
-    <div class="popup">
-      <button class="close-btn" onclick="closeUrlPhoto()">×</button>
-      <h2>🔗 Link Foto Profil</h2>
-      <p style="color:#aaa;font-size:13px;margin-bottom:12px;">Paste link gambar (Imgur / Google Drive public)</p>
-      <input type="text" id="photo-url" placeholder="https://...">
-      <button class="btn" style="width:100%;" onclick="saveUrlPhoto()">Simpan</button>
-    </div>
-  </div>
-
-  <script>
+<div class="eb">
+ <div class="eb-top"><h1>EXECUTE BLOCK</h1><div class="eb-sc">Skor <b id="sc">0</b><span>Lv <b id="lv">1</b></span></div></div>
+ <div class="eb-info">1 baris / kolom hancur = <b>+1 Mora / Credit</b> (bergantian) · Didapat: <b id="gm">0</b> Mora, <b id="gc">0</b> Credit</div>
+ <div id="ebd"><div id="board"></div>
+  <div id="edock"><div class="sl"></div><div class="sl"></div><div class="sl"></div></div>
+  <div id="over"><h2>GAME OVER</h2><p>Skor <b id="fs">0</b> · Baris hancur <b id="fln">0</b></p><p id="fr"></p>
+   <div class="row"><button class="btn btn-gold" onclick="newGame()">Main Lagi</button><a class="btn" href="Game.html">Kembali</a></div></div></div>
+</div>
+<script>
 /* =====================================================
    SCRIPT.JS
    ===================================================== */
 
-const API_URL = "https://script.google.com/macros/s/AKfycbz7gHt-Pc5dRyKYwejO7VpMH_nmBR8Cxsk1pVt3y4h9rcXx4KtgF2vBqkOQ4ENz10MJkQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwHtatQVaip_YspROYu7Rmtm1xWG_f69yBHoahG7DoPElB08sMmKgSCXgdgF7X9_14/exec";
 // ↑ Pastikan ini URL Web App kamu yang benar
 
 const SECRET = "popit_secret_2026";
@@ -549,7 +567,7 @@ const SVG_MORA="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http:/
 const SVG_CREDIT="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="#1c8f9c" stroke="#b8fff8" stroke-width="3"/><path d="M32 12l14 20-14 20-14-20z" fill="#5afff0" stroke="#e6fffd" stroke-width="2.5" stroke-linejoin="round"/><path d="M32 12v40M18 32h28" stroke="#1c8f9c" stroke-width="2" opacity=".6"/></svg>');
 // ★ GANTI LOGO MATA UANG DI SINI (URL atau nama file, mis. "credit.png"). Kalau gagal dimuat otomatis pakai logo SVG bawaan.
 const ICON_MORA="https://media.printables.com/media/prints/274692/images/2440991_fbc314d8-5e72-465c-b7f6-13397d418cc8/thumbs/inside/1280x960/png/icon_mora_274692.webp";
-const ICON_CREDIT=SVG_CREDIT;
+const ICON_CREDIT="https://static.wikia.nocookie.net/houkai-star-rail/images/d/d9/Item_Credit.png/revision/latest?cb=20230722075044";
 const $=id=>document.getElementById(id);
 const esc=t=>String(t??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 const ci=t=>`<img class="cur-ico" src="${t==="mora"?ICON_MORA:ICON_CREDIT}" alt="${t}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${t==="mora"?SVG_MORA:SVG_CREDIT}'">`;
@@ -558,7 +576,7 @@ function mountHeader(){
   const el=$("top");if(!el||!currentUser)return;
   const at=document.body.dataset.tab||location.pathname.split("/").pop();
   const T=[["Game.html","Game"],["Inventori.html","Inventori"],["Gacha.html","Gacha"],["Chat.html","Chat"]];
-  el.innerHTML=`<div class="bar"><span class="brand">PROFILE</span><span class="chip">${ci("mora")}<b class="mora-count">0</b></span><span class="chip">${ci("credit")}<b class="credit-count">0</b></span><a href="Profile.html" title="Profil"><img class="av" src="${esc(avatar(currentUser.username,currentUser.profilePic))}"></a></div><div class="tabs">${T.map(t=>`<a href="${t[0]}" data-t="${t[0]}" class="${t[0]===at?"on":""}">${t[1]}</a>`).join("")}</div>`;
+  el.innerHTML=`<div class="bar"><span class="brand">ExecuteBlock</span><span class="chip">${ci("mora")}<b class="mora-count">0</b></span><span class="chip">${ci("credit")}<b class="credit-count">0</b></span><a href="Profile.html" title="Profil"><img class="av" src="${esc(avatar(currentUser.username,currentUser.profilePic))}"></a></div><div class="tabs">${T.map(t=>`<a href="${t[0]}" data-t="${t[0]}" class="${t[0]===at?"on":""}">${t[1]}</a>`).join("")}</div>`;
 }
 let _n=null;
 function badge(f,n){const a=document.querySelector(`.tabs a[data-t="${f}"]`);if(!a)return;let b=a.querySelector(".bdg");if(!n){b&&b.remove();return}if(!b){b=document.createElement("span");b.className="bdg";a.appendChild(b)}b.textContent=n>9?"9+":n}
@@ -587,215 +605,82 @@ async function openProfile(n){
 async function fAct(a,x){const r=await apiCall(a,{username:currentUser.username,target:_pn,from:_pn,accept:!!x});showToast(r.message||(r.success?"Berhasil":"Gagal"));openProfile(_pn);poll()}
 </script>
   <script>
-    let timerInterval = null;
+/* ===== EXECUTE BLOCK ===== */
+const N=7, GAP=4;                       // ★ ukuran papan (7x7 = lebih sulit dari 8x8)
+const START_FILLED=6;                   // ★ jumlah blok acak di awal
+const COLORS=["#0288d1","#e91e63","#ff9800","#7e57c2","#26a69a","#ef5350","#9ccc65"];
+// d = tingkat kesulitan bentuk (1 mudah … 3 sulit). ★ tambah/ubah bentuk di sini
+const SH=[
+ {s:[[1,1]],d:1},{s:[[1],[1]],d:1},{s:[[1,1,1]],d:1},{s:[[1],[1],[1]],d:1},{s:[[1,1],[1,1]],d:1},{s:[[1,0],[1,1]],d:1},{s:[[1,1],[0,1]],d:1},
+ {s:[[1,1,1,1]],d:2},{s:[[1],[1],[1],[1]],d:2},{s:[[1,1,1],[1,1,1]],d:2},{s:[[1,1],[1,1],[1,1]],d:2},{s:[[1,1,0],[0,1,1]],d:2},{s:[[0,1,1],[1,1,0]],d:2},{s:[[1,0],[1,1],[1,0]],d:2},{s:[[1,1,1],[0,1,0]],d:2},
+ {s:[[1,1,1,1,1]],d:3},{s:[[1],[1],[1],[1],[1]],d:3},{s:[[1,1,1],[1,1,1],[1,1,1]],d:3},{s:[[1,1,1],[1,0,0],[1,0,0]],d:3},{s:[[1,1,1],[0,0,1],[0,0,1]],d:3},{s:[[1,1,1],[0,1,0],[0,1,0]],d:3},{s:[[0,1,0],[1,1,1],[0,1,0]],d:3},{s:[[1,0,1],[1,1,1]],d:3},{s:[[1,0],[1,0],[1,0],[1,1]],d:3},{s:[[0,1],[0,1],[0,1],[1,1]],d:3}
+];
+const board=$("board"),docks=[...document.querySelectorAll(".sl")];
+let grid,slots,score,lines,placed,level,busy,over,drag,pend={mora:0,credit:0},got={mora:0,credit:0},ft,fl=Promise.resolve();
+for(let i=0;i<N*N;i++){const c=document.createElement("div");c.className="c";board.appendChild(c)}
+const cells=[...board.children];
 
-    function getPetRemaining(pet) {
-      if (!pet.lastClaim) return 0;
-      const last = new Date(pet.lastClaim).getTime();
-      const intervalMs = (pet.intervalMinutes || 60) * 60 * 1000;
-      return Math.max(0, last + intervalMs - Date.now());
-    }
+function pick(){ // makin tinggi level → bentuk makin besar & sulit; TIDAK dijamin muat (hard mode)
+  const t=Math.min(3.4,1.8+(level-1)*.25);
+  const w=SH.map(p=>Math.max(.12,1-Math.abs(p.d-t)*.45)),sum=w.reduce((a,b)=>a+b);
+  let r=Math.random()*sum,i=0;for(;i<SH.length-1&&(r-=w[i])>0;i++);
+  return {s:SH[i].s,k:COLORS[Math.floor(Math.random()*COLORS.length)]};
+}
+function mk(p,size){const e=document.createElement("div");e.className="pc";e.style.gridTemplateColumns=`repeat(${p.s[0].length},${size}px)`;e.style.setProperty("--k",p.k);
+  p.s.forEach(r=>r.forEach(v=>{const c=document.createElement("i");c.style.width=c.style.height=size+"px";if(v)c.className="f";e.appendChild(c)}));return e}
+function fits(p,r0,c0){const h=p.s.length,w=p.s[0].length;if(r0<0||c0<0||r0+h>N||c0+w>N)return false;
+  for(let r=0;r<h;r++)for(let c=0;c<w;c++)if(p.s[r][c]&&grid[r0+r][c0+c])return false;return true}
+function canPlay(p){for(let r=0;r<N;r++)for(let c=0;c<N;c++)if(fits(p,r,c))return true;return false}
+function draw(){cells.forEach((el,i)=>{const v=grid[Math.floor(i/N)][i%N];el.className="c"+(v?" f":"");el.style.setProperty("--k",v||"")})}
+function dock(){const cs=parseFloat(getComputedStyle(cells[0]).width)*.5;docks.forEach((d,i)=>{d.innerHTML="";if(slots[i])d.appendChild(mk(slots[i],cs))})}
+function hud(){$("sc").textContent=score;$("lv").textContent=level;$("gm").textContent=got.mora;$("gc").textContent=got.credit}
 
-    function formatTime(ms) {
-      if (ms <= 0) return "Siap diklaim!";
-      const totalSec = Math.ceil(ms / 1000);
-      const m = Math.floor(totalSec / 60);
-      const s = totalSec % 60;
-      return `${m}m ${s.toString().padStart(2,"0")}s`;
-    }
+function newGame(){grid=Array.from({length:N},()=>Array(N).fill(0));
+  for(let k=0;k<START_FILLED;k++){grid[Math.floor(Math.random()*N)][Math.floor(Math.random()*N)]=COLORS[Math.floor(Math.random()*COLORS.length)]}
+  score=0;lines=0;placed=0;level=1;busy=false;over=false;got={mora:0,credit:0};slots=[pick(),pick(),pick()];
+  $("over").classList.remove("on");draw();dock();hud();check()}
+function check(){ // GAME OVER bila tidak ada satu pun blok tersisa yang bisa diletakkan
+  const rest=slots.filter(Boolean);if(rest.length&&!rest.some(canPlay))end()}
+function end(){over=true;flush();$("fs").textContent=score;$("fln").textContent=lines;
+  $("fr").innerHTML=`Hadiah: ${ci("mora")} ${got.mora} Mora · ${ci("credit")} ${got.credit} Credit`;setTimeout(()=>$("over").classList.add("on"),350)}
 
-    function renderProfile() {
-      if (!currentUser) return;
-      document.getElementById("profile-name").textContent = currentUser.username;
+/* --- drag & drop --- */
+function down(e,i){if(busy||over||!slots[i]||drag)return;e.preventDefault();const p=slots[i],sz=cells[0].getBoundingClientRect().width;
+  const el=mk(p,sz);el.classList.add("fl");document.body.appendChild(el);
+  drag={i,p,el,sz,w:p.s[0].length*(sz+GAP)-GAP,h:p.s.length*(sz+GAP)-GAP,t:null};docks[i].style.opacity=.25;
+  move(e);addEventListener("pointermove",move);addEventListener("pointerup",up);addEventListener("pointercancel",up)}
+function target(e){const off=e.pointerType==="mouse"?26:78,x=e.clientX-drag.w/2,y=e.clientY-drag.h-off,b=cells[0].getBoundingClientRect(),st=b.width+GAP;
+  return {x,y,r:Math.round((y-b.top)/st),c:Math.round((x-b.left)/st)}}
+function move(e){if(!drag)return;const t=target(e);drag.el.style.transform=`translate(${t.x}px,${t.y}px)`;drag.t=t;hint(t.r,t.c)}
+function hint(r0,c0){cells.forEach(c=>c.classList.remove("ok","no"));const p=drag.p,ok=fits(p,r0,c0);
+  p.s.forEach((row,r)=>row.forEach((v,c)=>{if(v&&r0+r>=0&&r0+r<N&&c0+c>=0&&c0+c<N)cells[(r0+r)*N+c0+c].classList.add(ok?"ok":"no")}))}
+function up(e){removeEventListener("pointermove",move);removeEventListener("pointerup",up);removeEventListener("pointercancel",up);
+  if(!drag)return;const d=drag;
+  // hitung posisi jatuh SELAGI drag masih terisi (target() membaca drag.w / drag.h)
+  const tt=e.type==="pointercancel"?null:target(e);
+  drag=null;d.el.remove();docks[d.i].style.opacity=1;cells.forEach(c=>c.classList.remove("ok","no"));
+  if(tt&&fits(d.p,tt.r,tt.c))place(d,tt.r,tt.c)}
+function place(d,r0,c0){slots[d.i]=null;let n=0;
+  d.p.s.forEach((row,r)=>row.forEach((v,c)=>{if(v){grid[r0+r][c0+c]=d.p.k;n++}}));score+=n;placed++;level=1+Math.floor(placed/8);
+  draw();dock();
+  const R=[],C=[];for(let r=0;r<N;r++)if(grid[r].every(Boolean))R.push(r);
+  for(let c=0;c<N;c++)if(grid.every(row=>row[c]))C.push(c);
+  const k=R.length+C.length;
+  if(!k){after();return}
+  busy=true;R.forEach(r=>{for(let c=0;c<N;c++)cells[r*N+c].classList.add("bl")});C.forEach(c=>{for(let r=0;r<N;r++)cells[r*N+c].classList.add("bl")});
+  setTimeout(()=>{R.forEach(r=>grid[r].fill(0));C.forEach(c=>grid.forEach(row=>row[c]=0));draw();
+    for(let j=0;j<k;j++){const m=(lines+j)%2===0;m?(pend.mora++,got.mora++):(pend.credit++,got.credit++)}   // 1 baris = 1 mora/credit
+    lines+=k;score+=10*k*k;showToast(`+${k} baris → +${k} Mora/Credit`);schedule();busy=false;after()},360)}
+function after(){if(!slots.some(Boolean))slots=[pick(),pick(),pick()];dock();hud();check()}
 
-      const pic = document.getElementById("profile-pic");
-      if (currentUser.profilePic) pic.src = currentUser.profilePic;
-
-      const bannerBg = document.getElementById("banner-bg");
-      if (currentUser.activeBanner) {
-        const banner = (currentUser.banners || []).find(b => b.id === currentUser.activeBanner);
-        bannerBg.style.backgroundImage = banner?.imageUrl ? `url('${banner.imageUrl}')` : "none";
-      } else {
-        bannerBg.style.backgroundImage = "none";
-      }
-
-      renderPets();
-    }
-
-    function renderPets() {
-      const petArea = document.getElementById("pet-area");
-      const pets = currentUser.pets || [];
-      if (pets.length === 0) {
-        petArea.innerHTML = '<p style="color:#666;">Belum ada pet. Dapatkan dari Gacha!</p>';
-        return;
-      }
-
-      petArea.innerHTML = `
-        <div class="item-grid">
-          ${pets.map((p, i) => {
-            const remain = getPetRemaining(p);
-            const ready = remain <= 0;
-            return `
-              <div class="item-card">
-                <img src="${p.imageUrl || 'https://via.placeholder.com/64'}" 
-                     onerror="this.src='https://via.placeholder.com/64/333/fff?text=Pet'">
-                <div class="name">${p.name}</div>
-                <div style="font-size:11px;color:#aaa;">
-                  ${p.earnAmount} ${ci(p.earnType)} / ${p.intervalMinutes}m
-                </div>
-                <div class="pet-timer ${ready ? 'ready' : ''}" data-index="${i}">
-                  ${formatTime(remain)}
-                </div>
-                <button class="btn btn-sell" onclick="sellPet(${i})">Jual</button>
-              </div>
-            `;
-          }).join("")}
-        </div>
-      `;
-    }
-
-    function startPetTimers() {
-      if (timerInterval) clearInterval(timerInterval);
-      timerInterval = setInterval(() => {
-        document.querySelectorAll(".pet-timer").forEach(el => {
-          const idx = parseInt(el.dataset.index);
-          const pet = currentUser?.pets?.[idx];
-          if (!pet) return;
-          const remain = getPetRemaining(pet);
-          el.textContent = formatTime(remain);
-          el.classList.toggle("ready", remain <= 0);
-        });
-      }, 1000);
-    }
-
-    async function sellPet(index) {
-      if (!currentUser?.pets?.[index]) return;
-      const pet = currentUser.pets[index];
-      const sellPrice = Math.max(20, (pet.earnAmount || 5) * (SELL_PRICE?.petMultiplier || 10));
-      if (!confirm(`Jual ${pet.name} seharga ${sellPrice} Mora?`)) return;
-
-      const newPets = currentUser.pets.filter((_, i) => i !== index);
-      const res = await updateUser({
-        pets: newPets,
-        mora: (currentUser.mora || 0) + sellPrice
-      });
-      if (res.success) {
-        showToast(`Berhasil jual ${pet.name} (+${sellPrice} Mora)`);
-        renderPets();
-        updateCurrencyDisplay();
-      }
-    }
-
-    async function changePhoto(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      // Limit praktis untuk Google Sheets (base64)
-      if (file.size > 800 * 1024) {
-        showToast("Foto terlalu besar! Maksimal ~800KB. Lebih baik pakai Paste Link.");
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = async (ev) => {
-        showToast("Menyimpan foto...");
-        const res = await updateUser({ profilePic: ev.target.result });
-        if (res.success) {
-          document.getElementById("profile-pic").src = ev.target.result;
-          showToast("Foto berhasil diganti!");
-        } else {
-          showToast("Gagal menyimpan. Coba foto lebih kecil atau pakai Paste Link");
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function openUrlPhoto() {
-      document.getElementById("photo-url").value = "";
-      document.getElementById("url-photo-popup").classList.add("show");
-    }
-    function closeUrlPhoto() {
-      document.getElementById("url-photo-popup").classList.remove("show");
-    }
-
-    async function saveUrlPhoto() {
-      const url = document.getElementById("photo-url").value.trim();
-      if (!url) {
-        showToast("Masukkan link dulu");
-        return;
-      }
-      const res = await updateUser({ profilePic: url });
-      if (res.success) {
-        document.getElementById("profile-pic").src = url;
-        showToast("Foto dari link berhasil disimpan!");
-        closeUrlPhoto();
-      } else {
-        showToast("Gagal menyimpan link");
-      }
-    }
-
-    async function removeBanner() {
-      const res = await updateUser({ activeBanner: null });
-      if (res.success) {
-        document.getElementById("banner-bg").style.backgroundImage = "none";
-        showToast("Banner dilepas");
-      }
-    }
-
-    async function manualClaimPets() {
-      await claimPetEarnings();
-      renderPets();
-    }
-
-    async function loadChats() {
-      const chats = await getChats();
-      const box = document.getElementById("chat-box");
-      if (!chats?.length) {
-        box.innerHTML = '<p style="color:#666;text-align:center;">Belum ada pesan</p>';
-        return;
-      }
-      box.innerHTML = chats.map(c => `
-        <div class="chat-msg">
-          <span class="user">${c.username}</span>
-          <span>${escapeHtml(c.message)}</span>
-          <span class="time">${timeAgo(c.time)}</span>
-        </div>
-      `).join("");
-      box.scrollTop = box.scrollHeight;
-    }
-
-    function escapeHtml(t) {
-      const d = document.createElement("div");
-      d.textContent = t;
-      return d.innerHTML;
-    }
-
-    async function doSendChat() {
-      const input = document.getElementById("chat-input");
-      const msg = input.value.trim();
-      if (!msg) return;
-      input.value = "";
-      const res = await sendChat(msg);
-      if (res.success) loadChats();
-      else showToast(res.message || "Gagal kirim");
-    }
-
-    
-
-    (async () => {
-      const ok = await requireLogin();
-      if (ok) {
-        renderProfile();
-        startPetTimers();
-        
-      }
-    })();
-  </script>
-<script>
-async function changePhoto(e){const f=e.target.files[0];if(!f)return;const im=new Image();
- im.onload=async()=>{const c=document.createElement("canvas"),s=Math.min(im.width,im.height);c.width=c.height=160;
-  c.getContext("2d").drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,160,160);const d=c.toDataURL("image/jpeg",.8);
-  const r=await updateUser({profilePic:d});if(r.success){$("profile-pic").src=d;showToast("Foto diganti!")}else showToast("Gagal menyimpan foto")};
- im.src=URL.createObjectURL(f)}
-</script></body>
+/* --- hadiah: dikumpulkan lalu dikirim sekaligus (tanpa menahan game) --- */
+function schedule(){clearTimeout(ft);ft=setTimeout(flush,1500)}
+function flush(){clearTimeout(ft);const m=pend.mora,c=pend.credit;if(!m&&!c)return;pend={mora:0,credit:0};
+  fl=fl.then(async()=>{if(!currentUser)throw 0;const u={};if(m)u.mora=(currentUser.mora||0)+m;if(c)u.credit=(currentUser.credit||0)+c;
+    const r=await updateUser(u);if(!r||!r.success)throw 0;updateCurrencyDisplay()}).catch(()=>{pend.mora+=m;pend.credit+=c})}
+addEventListener("pagehide",flush);
+docks.forEach((d,i)=>d.addEventListener("pointerdown",e=>down(e,i)));
+(async()=>{await requireLogin();newGame()})();
+</script>
+</body>
 </html>

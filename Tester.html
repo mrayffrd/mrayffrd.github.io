@@ -467,7 +467,7 @@
                         document.querySelector(`.cell[data-row='${r}'][data-col='${c}']`).classList.add('blast');
                     }
                     grid[r] = Array(GRID_SIZE).fill(0);
-                    score += 150; // Skor bonus tinggi untuk mode sulit
+                    score += 1; // Skor bonus tinggi untuk mode sulit
                 });
 
                 colsToBlast.forEach(c => {
