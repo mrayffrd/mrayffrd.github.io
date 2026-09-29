@@ -249,9 +249,6 @@ body::after{
       transform: translate(-50%, -50%) scale(0.88);
     }
 
-    .game-info { text-align: center; max-width: 380px; margin: 18px auto 0; padding: 0 16px; }
-    .game-info h1 { font-size: 22px; color: #eef1ff; letter-spacing: 1px; margin-bottom: 4px; }
-    .game-info p { color: #aaa; font-size: 14px; }
     .game-hint {
       text-align: center;
       color: #888;
@@ -282,10 +279,12 @@ body::after{
   </nav>
 
   <div class="card text-center">
+    <h1>👆 Clicker</h1>
     <div class="currency">
       <span class="mora">🪙 <span class="mora-count">0</span> Mora</span>
       <span class="credit">💎 <span class="credit-count">0</span> Credit</span>
     </div>
+    <p style="color:#aaa;font-size:14px;">Setiap 10 klik → 1 Mora / 1 Credit (bergantian)</p>
     <p>Total klik: <strong id="click-count">0</strong></p>
   </div>
 
@@ -295,10 +294,6 @@ body::after{
          src="https://api.dicebear.com/9.x/fun-emoji/svg?seed=idle&backgroundColor=ff6b6b"
          alt="Character"
          draggable="false">
-  </div>
-  <div class="game-info">
-    <h1>👆 Clicker</h1>
-    <p>Setiap 10 klik → 1 Mora / 1 Credit (bergantian)</p>
   </div>
   <p class="game-hint">Klik di mana saja pada area di atas</p>
   <!-- ========== AKHIR AREA GAME ========== -->
