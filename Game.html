@@ -1,4 +1,15 @@
-<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><meta name="theme-color" content="#03030a"><link rel="icon" href="icon.png"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><title>Game</title><style>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#03030a">
+<link rel="icon" href="icon.png" type="image/png">
+<link rel="apple-touch-icon" href="icon.png">
+<meta name="theme-color" content="#03030a">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>Game - Clicker</title>
+  <style>
 /* =====================================================================
    TEMA BERSAMA — diselaraskan dengan index.html (EMU Joki)
    Ruang gelap #03030a, aksen indigo, font Inter, panel kaca.
@@ -201,87 +212,56 @@ body::after{
   .card{ margin:12px; padding:16px; }
 }
 
+</style>
+  <style>
+    /* ========== AREA GAME ========== */
+    #game-container {
+      position: relative;
+      max-width: 380px;
+      margin: 20px auto;
+      height: 380px;
+      border-radius: 24px;
+      overflow: hidden;
+      background: radial-gradient(circle at center, #12162e 0%, #05060f 70%);
+      border: 1px solid rgba(148,168,255,0.32);
+      box-shadow: 0 10px 40px rgba(0,0,0,.45), inset 0 0 40px rgba(148,168,255,.06);
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
 
-/* ===== HEADER BARU ===== */
-[hidden]{display:none!important}
-.cur-ico{width:20px;height:20px;object-fit:contain;vertical-align:middle}
-body:not([data-tab="Profile.html"]) .currency{display:none}
-#top{position:sticky;top:0;z-index:100;background:rgba(5,7,18,.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding:calc(8px + env(safe-area-inset-top,0px)) 12px 8px;min-height:60px}
-.bar,.tabs{display:flex;align-items:center;gap:8px;max-width:1000px;margin:auto}
-.brand{font-family:var(--mono);letter-spacing:4px;font-weight:700;font-size:13px;color:#e6ecff;margin-right:auto}
-.chip{display:flex;align-items:center;gap:6px;background:rgba(9,12,30,.85);border:1px solid rgba(96,110,190,.35);padding:3px 11px;border-radius:99px;font-size:13px;font-weight:600}
-.av{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--line-hi);background:#0c0f24;cursor:pointer;display:block;flex:none}
-.tabs{margin-top:8px}
-.tabs a{flex:1;text-align:center;position:relative;color:var(--tx-2);text-decoration:none;padding:8px 4px;border-radius:10px;font-size:12.5px;font-weight:600;border:1px solid transparent;transition:.2s}
-.tabs a:hover{color:#fff}.tabs a.on{color:#fff;background:rgba(var(--ac-rgb),.2);border-color:var(--line-hi)}
-.bdg{position:absolute;top:0;right:4px;min-width:16px;height:16px;border-radius:9px;background:var(--danger);color:#fff;font-size:10px;line-height:16px;padding:0 4px;font-weight:700}
-.wrap{max-width:1000px;margin:14px auto;padding:0 12px}
-.ttl{font-size:20px;margin:6px 2px 12px;color:#eef1ff}
-.empty{color:var(--tx-3);text-align:center;padding:24px 8px;grid-column:1/-1}
-/* profil popup */
-.popup.pc{padding:0;overflow:hidden}
-.pbn{height:96px;background:linear-gradient(135deg,#1b2350,#3a2a6a) center/cover}
-.pav{width:88px;height:88px;margin:-44px auto 8px;border-width:3px}
-.pc .in{padding:0 20px 22px}.pc .row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
-.pc small{color:var(--tx-3)}
-/* GAME HUB */
-.gg{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
-.gc{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:.2s}
-.gc:hover{border-color:var(--line-hi);transform:translateY(-3px);box-shadow:0 0 22px rgba(var(--ac-rgb),.22)}
-.gc .pv{height:150px;background:#0c0f24 center/cover;display:grid;place-items:center}.gc .pv img{width:100%;height:100%;object-fit:cover;border-radius:0}
-.gc .bd{padding:14px}.gc h3{color:#eef1ff}.gc p{color:var(--tx-2);font-size:12.5px;margin:4px 0 12px}
-/* INVENTORI */
-.inv{display:grid;grid-template-columns:68px 1fr 310px;gap:12px;align-items:start}
-.side{display:flex;flex-direction:column;gap:8px;position:sticky;top:112px}
-.cat{position:relative;aspect-ratio:1;border-radius:14px;border:1px solid var(--line);background:var(--panel-2);display:grid;place-items:center;font-size:26px;cursor:pointer;transition:.2s}
-.cat img{width:34px;height:34px;object-fit:contain}.cat.on{border-color:var(--line-hi);box-shadow:0 0 16px rgba(var(--ac-rgb),.35);background:rgba(var(--ac-rgb),.16)}
-.mainp{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;min-height:340px}
-.mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}.mh b{color:#eef1ff}
-.gridm{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
-.slot{position:relative;aspect-ratio:1;border-radius:12px;border:1px solid rgba(96,110,190,.28);background:var(--panel-2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:6px;cursor:pointer;text-align:center;font-size:11.5px;font-weight:600;color:#eef1ff;transition:.2s;overflow:hidden}
-.slot:hover,.slot.on{border-color:var(--line-hi);box-shadow:0 0 14px rgba(var(--ac-rgb),.3)}
-.slot .m{font-size:30px;line-height:1}.slot img{width:52px;height:52px;object-fit:cover;border-radius:50%}
-.slot .nm{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.dot{position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;background:var(--danger)}
-.prev{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;text-align:center;position:sticky;top:112px}
-.prev .big{width:100%;max-height:160px;object-fit:cover;border-radius:12px;margin-bottom:10px}.prev .bm{font-size:56px}
-.prev h3{color:#eef1ff;margin:6px 0}.prev .ds{color:var(--tx-2);font-size:13px;margin-bottom:12px;word-break:break-word}
-.prev .acts{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.prev .x{display:none}
-.veil{position:fixed;inset:0;background:rgba(2,2,8,.7);backdrop-filter:blur(4px);z-index:1000;display:none}.veil.on{display:block}
-@media(max-width:760px){.inv{grid-template-columns:56px 1fr}.side{top:108px}
-.prev{position:fixed;left:50%;top:50%;width:min(88vw,340px);transform:translate(-50%,-46%) scale(.92);opacity:0;pointer-events:none;z-index:1001;transition:.2s;box-shadow:0 0 40px rgba(var(--ac-rgb),.25)}
-.prev.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%)}.prev .x{display:block;position:absolute;top:8px;right:12px;background:none;border:0;color:var(--tx-3);font-size:24px}}
-/* CHAT */
-.seg{display:flex;gap:6px;margin-bottom:10px}.seg button{flex:1;position:relative;font:inherit;font-weight:700;font-size:13px;padding:10px;border-radius:12px;border:1px solid var(--line);background:var(--panel-2);color:var(--tx-2);cursor:pointer}
-.seg button.on{color:#fff;background:rgba(var(--ac-rgb),.2);border-color:var(--line-hi)}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;height:calc(100dvh - 200px);min-height:380px;display:flex;flex-direction:column;overflow:hidden}
-.msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
-.msg{display:flex;gap:8px;max-width:88%}.msg.me{margin-left:auto;flex-direction:row-reverse}.msg .av{width:34px;height:34px}
-.bub{background:rgba(255,255,255,.06);border-radius:4px 14px 14px 14px;padding:7px 12px}.me .bub{background:rgba(var(--ac-rgb),.22);border-radius:14px 4px 14px 14px}
-.bub b{font-size:11.5px;color:var(--ac);display:block}.bub p{word-break:break-word;font-size:14px}.bub i{font-size:10px;color:var(--tx-3);font-style:normal}
-.inp{display:flex;gap:8px;padding:10px;border-top:1px solid var(--line)}
-.inp input{flex:1;min-width:0;padding:11px 15px;border-radius:99px;border:1px solid rgba(96,110,190,.4);background:rgba(9,12,30,.92);color:var(--tx);font-size:15px;outline:none}.inp input:focus{border-color:var(--line-hi)}
-.tools{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--line);font-size:12px;color:var(--tx-3)}
-.tools button{background:none;border:0;color:var(--tx-2);font:inherit;cursor:pointer}.tools button:hover{color:var(--danger)}
-.pl{display:grid;grid-template-columns:250px 1fr}.flist{border-right:1px solid var(--line);overflow-y:auto}
-.fi{display:flex;gap:10px;align-items:center;padding:11px 12px;cursor:pointer;border-bottom:1px solid rgba(96,110,190,.15);position:relative}.fi:hover,.fi.on{background:rgba(var(--ac-rgb),.12)}
-.fi .t{min-width:0;flex:1}.fi b{display:block;color:#eef1ff;font-size:13.5px}.fi small{display:block;color:var(--tx-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.fi .bdg{position:static}.conv{display:flex;flex-direction:column;min-height:0}
-@media(max-width:760px){.pl{grid-template-columns:1fr}.pl .conv{display:none}.pl.open .flist{display:none}.pl.open .conv{display:flex}.back{display:inline!important}}
-.back{display:none}
-/* GACHA */
-.gwrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;max-width:1000px;margin:14px auto;padding:0 12px}
-.gwrap .card{margin:0;max-width:none}.gacha-box{padding:28px 20px}
-#zero-box{background:linear-gradient(160deg,rgba(var(--credit-rgb),.14),rgba(5,7,18,.9) 60%)}
-#infinite-box{background:linear-gradient(160deg,rgba(var(--gold-rgb),.15),rgba(5,7,18,.9) 60%)}
-.gacha-buttons .btn{flex:1 1 110px}
-#result-card{max-width:1000px}#gacha-result{grid-template-columns:repeat(auto-fill,minmax(105px,1fr))}
-.result-item{background:radial-gradient(circle at 50% 0,rgba(var(--ac-rgb),.25),rgba(12,15,36,.9) 70%)!important;border-color:var(--line-hi)!important}
-.result-item .cur-ico{width:36px;height:36px}
-/* PROFIL */
-body[data-tab="Profile.html"] .profile-header{padding:40px 0 22px;border:1px solid var(--line)}
-body[data-tab="Profile.html"] .profile-pic-wrap{width:112px;height:112px}
-</style></head><body data-tab="Game.html"><div id="emu-boot"><b>P O P &nbsp; I T</b><i></i><span>memilih game...</span></div>
+    #main-character {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      pointer-events: none;
+      transition: transform 0.08s ease;
+      border: 3px solid rgba(255,255,255,0.2);
+    }
+
+    #main-character.clicked {
+      transform: translate(-50%, -50%) scale(0.88);
+    }
+
+    .game-info { text-align: center; max-width: 380px; margin: 18px auto 0; padding: 0 16px; }
+    .game-info h1 { font-size: 22px; color: #eef1ff; letter-spacing: 1px; margin-bottom: 4px; }
+    .game-info p { color: #aaa; font-size: 14px; }
+    .game-hint {
+      text-align: center;
+      color: #888;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<div id="emu-boot"><b>P O P &nbsp; I T</b><i></i><span>menyalakan dunia klik...</span></div>
 <script>
 (function(){
   var first = !sessionStorage.getItem('popit_booted');
@@ -293,11 +273,46 @@ body[data-tab="Profile.html"] .profile-pic-wrap{width:112px;height:112px}
   else addEventListener('load', function(){ setTimeout(done, wait); }, { once:true });
   setTimeout(done, 2200);
 })();
-</script><header id="top"></header><div class="wrap"><h1 class="ttl">Pilih game</h1><div class="gg" id="games"></div></div><script>/* =====================================================
+</script>
+  <nav class="nav">
+    <a href="Game.html" class="active">Game</a>
+    <a href="Inventori.html">Inventori</a>
+    <a href="Gacha.html">Gacha</a>
+    <a href="Profile.html">Profile</a>
+  </nav>
+
+  <div class="card text-center">
+    <div class="currency">
+      <span class="mora">🪙 <span class="mora-count">0</span> Mora</span>
+      <span class="credit">💎 <span class="credit-count">0</span> Credit</span>
+    </div>
+    <p>Total klik: <strong id="click-count">0</strong></p>
+  </div>
+
+  <!-- ========== AREA GAME ========== -->
+  <div id="game-container">
+    <img id="main-character"
+         src="https://api.dicebear.com/9.x/fun-emoji/svg?seed=idle&backgroundColor=ff6b6b"
+         alt="Character"
+         draggable="false">
+  </div>
+  <div class="game-info">
+    <h1>👆 Clicker</h1>
+    <p>Setiap 10 klik → 1 Mora / 1 Credit (bergantian)</p>
+  </div>
+  <p class="game-hint">Klik di mana saja pada area di atas</p>
+  <!-- ========== AKHIR AREA GAME ========== -->
+
+  <div class="text-center" style="margin:20px;">
+    <button class="btn btn-outline" onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+/* =====================================================
    SCRIPT.JS
    ===================================================== */
 
-const API_URL = "https://script.google.com/macros/s/AKfycbwHtatQVaip_YspROYu7Rmtm1xWG_f69yBHoahG7DoPElB08sMmKgSCXgdgF7X9_14/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbz7gHt-Pc5dRyKYwejO7VpMH_nmBR8Cxsk1pVt3y4h9rcXx4KtgF2vBqkOQ4ENz10MJkQ/exec";
 // ↑ Pastikan ini URL Web App kamu yang benar
 
 const SECRET = "popit_secret_2026";
@@ -467,57 +482,55 @@ function timeAgo(ts) {
   if (m < 60) return m + " mnt lalu";
   return Math.floor(m / 60) + " jam lalu";
 }
-</script><script>
-/* ===== TAMBAHAN BERSAMA ===== */
-// ★ GANTI LOGO MATA UANG DI SINI
-const SVG_MORA="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="#e7b64a" stroke="#fff3c4" stroke-width="3"/><circle cx="32" cy="32" r="20" fill="none" stroke="#a8781c" stroke-width="3"/><path d="M22 41V24l10 10 10-10v17" fill="none" stroke="#7a520e" stroke-width="4" stroke-linejoin="round"/></svg>');
-const SVG_CREDIT="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="#1c8f9c" stroke="#b8fff8" stroke-width="3"/><path d="M32 12l14 20-14 20-14-20z" fill="#5afff0" stroke="#e6fffd" stroke-width="2.5" stroke-linejoin="round"/><path d="M32 12v40M18 32h28" stroke="#1c8f9c" stroke-width="2" opacity=".6"/></svg>');
-// ★ GANTI LOGO MATA UANG DI SINI (URL atau nama file, mis. "credit.png"). Kalau gagal dimuat otomatis pakai logo SVG bawaan.
-const ICON_MORA="https://media.printables.com/media/prints/274692/images/2440991_fbc314d8-5e72-465c-b7f6-13397d418cc8/thumbs/inside/1280x960/png/icon_mora_274692.webp";
-const ICON_CREDIT="https://static.wikia.nocookie.net/houkai-star-rail/images/d/d9/Item_Credit.png/revision/latest?cb=20230722075044";
-const $=id=>document.getElementById(id);
-const esc=t=>String(t??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-const ci=t=>`<img class="cur-ico" src="${t==="mora"?ICON_MORA:ICON_CREDIT}" alt="${t}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${t==="mora"?SVG_MORA:SVG_CREDIT}'">`;
-const avatar=(n,p)=>p||"https://api.dicebear.com/9.x/initials/svg?seed="+encodeURIComponent(n||"?");
-function mountHeader(){
-  const el=$("top");if(!el||!currentUser)return;
-  const at=document.body.dataset.tab||location.pathname.split("/").pop();
-  const T=[["Game.html","Game"],["Inventori.html","Inventori"],["Gacha.html","Gacha"],["Chat.html","Chat"]];
-  el.innerHTML=`<div class="bar"><span class="brand">LIST GAME</span><span class="chip">${ci("mora")}<b class="mora-count">0</b></span><span class="chip">${ci("credit")}<b class="credit-count">0</b></span><a href="Profile.html" title="Profil"><img class="av" src="${esc(avatar(currentUser.username,currentUser.profilePic))}"></a></div><div class="tabs">${T.map(t=>`<a href="${t[0]}" data-t="${t[0]}" class="${t[0]===at?"on":""}">${t[1]}</a>`).join("")}</div>`;
-}
-let _n=null;
-function badge(f,n){const a=document.querySelector(`.tabs a[data-t="${f}"]`);if(!a)return;let b=a.querySelector(".bdg");if(!n){b&&b.remove();return}if(!b){b=document.createElement("span");b.className="bdg";a.appendChild(b)}b.textContent=n>9?"9+":n}
-async function poll(){
-  if(!currentUser)return;const r=await apiCall("notifs",{username:currentUser.username});if(!r.success)return;
-  if(!_n?r.inbox>0:r.inbox>_n.inbox)showToast("✉️ Ada pesan baru di Kotak Pesan");
-  if(!_n?r.priv>0:r.priv>_n.priv)showToast("💬 Ada pesan pribadi baru");
-  _n=r;badge("Inventori.html",r.inbox);badge("Chat.html",r.priv);
-  if(window.onNotif)window.onNotif(r);
-}
-const _rl=requireLogin;
-requireLogin=async()=>{const ok=await _rl();if(ok){mountHeader();updateCurrencyDisplay();poll();setInterval(poll,30000)}return ok};
-/* Popup profil orang lain */
-async function openProfile(n){
-  const r=await apiCall("profileOf",{username:currentUser.username,target:n});
-  if(!r.success)return showToast(r.message||"Gagal memuat profil");
-  const p=r.profile;window._pn=p.username;
-  let o=$("pp");if(!o){o=document.createElement("div");o.id="pp";o.className="popup-overlay";o.onclick=e=>{if(e.target===o)o.classList.remove("show")};document.body.appendChild(o)}
-  const B=(a,t,c,x)=>`<button class="btn ${c||""}" onclick="fAct('${a}',${x||0})">${t}</button>`;
-  const act={self:"<small>Ini profilmu</small>",none:B("friendReq","Tambah teman"),out:"<small>Menunggu persetujuan…</small>",
-    in:B("friendRespond","Terima","btn-gold",1)+B("friendRespond","Tolak","btn-sell",0),
-    friends:`<a class="btn btn-credit" href="Chat.html?with=${encodeURIComponent(p.username)}">Chat pribadi</a>`+B("friendRemove","Hapus teman","btn-sell")}[p.rel];
-  o.innerHTML=`<div class="popup pc"><button class="close-btn" onclick="$('pp').classList.remove('show')">×</button><div class="pbn" style="${p.banner?`background-image:url('${esc(p.banner)}')`:""}"></div><div class="in"><img class="av pav" src="${esc(avatar(p.username,p.pic))}"><h2 style="margin:0">${esc(p.username)}</h2><small>${p.pets} pet · ${p.banners} banner</small><div class="row">${act}</div></div></div>`;
-  o.classList.add("show");
-}
-async function fAct(a,x){const r=await apiCall(a,{username:currentUser.username,target:_pn,from:_pn,accept:!!x});showToast(r.message||(r.success?"Berhasil":"Gagal"));openProfile(_pn);poll()}
-</script><script>
-// ★ DAFTAR GAME — tambah game baru cukup tambah satu baris di sini
-const GAMES=[
-  {name:"Pop Cat",file:"Popit.html",desc:"Klik kucing untuk dapat 1 Mora / 1 Credit.",img:"https://popcat.click/twitter-card.jpg"},
-  {name:"Execute Block",file:"ExecuteBlock.html",desc:"Susun blok untuk dapat 1 Mora / Credit.",img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSO3JUu9RWeCFuL1E74O_RyazwRj1lHl9ORtLmzeSc1rg&s"},
-  {name:"Kobo Saurus",file:"Dino.html",desc:"Loncat untuk 1 Mora / Credit",img:"https://i.pinimg.com/736x/98/44/15/9844158ff92e35296f4be30484c2772c.jpg"},
-// {name:"Game Baru",file:"GameBaru.html",desc:"Deskripsi singkat",img:"https://link-gambar-preview"},
-];
-$("games").innerHTML=GAMES.map(g=>`<div class="gc"><div class="pv"><img src="${esc(g.img)}" alt=""></div><div class="bd"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p><a class="btn" style="width:100%" href="${esc(g.file)}">Main</a></div></div>`).join("");
-requireLogin();
-</script></body></html>
+</script>
+  <script>
+    const container = document.getElementById("game-container");
+    const character = document.getElementById("main-character");
+
+    // Gambar diam & gambar saat diklik (ganti URL sesuai keinginan)
+    const IMG_IDLE = "https://api.dicebear.com/9.x/fun-emoji/svg?seed=idle&backgroundColor=ff6b6b";
+    const IMG_CLICK = "https://api.dicebear.com/9.x/fun-emoji/svg?seed=click&backgroundColor=4d96ff";
+
+    let totalClicks = 0;
+    let rewardToggle = true;
+    let isProcessingReward = false;
+
+    function handleClick() {
+      totalClicks++;
+      document.getElementById("click-count").textContent = totalClicks;
+
+      // Ganti ke gambar "klik" sebentar
+      character.src = IMG_CLICK;
+      character.classList.add("clicked");
+
+      setTimeout(() => {
+        character.src = IMG_IDLE;
+        character.classList.remove("clicked");
+      }, 120);
+
+      // Reward setiap 10 klik (tidak memblokir klik berikutnya)
+      if (totalClicks % 10 === 0 && !isProcessingReward) {
+        isProcessingReward = true;
+        const type = rewardToggle ? "mora" : "credit";
+        const label = rewardToggle ? "+1 Mora 🪙" : "+1 Credit 💎";
+        rewardToggle = !rewardToggle;
+
+        addCurrency(type, 1).then(() => {
+          showToast(label);
+          isProcessingReward = false;
+        }).catch(() => {
+          isProcessingReward = false;
+        });
+      }
+    }
+
+    container.addEventListener("click", handleClick);
+    container.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      handleClick();
+    }, { passive: false });
+
+    (async () => { await requireLogin(); })();
+  </script>
+</body>
+</html>
