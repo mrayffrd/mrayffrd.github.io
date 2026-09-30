@@ -189,6 +189,7 @@ button{font:inherit;color:inherit}
 .ra{width:56px;height:74px;display:grid;place-items:center;font-size:30px;flex-shrink:0;border:1px solid rgba(255,255,255,.35);background:linear-gradient(160deg,#2a3a7a,#0d1030);box-shadow:5px -3px 0 -1px rgba(255,255,255,.12)}
 .ra img{width:100%;height:100%;object-fit:cover}
 .one .ra{width:96px;height:124px;font-size:52px}
+.new.dup{color:#cfd6ff;background:#26304f;border-color:#8b97d6}
 .new{position:absolute;right:12px;top:-11px;font-size:11px;padding:1px 9px;color:#ffd77a;background:#2b1a55;border:1px solid #ffd77a;border-radius:6px}
 @media (max-width:820px){
   .topbar{padding:calc(12px + env(safe-area-inset-top,0px)) 14px 0}
@@ -209,7 +210,7 @@ button{font:inherit;color:inherit}
 </style>
 </head>
 <body>
-<div id="emu-boot"><b>P O P &nbsp; I T</b><i></i><span>membuka gerbang gacha...</span></div>
+<div id="emu-boot"><b>G A C H A</b><i></i><span>membuka gerbang gacha...</span></div>
 <script>
 (function(){
   var first = !sessionStorage.getItem('popit_booted');
@@ -517,6 +518,9 @@ const BANNERS = {
   infinite: { name:"Contract Infinite", cur:"mora",   label:"Mora",   logo:MORA_LOGO,   plate:"Infinite Gacha", hero:"∞" }
 };
 const PRICE = { 1:100, 10:900 };
+// ---- Item ganda (pet/banner yang sudah dimiliki) otomatis ditukar jadi mata uang ----
+// type: "auto" = sesuai mata uang banner (Zero -> Credit, Infinite -> Mora); atau isi "mora" / "credit"
+const DUP_REFUND = { amount: 50, type: "auto" };
 
 // ---- Rarity: pakai item.rarity (3-5) kalau ada dari spreadsheet, kalau tidak dari tipe item ----
 function rarityOf(it) {
@@ -574,6 +578,10 @@ async function pull(times) {
   if ((currentUser[b.cur] || 0) < cost) { showToast(`Tidak cukup! Butuh ${cost} ${b.cur}`); return; }
   running = true; setDis(true);
 
+  const before = {   // isi inventori sebelum gacha, untuk mendeteksi item ganda
+    pet: (currentUser.pets || []).map(x => x.name),
+    banner: (currentUser.banners || []).map(x => x.name)
+  };
   const fx = $("fx");
   fx.querySelectorAll(".st").forEach(e => e.remove());
   for (let i = 0; i < 45; i++) {
@@ -592,6 +600,7 @@ async function pull(times) {
     return;
   }
   const items = res.results || [];
+  await settleDuplicates(items, before, b.cur);
   fx.className = "show c" + Math.max(3, ...items.map(rarityOf));
   await Promise.race([sleep(1100), new Promise(r => $("skip").onclick = r)]);
   showResult(items);
@@ -599,20 +608,77 @@ async function pull(times) {
   running = false; setDis(false);
 }
 
+// Tandai item ganda, buang salinannya dari inventori, lalu ganti dengan DUP_REFUND.amount Mora/Credit
+async function settleDuplicates(items, before, bannerCur) {
+  const owned = { pet: new Map(), banner: new Map() };
+  before.pet.forEach(n => owned.pet.set(n, (owned.pet.get(n) || 0) + 1));
+  before.banner.forEach(n => owned.banner.set(n, (owned.banner.get(n) || 0) + 1));
+
+  const gotNow = new Set(), touched = { pet: new Set(), banner: new Set() };
+  let dups = 0;
+  items.forEach(it => {
+    if (it.type !== "pet" && it.type !== "banner") return;
+    touched[it.type].add(it.name);
+    const key = it.type + "|" + it.name;
+    if (owned[it.type].has(it.name) || gotNow.has(key)) { it.dup = true; dups++; }
+    else gotNow.add(key);
+  });
+  if (!dups) return;
+
+  const type = DUP_REFUND.type === "auto" ? bannerCur : DUP_REFUND.type;
+  const amount = DUP_REFUND.amount * dups;
+  const updates = { [type]: (currentUser[type] || 0) + amount };
+
+  // pangkas salinan berlebih (yang terbaru) dari daftar milik pemain
+  const trim = (list, kind) => {
+    const keep = n => owned[kind].get(n) || 1, seenCount = {}, removed = [];
+    const out = list.filter(x => {
+      if (!touched[kind].has(x.name)) return true;
+      seenCount[x.name] = (seenCount[x.name] || 0) + 1;
+      if (seenCount[x.name] <= keep(x.name)) return true;
+      removed.push(x); return false;
+    });
+    return { out, removed };
+  };
+  const pets = trim(currentUser.pets || [], "pet");
+  const bans = trim(currentUser.banners || [], "banner");
+  if (pets.removed.length) updates.pets = pets.out;
+  if (bans.removed.length) {
+    updates.banners = bans.out;
+    const act = currentUser.activeBanner;
+    if (act && !bans.out.some(x => x.id === act)) {         // banner aktif ikut terhapus -> pindah ke salinan yang tersisa
+      const gone = bans.removed.find(x => x.id === act);
+      const alt = gone && bans.out.find(x => x.name === gone.name);
+      updates.activeBanner = alt ? alt.id : null;
+    }
+  }
+
+  const r = await updateUser(updates);
+  if (r && r.success) {
+    items.forEach(it => { if (it.dup) { it.refundType = type; it.refundAmount = DUP_REFUND.amount; } });
+    updateCurrencyDisplay();
+  } else {
+    items.forEach(it => { delete it.dup; });
+    showToast("Gagal menukar item ganda");
+  }
+}
+
 function showResult(items) {
   const rg = $("rg");
   rg.className = "rg" + (items.length === 1 ? " one" : "");
   rg.innerHTML = items.map((it, i) => {
     const r = rarityOf(it);
-    const isNew = it.isNew ?? it.new ?? ((it.type === "banner" || it.type === "pet") && !seen.has(it.name));
+    const isNew = it.dup ? false : (it.isNew ?? it.new ?? ((it.type === "banner" || it.type === "pet") && !seen.has(it.name)));
     seen.add(it.name);
     const pic = it.image || it.img || it.icon;
     const art = (typeof pic === "string" && /^https?:/.test(pic)) ? `<img src="${esc(pic)}" alt="">` : (TYPE_ICON[it.type] || "🎁");
-    const amt = (it.type === "mora" || it.type === "credit") ? `<small>+${esc(it.amount)} ${it.type === "mora" ? "Mora" : "Credit"}</small>` : "";
+    const amt = it.dup
+      ? `<small>Ganda → +${esc(it.refundAmount)} ${it.refundType === "mora" ? "Mora" : "Credit"}</small>`
+      : (it.type === "mora" || it.type === "credit") ? `<small>+${esc(it.amount)} ${it.type === "mora" ? "Mora" : "Credit"}</small>` : "";
     return `<div class="rc r${r}" style="animation-delay:${i * .12}s">
       <div class="ri"><span class="ci">${TYPE_ICON[it.type] || "🎁"}</span><i>${"★".repeat(r)}</i></div>
       <div class="rn">${esc(it.name)}${amt}</div>
-      <div class="ra">${art}</div>${isNew ? '<b class="new">New</b>' : ""}</div>`;
+      <div class="ra">${art}</div>${it.dup ? '<b class="new dup">Ganda</b>' : isNew ? '<b class="new">New</b>' : ""}</div>`;
   }).join("");
   $("uid").textContent = "UID: " + (currentUser ? currentUser.username : "");
   $("res").classList.add("show");

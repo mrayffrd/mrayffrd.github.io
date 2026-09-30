@@ -342,7 +342,7 @@ body[data-tab="Profile.html"] .profile-pic-wrap{width:112px;height:112px}
 #main-character.clicked{transform:translate(-50%,-50%) scale(.95);image-rendering:pixelated}
 </style></head>
 <body data-tab="Game.html">
-<div id="emu-boot"><b>P O P &nbsp; I T</b><i></i><span>menyalakan dunia klik...</span></div>
+<div id="emu-boot"><b>P O P &nbsp; C A T</b><i></i><span>menyalakan dunia klik...</span></div>
 <script>
 (function(){
   var first = !sessionStorage.getItem('popit_booted');
@@ -561,8 +561,9 @@ function timeAgo(ts) {
 const SVG_MORA="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="#e7b64a" stroke="#fff3c4" stroke-width="3"/><circle cx="32" cy="32" r="20" fill="none" stroke="#a8781c" stroke-width="3"/><path d="M22 41V24l10 10 10-10v17" fill="none" stroke="#7a520e" stroke-width="4" stroke-linejoin="round"/></svg>');
 const SVG_CREDIT="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="#1c8f9c" stroke="#b8fff8" stroke-width="3"/><path d="M32 12l14 20-14 20-14-20z" fill="#5afff0" stroke="#e6fffd" stroke-width="2.5" stroke-linejoin="round"/><path d="M32 12v40M18 32h28" stroke="#1c8f9c" stroke-width="2" opacity=".6"/></svg>');
 // ★ GANTI LOGO MATA UANG DI SINI (URL atau nama file, mis. "credit.png"). Kalau gagal dimuat otomatis pakai logo SVG bawaan.
-const ICON_MORA="https://media.printables.com/media/prints/274692/images/2440991_fbc314d8-5e72-465c-b7f6-13397d418cc8/thumbs/inside/1280x960/png/icon_mora_274692.webp";
-const ICON_CREDIT=SVG_CREDIT;
+const CREDIT_LOGO = "https://static.wikia.nocookie.net/houkai-star-rail/images/d/d9/Item_Credit.png/revision/latest?cb=20230722075044";
+const MORA_LOGO = "https://media.printables.com/media/prints/274692/images/2440991_fbc314d8-5e72-465c-b7f6-13397d418cc8/thumbs/inside/1280x960/png/icon_mora_274692.webp";
+
 const $=id=>document.getElementById(id);
 const esc=t=>String(t??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 const ci=t=>`<img class="cur-ico" src="${t==="mora"?ICON_MORA:ICON_CREDIT}" alt="${t}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${t==="mora"?SVG_MORA:SVG_CREDIT}'">`;
