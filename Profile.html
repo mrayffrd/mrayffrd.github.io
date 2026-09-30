@@ -373,7 +373,7 @@ body[data-tab="Profile.html"] .profile-pic-wrap{width:112px;height:112px}
       <div class="banner-bg" id="banner-bg"></div>
       <div class="content">
         <div class="profile-pic-wrap">
-          <img id="profile-pic" src="https://via.placeholder.com/100/333/fff?text=User" alt="Profile">
+          <img id="profile-pic" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230c0f24'/%3E%3Ccircle cx='32' cy='25' r='11' fill='%235b6bbf'/%3E%3Cpath d='M10 60c2-14 12-20 22-20s20 6 22 20z' fill='%235b6bbf'/%3E%3C/svg%3E" alt="Profile" referrerpolicy="no-referrer" onerror="this.onerror=null">
         </div>
         <h2 id="profile-name">Username</h2>
         <div class="currency" style="justify-content:center;">
@@ -611,7 +611,7 @@ const MORA_LOGO = "https://media.printables.com/media/prints/274692/images/24409
 
 const $=id=>document.getElementById(id);
 const esc=t=>String(t??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-const ci=t=>`<img class="cur-ico" src="${t==="mora"?ICON_MORA:ICON_CREDIT}" alt="${t}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${t==="mora"?SVG_MORA:SVG_CREDIT}'">`;
+const ci=t=>`<img class="cur-ico" src="${t==="mora"?MORA_LOGO:CREDIT_LOGO}" alt="${t}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${t==="mora"?SVG_MORA:SVG_CREDIT}'">`;
 const avatar=(n,p)=>p||"https://api.dicebear.com/9.x/initials/svg?seed="+encodeURIComponent(n||"?");
 function mountHeader(){
   const el=$("top");if(!el||!currentUser)return;
@@ -629,7 +629,7 @@ async function poll(){
   if(window.onNotif)window.onNotif(r);
 }
 const _rl=requireLogin;
-requireLogin=async()=>{const ok=await _rl();if(ok){mountHeader();updateCurrencyDisplay();poll();setInterval(poll,30000)}return ok};
+requireLogin=async()=>{const ok=await _rl();if(ok){try{mountHeader();updateCurrencyDisplay();poll();setInterval(poll,30000)}catch(e){console.error("Header error:",e)}}return ok};
 /* Popup profil orang lain */
 async function openProfile(n){
   const r=await apiCall("profileOf",{username:currentUser.username,target:n});
@@ -647,6 +647,7 @@ async function fAct(a,x){const r=await apiCall(a,{username:currentUser.username,
 </script>
   <script>
     let timerInterval = null;
+    const PET_FALLBACK = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#5b6bbf"/><text x="32" y="42" font-size="28" text-anchor="middle">🐾</text></svg>');
 
     function getPetRemaining(pet) {
       if (!pet.lastClaim) return 0;
@@ -673,10 +674,19 @@ async function fAct(a,x){const r=await apiCall(a,{username:currentUser.username,
       if (currentUser.profilePic) pic.src = currentUser.profilePic;
 
       const bannerBg = document.getElementById("banner-bg");
-      if (currentUser.activeBanner) {
-        const banner = (currentUser.banners || []).find(b => b.id === currentUser.activeBanner);
-        bannerBg.style.backgroundImage = banner?.imageUrl ? `url('${banner.imageUrl}')` : "none";
-      } else {
+      try {
+        const active = currentUser.activeBanner;
+        let bannerUrl = "";
+        if (active !== null && active !== undefined && active !== "") {
+          // bandingkan sebagai teks (id dari Sheets bisa berupa angka atau string)
+          const banner = (currentUser.banners || []).find(b => String(b.id) === String(active));
+          bannerUrl = banner?.imageUrl || "";
+          // cadangan: kalau activeBanner ternyata sudah berupa URL gambar
+          if (!bannerUrl && /^(https?:|data:image)/i.test(String(active))) bannerUrl = String(active);
+        }
+        bannerBg.style.backgroundImage = bannerUrl ? `url("${bannerUrl.replace(/"/g, "%22")}")` : "none";
+      } catch (e) {
+        console.error("Banner error:", e);
         bannerBg.style.backgroundImage = "none";
       }
 
@@ -828,8 +838,8 @@ async function fAct(a,x){const r=await apiCall(a,{username:currentUser.username,
           <div class="pet${ready ? " ready" : ""}" data-i="${i}">
             <div class="pet-in" onclick="togglePet(${i}, event)">
               <div class="pill tm${ready ? " ready" : ""}">${ci(p.earnType)}<span class="pet-timer ${ready ? "ready" : ""}" data-index="${i}">${formatTime(remain)}</span></div>
-              <div class="pet-sprite idle"><img src="${esc(p.imageUrl || "https://via.placeholder.com/64")}" alt=""
-                   onerror="this.src='https://via.placeholder.com/64/333/fff?text=Pet'"></div>
+              <div class="pet-sprite idle"><img src="${esc(p.imageUrl || PET_FALLBACK)}" alt="" referrerpolicy="no-referrer"
+                   onerror="this.onerror=null;this.src=PET_FALLBACK"></div>
               <div class="pill nm${rb ? "" : " norb"}">${rb ? `<span class="rb r${rb[1]}">${esc(rb[0])}</span>` : ""}${esc(p.name)}</div>
             </div>
             <div class="pet-menu" onclick="event.stopPropagation()">
