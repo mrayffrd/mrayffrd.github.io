@@ -566,7 +566,7 @@ const MORA_LOGO = "https://media.printables.com/media/prints/274692/images/24409
 
 const $=id=>document.getElementById(id);
 const esc=t=>String(t??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-const ci=t=>`<img class="cur-ico" src="${t==="mora"?ICON_MORA:ICON_CREDIT}" alt="${t}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${t==="mora"?SVG_MORA:SVG_CREDIT}'">`;
+const ci=t=>`<img class="cur-ico" src="${t==="mora"?MORA_LOGO:CREDIT_LOGO}" alt="${t}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${t==="mora"?SVG_MORA:SVG_CREDIT}'">`;
 const avatar=(n,p)=>p||"https://api.dicebear.com/9.x/initials/svg?seed="+encodeURIComponent(n||"?");
 function mountHeader(){
   const el=$("top");if(!el||!currentUser)return;
@@ -584,7 +584,7 @@ async function poll(){
   if(window.onNotif)window.onNotif(r);
 }
 const _rl=requireLogin;
-requireLogin=async()=>{const ok=await _rl();if(ok){mountHeader();updateCurrencyDisplay();poll();setInterval(poll,30000)}return ok};
+requireLogin=async()=>{const ok=await _rl();if(ok){try{mountHeader();updateCurrencyDisplay();poll();setInterval(poll,30000)}catch(e){console.error("Header error:",e)}}return ok};
 /* Popup profil orang lain */
 async function openProfile(n){
   const r=await apiCall("profileOf",{username:currentUser.username,target:n});

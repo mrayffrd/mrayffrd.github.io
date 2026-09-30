@@ -368,11 +368,11 @@ body[data-tab="Profile.html"] .profile-pic-wrap{width:112px;height:112px}
   var first = !sessionStorage.getItem('popit_booted');
   sessionStorage.setItem('popit_booted','1');
   var el = document.getElementById('emu-boot');
-  var wait = first ? 700 : 200;
-  function done(){ el.classList.add('off'); setTimeout(function(){ el.remove(); }, 450); }
-  if (document.readyState === 'complete') setTimeout(done, wait);
-  else addEventListener('load', function(){ setTimeout(done, wait); }, { once:true });
-  setTimeout(done, 2200);
+  var wait = first ? 250 : 0;
+  function done(){ if(!el.isConnected) return; el.classList.add('off'); setTimeout(function(){ el.remove(); }, 300); }
+  if (document.readyState !== 'loading') setTimeout(done, wait);
+  else addEventListener('DOMContentLoaded', function(){ setTimeout(done, wait); }, { once:true });
+  setTimeout(done, 900);
 })();
 </script>
   <header id="top"></header>
@@ -382,6 +382,7 @@ body[data-tab="Profile.html"] .profile-pic-wrap{width:112px;height:112px}
 #rdy{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;color:var(--tx-2);font-size:14px;text-align:center;padding:0 16px}
 #rdy.off{display:none}#rdy b{color:var(--tx)}
 #dk{width:100%;margin-top:12px;padding:16px;font-size:14px}
+body::before{animation:none!important}
 </style>
 <div class="eb dn">
  <div class="eb-top"><h1>KOBO RUN</h1><div class="eb-sc">Skor <b id="sc">0</b><span>HI <b id="hi">0</b></span></div></div>
@@ -580,7 +581,7 @@ const MORA_LOGO = "https://media.printables.com/media/prints/274692/images/24409
 
 const $=id=>document.getElementById(id);
 const esc=t=>String(t??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
-const ci=t=>`<img class="cur-ico" src="${t==="mora"?ICON_MORA:ICON_CREDIT}" alt="${t}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${t==="mora"?SVG_MORA:SVG_CREDIT}'">`;
+const ci=t=>`<img class="cur-ico" src="${t==="mora"?MORA_LOGO:CREDIT_LOGO}" alt="${t}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${t==="mora"?SVG_MORA:SVG_CREDIT}'">`;
 const avatar=(n,p)=>p||"https://api.dicebear.com/9.x/initials/svg?seed="+encodeURIComponent(n||"?");
 function mountHeader(){
   const el=$("top");if(!el||!currentUser)return;
@@ -598,7 +599,7 @@ async function poll(){
   if(window.onNotif)window.onNotif(r);
 }
 const _rl=requireLogin;
-requireLogin=async()=>{const ok=await _rl();if(ok){mountHeader();updateCurrencyDisplay();poll();setInterval(poll,30000)}return ok};
+requireLogin=async()=>{const ok=await _rl();if(ok){try{mountHeader();updateCurrencyDisplay();poll();setInterval(poll,30000)}catch(e){console.error("Header error:",e)}}return ok};
 /* Popup profil orang lain */
 async function openProfile(n){
   const r=await apiCall("profileOf",{username:currentUser.username,target:n});
@@ -624,19 +625,20 @@ const cv=$("cv"),cx=cv.getContext("2d"),dpr=Math.min(2,window.devicePixelRatio||
 cv.width=W*dpr;cv.height=H*dpr;cx.scale(dpr,dpr);
 const DINO=["........######..","........#.######","........########","........########","........####....","#.......####....","#......#####..#.","##....#######.#.","###..###########",".###########....","..##########....","...########.....","....######......"];
 const LEG=[["....##...##.....","....##..........","....###........."],["....##...##.....","..........##.....","........###....."]];
-let st="ready",y=0,vy=0,dk=false,ob=[],dist=0,speed=V0,score=0,rw=0,nextGap=400,fr=0,cl=[],got={mora:0,credit:0},pend={mora:0,credit:0},ft,fl=Promise.resolve(),best=0,lockT=0,lt=0;
+let st="ready",y=0,vy=0,dk=false,ob=[],dist=0,speed=V0,score=0,rw=0,nextGap=400,fr=0,cl=[],got={mora:0,credit:0},pend={mora:0,credit:0},ft,fl=Promise.resolve(),best=0,lockT=0,lt=0,jb=0,hv={},hel={};
 try{best=+localStorage.getItem("dino_best")||0}catch(e){}
 
 function sprite(rows,x,y0,sx,sy){rows.forEach((r,j)=>{for(let i=0;i<r.length;i++)if(r[i]==="#")cx.fillRect(Math.round(x+i*sx),Math.round(y0+j*sy),Math.ceil(sx),Math.ceil(sy))})}
-function hud(){$("sc").textContent=Math.floor(score);$("hi").textContent=best;$("gm").textContent=got.mora;$("gc").textContent=got.credit}
-function reset(){y=0;vy=0;dk=false;ob=[];dist=0;speed=V0;score=0;rw=0;nextGap=400;fr=0;got={mora:0,credit:0};
+function hset(id,v){if(hv[id]!==v){hv[id]=v;(hel[id]||(hel[id]=$(id))).textContent=v}}
+function hud(){hset("sc",Math.floor(score));hset("hi",best);hset("gm",got.mora);hset("gc",got.credit)}
+function reset(){y=0;vy=0;jb=0;dk=false;ob=[];dist=0;speed=V0;score=0;rw=0;nextGap=400;fr=0;got={mora:0,credit:0};
   cl=[[80,30],[260,50],[430,25],[560,45]];$("over").classList.remove("on");hud()}
 function begin(){reset();st="run";$("rdy").classList.add("off")}
 function again(){if(performance.now()>lockT)begin()}
-function act(){if(st==="over")again();else if(st==="ready")begin();else if(y===0)vy=JUMP}
+function act(){if(st==="over")again();else if(st==="ready")begin();else if(y===0)vy=JUMP;else jb=.12}
 function end(){st="over";const s=Math.floor(score);if(s>best){best=s;try{localStorage.setItem("dino_best",s)}catch(e){}}
   flush();hud();$("fs").textContent=s;$("fr2").innerHTML=`Hadiah: ${ci("mora")} ${got.mora} Mora · ${ci("credit")} ${got.credit} Credit`;
-  lockT=performance.now()+400;setTimeout(()=>$("over").classList.add("on"),350)}
+  lockT=performance.now()+250;setTimeout(()=>$("over").classList.add("on"),200)}
 
 function spawn(){
   if(score>250&&Math.random()<.28)ob.push({t:1,x:W+10,w:34,h:20,b:Math.random()<.5?8:34});   // burung: rendah (lompat) / tengah (merunduk)
@@ -649,7 +651,8 @@ function hit(){
 
 function update(dt){
   speed=Math.min(VMAX,speed+ACC*dt);const d=speed*dt;dist+=d;score=dist/14;fr+=dt*10;
-  if(y>0||vy>0){vy-=GRAV*(dk&&y>0?2.6:1)*dt;y+=vy*dt;if(y<=0){y=0;vy=0}}
+  if(jb>0)jb-=dt;
+  if(y>0||vy>0){vy-=GRAV*(dk&&y>0?2.6:1)*dt;y+=vy*dt;if(y<=0){y=0;vy=0;if(jb>0){vy=JUMP;jb=0}}}
   cl.forEach(c=>{c[0]-=d*.2;if(c[0]<-60){c[0]=W+40;c[1]=20+Math.random()*50}});
   ob.forEach(o=>o.x-=d*(o.t?1.15:1));ob=ob.filter(o=>o.x+o.w>-10);
   const l=ob[ob.length-1];if(!l||l.x+l.w<W-nextGap)spawn();
@@ -691,7 +694,8 @@ function flush(){clearTimeout(ft);const m=pend.mora,c=pend.credit;if(!m&&!c)retu
   fl=fl.then(async()=>{if(!currentUser)throw 0;const u={};if(m)u.mora=(currentUser.mora||0)+m;if(c)u.credit=(currentUser.credit||0)+c;
     const r=await updateUser(u);if(!r||!r.success)throw 0;updateCurrencyDisplay()}).catch(()=>{pend.mora+=m;pend.credit+=c})}
 addEventListener("pagehide",flush);
-(async()=>{await requireLogin();reset();requestAnimationFrame(loop)})();
+reset();requestAnimationFrame(loop);
+requireLogin().catch(e=>console.error("Login error:",e));
 </script>
 </body>
 </html>
