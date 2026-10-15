@@ -493,7 +493,7 @@ function mountHeader(){
   const el=$("top");if(!el||!currentUser)return;
   const at=document.body.dataset.tab||location.pathname.split("/").pop();
   const T=[["Game.html","Game"],["Inventori.html","Inventori"],["Gacha.html","Gacha"],["Chat.html","Chat"]];
-  el.innerHTML=`<div class="bar"><span class="brand">POP IT</span><span class="chip">${ci("mora")}<b class="mora-count">0</b></span><span class="chip">${ci("credit")}<b class="credit-count">0</b></span><a href="Profile.html" title="Profil"><img class="av" src="${esc(avatar(currentUser.username,currentUser.profilePic))}"></a></div><div class="tabs">${T.map(t=>`<a href="${t[0]}" data-t="${t[0]}" class="${t[0]===at?"on":""}">${t[1]}</a>`).join("")}</div>`;
+  el.innerHTML=`<div class="bar"><span class="brand">CHAT</span><span class="chip">${ci("mora")}<b class="mora-count">0</b></span><span class="chip">${ci("credit")}<b class="credit-count">0</b></span><a href="Profile.html" title="Profil"><img class="av" src="${esc(avatar(currentUser.username,currentUser.profilePic))}"></a></div><div class="tabs">${T.map(t=>`<a href="${t[0]}" data-t="${t[0]}" class="${t[0]===at?"on":""}">${t[1]}</a>`).join("")}</div>`;
 }
 let _n=null;
 function badge(f,n){const a=document.querySelector(`.tabs a[data-t="${f}"]`);if(!a)return;let b=a.querySelector(".bdg");if(!n){b&&b.remove();return}if(!b){b=document.createElement("span");b.className="bdg";a.appendChild(b)}b.textContent=n>9?"9+":n}
