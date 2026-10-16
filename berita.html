@@ -6,7 +6,7 @@
 <link rel="icon" href="icon.png" type="image/png">
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="theme-color" content="#03030a">
-<title>Sayembara</title>
+<title>Berita</title>
 <style>
 /* ============ PENGATURAN TAMPILAN (UBAH SESUKA HATI) ============ */
 :root{
@@ -35,9 +35,9 @@ html[data-theme="dark"]{
 html,body{margin:0;height:100%;overflow:hidden;font-family:"Inter","Segoe UI",system-ui,sans-serif}
 #desktop{position:fixed;inset:0;background:var(--bg-desktop);background-size:cover;background-position:center}
 #icons{display:flex;flex-direction:column;flex-wrap:wrap;gap:8px;padding:14px;height:calc(100% - 80px);align-content:flex-start}
-.dicon{width:96px;padding:10px 4px;text-align:center;color:var(--fg-desk);font-size:12px;font-weight:500;border-radius:16px;cursor:pointer;user-select:none;text-shadow:var(--txt-shadow);transition:.2s}
+.dicon{width:calc(var(--isz,54px) + 42px);padding:10px 4px;text-align:center;color:var(--fg-desk);font-size:12px;font-weight:500;border-radius:16px;cursor:pointer;user-select:none;text-shadow:var(--txt-shadow);transition:.2s}
 .dicon:hover{background:var(--hover);backdrop-filter:blur(8px);transform:translateY(-2px)}
-.dicon img{width:54px;height:54px;object-fit:cover;border-radius:16px;display:block;margin:0 auto 6px;box-shadow:0 6px 16px #0006}
+.dicon img{width:var(--isz,54px);height:var(--isz,54px);object-fit:cover;border-radius:16px;display:block;margin:0 auto 6px;box-shadow:0 6px 16px #0006}
 .dicon span{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 /* Jendela */
 .win{position:absolute;display:flex;flex-direction:column;background:var(--bg-window);color:var(--text-window);border-radius:20px;border:1px solid rgba(255,255,255,.5);box-shadow:0 24px 70px rgba(5,8,30,.55);min-width:280px;min-height:200px;resize:both;overflow:hidden;backdrop-filter:blur(20px);animation:pop .28s cubic-bezier(.2,.9,.3,1.2);transition:opacity .22s,transform .22s}
@@ -80,19 +80,66 @@ html,body{margin:0;height:100%;overflow:hidden;font-family:"Inter","Segoe UI",sy
 .mi{display:flex;align-items:center;gap:12px;color:var(--fg-menu);padding:9px 10px;border-radius:14px;font-size:14px;cursor:pointer;transition:.15s}
 .mi:hover{background:var(--hover)}
 .mi img{width:34px;height:34px;border-radius:11px;object-fit:cover}
+
+/* ============ FITUR ALA WINDOWS ============ */
+.dicon.sel{background:var(--hover);outline:1px solid rgba(255,255,255,.55);backdrop-filter:blur(8px)}
+#clock{cursor:pointer;border-radius:12px;padding:2px 8px}#clock:hover{background:var(--hover)}
+#show{width:10px;height:40px;border:0;border-left:1px solid rgba(255,255,255,.35);background:transparent;cursor:pointer;flex:none;padding:0;border-radius:0 12px 12px 0}
+#show:hover{background:var(--hover)}
+#mq{width:100%;margin:2px 0 8px;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:var(--fg-menu);font:inherit;font-size:14px;outline:0}
+#mq::placeholder{color:#fff9}#mq:focus{border-color:#a5b4fc}
+.mfoot{display:flex;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,.15)}
+.mfoot button{flex:1;border:0;border-radius:12px;padding:10px;background:rgba(255,255,255,.1);color:var(--fg-menu);font:inherit;font-size:13px;cursor:pointer}
+.mfoot button:hover{background:var(--hover)}
+#ctx{position:fixed;min-width:230px;background:var(--bg-startmenu);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.18);border-radius:16px;padding:6px;opacity:0;pointer-events:none;transform:scale(.96);transform-origin:top left;transition:.15s;z-index:99997;box-shadow:0 16px 44px rgba(0,0,0,.45)}
+#ctx.show{opacity:1;pointer-events:auto;transform:none}
+.ci{display:flex;gap:10px;align-items:center;color:var(--fg-menu);padding:9px 12px;border-radius:11px;font-size:14px;cursor:pointer}
+.ci:hover{background:var(--hover)}.ci i{font-style:normal;width:20px;text-align:center}
+#cal{position:fixed;right:12px;bottom:80px;width:min(290px,92vw);background:var(--bg-startmenu);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:14px;color:var(--fg-menu);opacity:0;pointer-events:none;transform:translateY(12px);transition:.22s;z-index:99998}
+#cal.show{opacity:1;pointer-events:auto;transform:none}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font-size:14px;text-transform:capitalize}
+.ch button{width:30px;height:30px;border:0;border-radius:50%;background:rgba(255,255,255,.12);color:inherit;font-size:16px;cursor:pointer}
+.cg{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;font-size:13px}
+.cg i{font-style:normal;font-size:11px;color:#a5b4fc;padding-bottom:4px}
+.cg span{padding:6px 0;border-radius:50%}.cg .today{background:#a5b4fc;color:#1a1030;font-weight:700}
+#note{position:fixed;right:16px;bottom:84px;max-width:min(320px,calc(100% - 32px));background:var(--bg-startmenu);color:var(--fg-menu);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:12px 16px;font-size:13px;opacity:0;transform:translateY(8px);pointer-events:none;transition:.22s;z-index:99999}
+#note.show{opacity:1;transform:none}
+/* Jendela Personalisasi */
+.set h3{margin:18px 0 8px;font-size:12px;letter-spacing:.6px;color:var(--accent);text-transform:uppercase}
+.set h3:first-child{margin-top:0}.set small{color:var(--muted);text-transform:none;letter-spacing:0;margin-left:6px}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+.th{position:relative;aspect-ratio:16/10;border:2px solid var(--border);border-radius:12px;background:#222 center/cover;cursor:pointer;padding:0;overflow:hidden}
+.th i{position:absolute;left:0;right:0;bottom:0;padding:3px 6px;font-size:11px;font-style:normal;color:#fff;background:rgba(0,0,0,.55);text-align:left}
+.th.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.row input[type=url]{flex:1;min-width:140px;padding:9px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text-window);font:inherit;font-size:13px}
+.sb{padding:9px 14px;border-radius:10px;border:1px solid var(--border);background:var(--chip);color:var(--text-window);font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.sb:hover,.sb:focus-within{border-color:var(--accent)}.sb.danger{color:#dc2626}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0}
+.sws{display:flex;gap:10px;flex-wrap:wrap}
+.sw{width:34px;height:34px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 2px var(--border);cursor:pointer;padding:0}
+.sw.on{box-shadow:0 0 0 3px var(--accent)}
+.set input[type=range]{width:100%;accent-color:var(--accent)}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:11px;overflow:hidden}
+.seg button{padding:8px 16px;border:0;background:var(--card);color:var(--text-window);font:inherit;font-size:13px;cursor:pointer}
+.seg button.on{background:var(--accent);color:#1b0b0b;font-weight:700}
 @media(max-width:700px){.dicon{width:80px}}
 </style>
 </head>
 <body>
 <div id="desktop"><div id="icons"></div></div>
-<div id="menu"><h4>SEMUA BERITA SAYEMBARA</h4><div id="menuList"></div></div>
+<div id="menu"><input id="mq" type="search" placeholder="Cari berita..." aria-label="Cari berita" autocomplete="off"><h4>SEMUA BERITA SAYEMBARA</h4><div id="menuList"></div><div class="mfoot"><button id="mset" type="button">&#9881; Personalisasi</button><button id="mfs" type="button">&#9974; Layar penuh</button></div></div>
 <div id="taskbar">
   <button id="saran" class="tbtn" title="Ganti tema terang / gelap"><img id="logo" src="icon.png" alt="Ganti tema"></button>
   <button id="start" class="tbtn" title="Daftar berita">&#9638;</button>
   <button id="tile" class="tbtn" title="Rapikan jendela otomatis">&#9636;</button>
+  <button id="gear" class="tbtn" title="Personalisasi (wallpaper, warna, dll)">&#9881;</button>
   <div id="tasks"></div>
-  <div id="clock"></div>
+  <div id="clock" role="button" tabindex="0" title="Kalender"></div>
+  <button id="show" type="button" title="Tampilkan desktop" aria-label="Tampilkan desktop"></button>
 </div>
+
+<div id="ctx"></div><div id="cal"></div><div id="note" role="status"></div>
 
 <script>
 /* ============ KONFIGURASI ============ */
@@ -117,8 +164,6 @@ const DEMO = [
 const $=s=>document.querySelector(s);
 const esc=t=>String(t||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 $("#logo").src=LOGO;
-(function(){let i=0;const tryNext=()=>{if(i>=BG_FILES.length){console.warn("Gambar background tidak ditemukan. Taruh file di folder yang sama dengan sayembara.html");return}
- const f=BG_FILES[i++],im=new Image();im.onload=()=>{$("#desktop").style.background=`linear-gradient(rgba(0,0,0,${BG_OVERLAY}),rgba(0,0,0,${BG_OVERLAY})),url("${f}") center/cover no-repeat`};im.onerror=tryNext;im.src=f};tryNext()})();
 const wins={};let z=10,cascade=0;
 
 const svgIcon=(e,c)=>"data:image/svg+xml,"+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='${c}'/><text x='32' y='44' font-size='34' text-anchor='middle'>${e}</text></svg>`);
@@ -204,7 +249,7 @@ function render(list){
     const d=document.createElement("div");d.className="dicon";
     d.innerHTML=`<img src="${esc(it.icon)}" alt=""><span>${esc(it.title)}</span>`;
     d.ondblclick=()=>openWin(it.id,it.title,it.icon,it.html);
-    d.onclick=()=>{if(innerWidth<700)openWin(it.id,it.title,it.icon,it.html)};
+    d.onclick=e=>{e.stopPropagation();selIcon(d);if(innerWidth<700)openWin(it.id,it.title,it.icon,it.html)};
     $("#icons").appendChild(d);
     const m=document.createElement("div");m.className="mi";
     m.innerHTML=`<img src="${esc(it.icon)}" alt=""><span>${esc(it.title)}</span>`;
@@ -229,6 +274,200 @@ let _rz;addEventListener("resize",()=>{clearTimeout(_rz);_rz=setTimeout(tile,150
 $("#start").onclick=e=>{e.stopPropagation();$("#menu").classList.toggle("show")};
 document.addEventListener("pointerdown",e=>{if(!e.target.closest("#menu,#start"))$("#menu").classList.remove("show")});
 setInterval(()=>{const d=new Date();$("#clock").innerHTML=d.toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"})+"<br>"+d.toLocaleDateString("id-ID")},1000);
+/* ============ FITUR ALA WINDOWS ============ */
+/* Wallpaper bawaan (gambar BG_FILES) + preset warna + foto sendiri. Semua pilihan tersimpan di browser. */
+const PRESETS=[
+ {n:"Senja",v:"linear-gradient(135deg,#0b1020,#591b1b 55%,#812e2e)"},
+ {n:"Samudra",v:"linear-gradient(135deg,#031b34,#0a4d7a 55%,#1aa1c9)"},
+ {n:"Hutan",v:"linear-gradient(135deg,#04170f,#0f5132 55%,#3fae6a)"},
+ {n:"Aurora",v:"radial-gradient(60% 50% at 20% 20%,#6d5dfc88,transparent),radial-gradient(50% 50% at 80% 30%,#22d3ee66,transparent),linear-gradient(160deg,#07071a,#10183a)"},
+ {n:"Fajar",v:"linear-gradient(160deg,#2b1055,#c2410c 60%,#fbbf24)"},
+ {n:"Malam",v:"linear-gradient(160deg,#05060f,#161a2e)"},
+ {n:"Abu",v:"linear-gradient(135deg,#1c1c1f,#3b3b42)"}
+];
+/* Warna bar judul jendela */
+const ACCENTS=[
+ {n:"Merah",v:"linear-gradient(90deg,#ff0000,#830000 55%,#030000)"},
+ {n:"Biru",v:"linear-gradient(90deg,#3b82f6,#1d4ed8 55%,#0b1a4a)"},
+ {n:"Hijau",v:"linear-gradient(90deg,#22c55e,#15803d 55%,#052e16)"},
+ {n:"Ungu",v:"linear-gradient(90deg,#a855f7,#6d28d9 55%,#1e0b4a)"},
+ {n:"Oranye",v:"linear-gradient(90deg,#fb923c,#c2410c 55%,#431407)"},
+ {n:"Abu",v:"linear-gradient(90deg,#6b7280,#374151 55%,#0b0f19)"}
+];
+const DEF={bg:"default",overlay:BG_OVERLAY,accent:0,tb:.55,isz:54};
+const K_SET="emu.os.set",K_WALL="emu.os.wall";
+let S=Object.assign({},DEF),custom=null,defSrc;
+try{S=Object.assign(S,JSON.parse(localStorage.getItem(K_SET)||"{}"));custom=localStorage.getItem(K_WALL)}catch(e){}
+const saveS=()=>{try{localStorage.setItem(K_SET,JSON.stringify(S))}catch(e){}};
+const cssUrl=u=>String(u).replace(/["\\\n\r]/g,c=>encodeURIComponent(c));
+let _nt;function note(m){const n=$("#note");n.textContent=m;n.classList.add("show");clearTimeout(_nt);_nt=setTimeout(()=>n.classList.remove("show"),2400)}
+
+/* ---- wallpaper ---- */
+function findDefault(cb){let i=0;const next=()=>{if(i>=BG_FILES.length){cb(null);return}const f=BG_FILES[i++],im=new Image();im.onload=()=>cb(f);im.onerror=next;im.src=f};next()}
+function paint(layer){const d=$("#desktop"),o=S.overlay;d.style.background=`linear-gradient(rgba(0,0,0,${o}),rgba(0,0,0,${o})),${layer}`;d.style.backgroundSize="cover";d.style.backgroundPosition="center";d.style.backgroundRepeat="no-repeat"}
+function applyBg(){
+  if(S.bg==="custom"&&custom){paint(`url("${cssUrl(custom)}")`);return}
+  if(/^p\d+$/.test(S.bg)&&PRESETS[+S.bg.slice(1)]){paint(PRESETS[+S.bg.slice(1)].v);return}
+  if(defSrc){paint(`url("${cssUrl(defSrc)}")`);return}
+  $("#desktop").removeAttribute("style");
+  if(defSrc===undefined){defSrc=null;findDefault(f=>{defSrc=f||false;applyBg();thumbs()})}
+}
+function applyLook(){
+  const r=document.documentElement.style;
+  r.setProperty("--bg-titlebar",ACCENTS[S.accent].v);
+  r.setProperty("--bg-taskbar",`rgba(20,24,40,${S.tb})`);
+  r.setProperty("--isz",S.isz+"px");
+  applyBg();
+}
+function setCustom(u){
+  custom=u;S.bg="custom";
+  try{localStorage.setItem(K_WALL,u)}catch(e){note("Wallpaper dipakai, tapi terlalu besar untuk disimpan permanen")}
+  saveS();applyBg();thumbs();
+}
+function fromFile(f){
+  if(!f||!/^image\//.test(f.type)){note("Pilih file gambar");return}
+  const r=new FileReader();
+  r.onload=()=>{const im=new Image();im.onload=()=>{
+    const k=Math.min(1,1920/Math.max(im.width,im.height)),c=document.createElement("canvas");
+    c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);
+    setCustom(c.toDataURL("image/jpeg",.85));note("Wallpaper diganti");
+  };im.onerror=()=>note("Gambar tidak bisa dibaca");im.src=r.result};
+  r.readAsDataURL(f);
+}
+function nextWall(){
+  const order=["default"].concat(PRESETS.map((p,i)=>"p"+i));if(custom)order.push("custom");
+  S.bg=order[(order.indexOf(S.bg)+1)%order.length];saveS();applyBg();thumbs();
+  note("Wallpaper: "+(S.bg==="default"?"Bawaan":S.bg==="custom"?"Foto saya":PRESETS[+S.bg.slice(1)].n));
+}
+
+/* ---- jendela Personalisasi ---- */
+function settingsHtml(){
+  const th=PRESETS.map((p,i)=>`<button class="th" data-bg="p${i}" style="background:${p.v}" title="${p.n}"><i>${p.n}</i></button>`).join("");
+  const ac=ACCENTS.map((a,i)=>`<button class="sw" data-ac="${i}" style="background:${a.v}" title="${a.n}" aria-label="${a.n}"></button>`).join("");
+  return `<div class="set"><h3>Wallpaper</h3>
+  <div class="thumbs"><button class="th" data-bg="default" id="thDef"><i>Bawaan</i></button>${th}<button class="th" data-bg="custom" id="thCus"><i>Foto saya</i></button></div>
+  <div class="row"><label class="sb">Unggah foto<input class="vh" type="file" id="setFile" accept="image/*"></label>
+  <input id="setUrl" type="url" placeholder="atau tempel link gambar" aria-label="Link gambar"><button class="sb" id="setGo" type="button">Pakai</button></div>
+  <h3>Kegelapan latar<small id="ovv"></small></h3><input type="range" id="setOv" min="0" max="80" step="5" aria-label="Kegelapan latar">
+  <h3>Warna judul jendela</h3><div class="sws">${ac}</div>
+  <h3>Tema jendela</h3><div class="seg" id="segTh"><button data-t="light">Terang</button><button data-t="dark">Gelap</button></div>
+  <h3>Transparansi taskbar</h3><input type="range" id="setTb" min="20" max="95" step="5" aria-label="Transparansi taskbar">
+  <h3>Ukuran ikon desktop</h3><div class="seg" id="segIs"><button data-s="44">Kecil</button><button data-s="54">Sedang</button><button data-s="68">Besar</button></div>
+  <div class="row"><button class="sb danger" id="setReset" type="button">Kembalikan ke pengaturan awal</button></div></div>`;
+}
+function thumbs(){
+  const w=wins.set;if(!w)return;const el=w.el,q=s=>el.querySelector(s);
+  el.querySelectorAll(".th").forEach(b=>b.classList.toggle("on",b.dataset.bg===S.bg));
+  el.querySelectorAll(".sw").forEach(b=>b.classList.toggle("on",+b.dataset.ac===S.accent));
+  const dt=document.documentElement.getAttribute("data-theme");
+  el.querySelectorAll("#segTh button").forEach(b=>b.classList.toggle("on",b.dataset.t===dt));
+  el.querySelectorAll("#segIs button").forEach(b=>b.classList.toggle("on",+b.dataset.s===S.isz));
+  q("#setOv").value=Math.round(S.overlay*100);q("#ovv").textContent=Math.round(S.overlay*100)+"%";
+  q("#setTb").value=Math.round(S.tb*100);
+  q("#thDef").style.backgroundImage=defSrc?`url("${cssUrl(defSrc)}")`:"var(--bg-desktop)";
+  q("#thCus").style.backgroundImage=custom?`url("${cssUrl(custom)}")`:"none";
+}
+function openSettings(){
+  const fresh=!wins.set;
+  openWin("set","Personalisasi",svgIcon("\u2699\uFE0F","#475569"),settingsHtml());
+  if(!fresh)return;
+  const el=wins.set.el;
+  el.addEventListener("click",e=>{
+    const b=e.target.closest("button");if(!b)return;
+    if(b.dataset.bg){if(b.dataset.bg==="custom"&&!custom){note("Unggah foto dulu");return}S.bg=b.dataset.bg;saveS();applyBg();thumbs()}
+    else if(b.dataset.ac!==undefined){S.accent=+b.dataset.ac;saveS();applyLook();thumbs()}
+    else if(b.dataset.t){setTheme(b.dataset.t);thumbs()}
+    else if(b.dataset.s){S.isz=+b.dataset.s;saveS();applyLook();thumbs();tile()}
+    else if(b.id==="setGo"){
+      const u=el.querySelector("#setUrl").value.trim();
+      if(!/^https?:\/\//i.test(u)){note("Tempel link gambar yang diawali http");return}
+      const im=new Image();im.onload=()=>{setCustom(u);note("Wallpaper diganti")};im.onerror=()=>note("Gambar dari link itu tidak bisa dimuat");im.src=u;
+    }
+    else if(b.id==="setReset"){
+      S=Object.assign({},DEF);custom=null;try{localStorage.removeItem(K_WALL)}catch(x){}
+      saveS();setTheme("light");applyLook();thumbs();tile();note("Pengaturan dikembalikan");
+    }
+  });
+  el.addEventListener("input",e=>{
+    if(e.target.id==="setOv"){S.overlay=e.target.value/100;saveS();applyBg();thumbs()}
+    else if(e.target.id==="setTb"){S.tb=e.target.value/100;saveS();applyLook()}
+  });
+  el.addEventListener("change",e=>{if(e.target.id==="setFile"){fromFile(e.target.files[0]);e.target.value=""}});
+  thumbs();
+}
+
+/* ---- tampilkan desktop, layar penuh ---- */
+let hiddenWins=[];
+function showDesk(){
+  const open=Object.values(wins).filter(w=>!w.el.classList.contains("min"));
+  if(open.length){hiddenWins=open;open.forEach(w=>{w.el.classList.add("min");w.tk.classList.remove("active")})}
+  else{hiddenWins.forEach(w=>{if(w.el.isConnected)w.el.classList.remove("min")});hiddenWins=[];tile()}
+}
+function fs(){
+  const d=document;if(d.fullscreenElement){d.exitFullscreen();return}
+  const r=d.documentElement.requestFullscreen;
+  if(r)r.call(d.documentElement).catch(()=>note("Layar penuh diblokir browser"));else note("Layar penuh tidak didukung");
+}
+
+/* ---- klik kanan di desktop ---- */
+const ctx=$("#ctx");
+[["\uD83D\uDD04","Segarkan berita",()=>{load();note("Berita disegarkan")}],
+ ["\uD83D\uDDBC\uFE0F","Ganti wallpaper berikutnya",nextWall],
+ ["\u25A6","Rapikan jendela",()=>tile()],
+ ["\uD83D\uDDA5\uFE0F","Tampilkan desktop",showDesk],
+ ["\u26F6","Layar penuh",fs],
+ ["\u2699\uFE0F","Personalisasi",openSettings]
+].forEach(([ic,t,fn])=>{const d=document.createElement("div");d.className="ci";d.innerHTML=`<i>${ic}</i><span>${t}</span>`;d.onclick=()=>{ctx.classList.remove("show");fn()};ctx.appendChild(d)});
+$("#desktop").addEventListener("contextmenu",e=>{
+  if(e.target.closest(".win"))return;
+  e.preventDefault();ctx.classList.add("show");
+  const w=ctx.offsetWidth,h=ctx.offsetHeight;
+  ctx.style.left=Math.max(6,Math.min(e.clientX,innerWidth-w-6))+"px";ctx.style.top=Math.max(6,Math.min(e.clientY,innerHeight-h-6))+"px";
+});
+
+/* ---- pilih ikon desktop ---- */
+function selIcon(d){document.querySelectorAll(".dicon.sel").forEach(x=>x.classList.remove("sel"));if(d)d.classList.add("sel")}
+$("#desktop").addEventListener("pointerdown",e=>{if(!e.target.closest(".dicon,.win"))selIcon()});
+
+/* ---- menu Start: pencarian & tombol bawah ---- */
+function filterMenu(){const t=$("#mq").value.toLowerCase();document.querySelectorAll("#menuList .mi").forEach(m=>{m.style.display=m.textContent.toLowerCase().includes(t)?"":"none"})}
+$("#mq").addEventListener("input",filterMenu);
+$("#start").addEventListener("click",()=>{if($("#menu").classList.contains("show")){$("#mq").value="";filterMenu();setTimeout(()=>$("#mq").focus(),60)}});
+$("#mset").onclick=()=>{$("#menu").classList.remove("show");openSettings()};
+$("#mfs").onclick=()=>{$("#menu").classList.remove("show");fs()};
+
+/* ---- tombol taskbar ---- */
+$("#gear").onclick=openSettings;
+$("#show").onclick=showDesk;
+$("#saran").addEventListener("click",()=>setTimeout(thumbs,0));
+
+/* ---- kalender (klik jam) ---- */
+let cm=new Date();
+function drawCal(){
+  const y=cm.getFullYear(),m=cm.getMonth(),now=new Date(),first=(new Date(y,m,1).getDay()+6)%7,days=new Date(y,m+1,0).getDate();
+  let h=`<div class="ch"><button data-d="-1" aria-label="Bulan sebelumnya">&#8249;</button><b>${cm.toLocaleDateString("id-ID",{month:"long",year:"numeric"})}</b><button data-d="1" aria-label="Bulan berikutnya">&#8250;</button></div><div class="cg">`;
+  ["Sen","Sel","Rab","Kam","Jum","Sab","Min"].forEach(d=>h+=`<i>${d}</i>`);
+  for(let i=0;i<first;i++)h+="<span></span>";
+  for(let d=1;d<=days;d++)h+=`<span class="${d===now.getDate()&&m===now.getMonth()&&y===now.getFullYear()?"today":""}">${d}</span>`;
+  $("#cal").innerHTML=h+"</div>";
+}
+function toggleCal(){cm=new Date();cm.setDate(1);drawCal();$("#cal").classList.toggle("show")}
+$("#clock").onclick=e=>{e.stopPropagation();toggleCal()};
+$("#clock").onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggleCal()}};
+$("#cal").addEventListener("click",e=>{const b=e.target.closest("[data-d]");if(!b)return;cm.setMonth(cm.getMonth()+ +b.dataset.d);drawCal()});
+
+/* ---- tutup menu pop-up & pintasan keyboard ---- */
+document.addEventListener("pointerdown",e=>{
+  if(!e.target.closest("#ctx"))ctx.classList.remove("show");
+  if(!e.target.closest("#cal,#clock"))$("#cal").classList.remove("show");
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){ctx.classList.remove("show");$("#cal").classList.remove("show");$("#menu").classList.remove("show")}
+  else if(e.key==="Enter"&&!/INPUT|TEXTAREA|BUTTON|SELECT/.test((document.activeElement||{}).tagName||"")){const s=document.querySelector(".dicon.sel");if(s)s.ondblclick()}
+});
+addEventListener("resize",()=>ctx.classList.remove("show"));
+
+applyLook();
 load();if(REFRESH_MS)setInterval(load,REFRESH_MS);
 </script>
 </body>

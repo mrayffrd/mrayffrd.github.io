@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silver Palace</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #090d16;
+            color: #f3f4f6;
+            overflow: hidden;
+        }
+        .font-mono {
+            font-family: 'JetBrains-Mono', 'JetBrains Mono', monospace;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.56);
+        }
+        .bg-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: 0;
+            opacity: 0.45;
+            animation: pulseGlow 10s infinite alternate ease-in-out;
+        }
+        @keyframes pulseGlow {
+            0% { transform: scale(1) translate(0, 0); opacity: 0.35; }
+            50% { transform: scale(1.15) translate(20px, -20px); opacity: 0.55; }
+            100% { transform: scale(0.95) translate(-15px, 15px); opacity: 0.35; }
+        }
+    </style>
+</head>
+<body class="relative min-h-screen flex items-center justify-center p-4 antialiased">
+
+    <!-- Glowing Background Effects -->
+    <div class="bg-glow w-96 h-96 bg-indigo-600 top-1/4 -left-20"></div>
+    <div class="bg-glow w-96 h-96 bg-purple-600 bottom-1/4 -right-20" style="animation-delay: -5s;"></div>
+
+    <!-- Canvas Partikel Background -->
+    <canvas id="particleCanvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- Main Card Container -->
+    <main class="relative z-10 w-full max-w-xl text-center">
+        <div class="glass-card rounded-3xl p-8 sm:p-12 transition-all duration-300">
+            
+            <!-- Digital Clock Section -->
+            <div class="mb-6">
+                <div class="font-mono text-5xl sm:text-7xl font-bold tracking-tight text-white mb-2 drop-shadow-md" id="digitalClock">
+                    00:00:00
+                </div>
+                <div class="text-xs sm:text-sm font-medium tracking-wider text-indigo-300 uppercase" id="digitalDate">
+                    Loading...
+                </div>
+            </div>
+
+            <div class="w-16 h-1 bg-gradient-to-r from-transparent via-indigo-500 to-transparent mx-auto mb-6 rounded-full opacity-60"></div>
+
+            <!-- Simple Description -->
+            <p class="text-gray-400 text-sm sm:text-base font-light leading-relaxed max-w-md mx-auto">
+                Web Silver Palace sedang dalam proses pembuatan. Kami akan segera kembali untuk Anda.
+            </p>
+
+        </div>
+    </main>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // 1. Digital Clock Functionality
+        function updateClock() {
+            const now = new Date();
+            
+            // Format Jam (HH:MM:SS)
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            document.getElementById('digitalClock').textContent = `${hours}:${minutes}:${seconds}`;
+
+            // Format Tanggal Bahasa Indonesia
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const dateString = now.toLocaleDateString('id-ID', options);
+            
+            document.getElementById('digitalDate').textContent = dateString;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // 2. Interactive Background Particles
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const particles = Array.from({ length: 45 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 1.8 + 0.5,
+            speedX: (Math.random() - 0.5) * 0.3,
+            speedY: (Math.random() - 0.5) * 0.3,
+            alpha: Math.random() * 0.5 + 0.2
+        }));
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                p.x += p.speedX;
+                p.y += p.speedY;
+
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height;
+                if (p.y > canvas.height) p.y = 0;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
+                ctx.fill();
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+    </script>
+</body>
+</html>
