@@ -43,8 +43,9 @@ body{margin:0;min-height:100vh;background:var(--bg);color:var(--tx);font-family:
 a{color:inherit}
 img{max-width:100%}
 button{font-family:inherit}
-::-webkit-scrollbar{width:9px;height:9px}
-::-webkit-scrollbar-thumb{background:rgba(128,134,170,.35);border-radius:9px}
+/* scrollbar disembunyikan, scroll tetap berfungsi */
+html,body,*{scrollbar-width:none;-ms-overflow-style:none}
+::-webkit-scrollbar{display:none;width:0;height:0}
 :focus-visible{outline:2px solid var(--ac-tx);outline-offset:2px;border-radius:8px}
 .wrap{width:100%;max-width:1210px;margin:0 auto;padding:0 16px}
 svg.i{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
@@ -350,6 +351,56 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
 .logo.mlogo{display:none}
 .mlogo small{color:rgba(255,255,255,.75)}
 @media (max-width:720px){.wrap{padding:0 16px}.logo.mlogo{display:flex;padding:calc(16px + var(--safe-t)) 0 0}.logo.mlogo .nv{height:26px}}
+
+/* ===== Potret: satu lembar menyatu penuh sampai tepi layar (seperti HoYoLAB) =====
+   Harus di paling bawah supaya tidak tertimpa aturan .wrap di atas. */
+@media (max-width:720px){
+  body{padding-bottom:0}
+
+  /* seluruh area konten jadi satu lembar, penuh lebar */
+  .wrap.layout{
+    display:block;
+    max-width:none;
+    padding:0;
+    margin-top:-30px;
+    min-height:60vh;
+    background:var(--card);
+    border-radius:28px 28px 0 0;
+    box-shadow:0 -6px 24px rgba(0,0,0,.18);
+    overflow:hidden;            /* isi (tab, garis, teks) terpotong mengikuti lengkungan */
+    -webkit-mask-image:-webkit-radial-gradient(white,black);
+  }
+  .layout .tabs{padding:0 22px}
+
+  /* kartu di dalam lembar jadi transparan (tidak ada kartu bertumpuk) */
+  .layout .col-main .card{
+    background:none;
+    box-shadow:none;
+    border-radius:0;
+    border:0;
+  }
+
+  /* sidebar (Sponsor, Status Layanan) ikut masuk ke lembar yang sama */
+  .layout .side{padding:0 16px}
+  .layout .side .card{
+    background:none;
+    box-shadow:none;
+    border-radius:0;
+    border:0;
+    border-top:1px solid var(--line);
+    margin:0;
+    padding:16px 0;
+  }
+  .layout .side h4{padding:0}
+  .layout .side .sp-s{padding:16px 0}
+
+  /* footer melanjutkan warna lembar, ruang bawah untuk nav */
+  .foot{
+    background:var(--card);
+    margin:0;
+    padding:8px 16px calc(92px + var(--safe-b));
+  }
+}
 </style>
 </head>
 <body>
