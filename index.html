@@ -6,7 +6,7 @@
 <link rel="icon" href="icon.png" type="image/png">
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="theme-color" content="#191c2b">
-<title>EMU | Jasa Joki Game Open World</title>
+<title>NEVE Jasa Joki Game Open World</title>
 <meta name="description" content="Jasa Joki Genshin Impact & Honkai Star Rail. Proses cepat 1-4 hari, 100% aman, garansi selesai.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://script.google.com">
@@ -53,8 +53,12 @@ svg.i.sm{width:14px;height:14px}
 /* ---------- HEADER (desktop) ---------- */
 .top{position:sticky;top:0;z-index:50;height:60px;background:var(--nav);border-bottom:1px solid var(--line)}
 .hd{height:100%;display:flex;align-items:center;gap:26px}
-.logo{font-weight:800;font-size:27px;letter-spacing:-1px;text-decoration:none;display:flex;align-items:baseline;gap:6px;background:linear-gradient(90deg,#8794ff,#5fb0ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-.logo small{font-size:11px;font-weight:700;letter-spacing:2.5px;-webkit-text-fill-color:var(--tx3)}
+.logo{text-decoration:none;display:flex;align-items:flex-end;gap:8px;color:var(--tx3)}
+/* wordmark neve dari logo.png (transparan), dipotong rapat ke huruf */
+.logo .nv{display:block;height:26px;aspect-ratio:1755/340;background:url('logo.png') 48.15% 48.57%/123.08% auto no-repeat;flex:none}
+/* wordmark neve di dalam judul (ikut ukuran huruf judul) */
+.nv-in{display:inline-block;height:1.05em;aspect-ratio:1755/340;background:url('logo.png') 48.15% 48.57%/123.08% auto no-repeat;vertical-align:-.12em;margin-left:.15em}
+.logo small{font-size:11px;font-weight:700;letter-spacing:2.5px;line-height:1;margin-bottom:1px;color:var(--tx3)}
 .nav{display:flex;gap:22px}
 .nav a{position:relative;text-decoration:none;font-weight:700;font-size:15px;color:var(--tx3);padding:18px 0}
 .nav a.on{color:var(--tx)}
@@ -354,7 +358,7 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
 <!-- ============ HEADER ============ -->
 <header class="top">
   <div class="wrap hd">
-    <a class="logo" href="index.html" aria-label="EMU Joki">EMU<small>JOKI</small></a>
+    <a class="logo" href="index.html" aria-label="neve Joki"><span class="nv" role="img" aria-label="neve"></span><small>JOKI</small></a>
     <nav class="nav" aria-label="Menu utama">
       <a class="on" href="index.html">Home</a>
       <a href="#games" data-goto="game">Channel</a>
@@ -434,12 +438,12 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
         <div class="sp-b" id="spBig" hidden aria-label="Sponsor"></div>
         <div class="sec-h"><span class="sec-ico"><svg class="i"><use href="#i-lines"/></svg></span>Unggulan</div>
         <div id="featList">
-        <a href="berita.html" class="pick" aria-label="Berita dari EMU">
-          <div class="thumb" style="background-image:linear-gradient(135deg,#4452dd,#1b1f33)"><img src="berita.jpeg" alt="Berita dari EMU" loading="lazy" decoding="async" onerror="this.remove()"></div>
+        <a href="berita.html" class="pick" aria-label="Berita Terbaru">
+          <div class="thumb" style="background-image:linear-gradient(135deg,#4452dd,#1b1f33)"><img src="berita.jpeg" alt="Berita Terbaru" loading="lazy" decoding="async" onerror="this.remove()"></div>
           <div class="tx">
-            <h3>Berita terbaru dari EMU</h3>
-            <p>Info terbaru, update layanan, promo, dan pengumuman dari EMU Joki.</p>
-            <div class="by"><img src="icon.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'E'}))">EMU Joki</div>
+            <h3>Berita terbaru dari <span class="nv-in" role="img" aria-label="neve"></span></h3>
+            <p>Info terbaru, update game, bansos, dan pengumuman dari neve joki.</p>
+            <div class="by"><img src="icon.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'E'}))">neve Joki</div>
           </div>
         </a>
         </div>
@@ -544,7 +548,7 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
 
 <footer class="foot">
   <nav aria-label="Tautan bawah"><a href="cek.html">Cek Pesanan</a><a href="snk.html">Syarat &amp; Ketentuan</a><a href="https://wa.me/6285150886538" target="_blank" rel="noopener">Hubungi CS</a></nav>
-  © 2026 EMU Joki. All rights reserved.
+  © 2026 neve Enterprise. All rights reserved.
 </footer>
 
 <!-- nav bawah mobile -->
@@ -558,8 +562,8 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
 
 <div class="mdl" id="aboutModal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
   <div class="mdl-box">
-    <h3 id="aboutTitle">Tentang EMU</h3>
-    <p>EMU Joki adalah layanan joki Genshin Impact dan Honkai: Star Rail dengan proses cepat dan privasi akun yang dijaga.</p>
+    <h3 id="aboutTitle">Tentang <span class="nv-in" role="img" aria-label="neve"></span></h3>
+    <p>neve Joki adalah layanan joki Genshin Impact dan Honkai Star Rail dengan proses cepat dan privasi akun yang dijaga.</p>
     <ul>
       <li>Estimasi pengerjaan rata-rata 1-4 hari</li>
       <li>Tidak ada permintaan download software atau password lewat web</li>
@@ -589,15 +593,15 @@ function toast(m,ms){const t=$('#toast');t.textContent=m;t.classList.add('show')
 /* ===================== DATA GAME BAGIAN ATAS ===================== */
 const GAMES=[
  {id:'genshin',logo:'genshin.png',name:'Genshin Impact',sub:'Teyvat',href:'genshin.html',ready:true,c1:'#c9a24a',c2:'#3b2a14',
-  img:'https://images8.alphacoders.com/112/1129503.jpg',chips:['Quest Archon','Abyss 12','Eksplorasi 100%','Build Karakter']},
- {id:'hsr',logo:'hsr.png',name:'Honkai: Star Rail',sub:'Astral Express',href:'hsr.html',ready:true,c1:'#7d86c9',c2:'#1f2240',
-  img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIQo91ANLulKswsuHrtO1Fx-o6XZLWVZKrxWYg61KjubipGDi2mqY4QrU&s=10',chips:['MoC','PF','AS','Event','Tugas Harian','Farming Relic']},
+  img:'https://images8.alphacoders.com/112/1129503.jpg',chips:['Quest Archon','Spiral Abyss 12','Eksplorasi','Build Karakter']},
+ {id:'hsr',logo:'hsr.png',name:'Honkai Star Rail',sub:'Astral Express',href:'hsr.html',ready:true,c1:'#7d86c9',c2:'#1f2240',
+  img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIQo91ANLulKswsuHrtO1Fx-o6XZLWVZKrxWYg61KjubipGDi2mqY4QrU&s=10',chips:['MoC',,'Event','Farming Relic','Dan masih banyak lagi']},
  {id:'zzz',logo:'zzz.png',name:'Zenless Zone Zero',sub:'New Eridu',href:'zzz.html',ready:true,c1:'#5a3bd1',c2:'#14103a',
-  img:'https://zenlesslab.com/wp-content/uploads/2023/09/Zenless-Zone-Zero-Combat-System.jpg',chips:['Shiyu Defense','Deadly Assault','Tugas Harian','Build Agent']},
+  img:'https://zenlesslab.com/wp-content/uploads/2023/09/Zenless-Zone-Zero-Combat-System.jpg',chips:['Shiyu Defense','Deadly Assault','Build Agent','Dan masih banyak lagi']},
+ {id:'wuwa',logo:'wuwa.png',name:'Wuthering Waves',sub:'Solaris-3',href:'wuwa.html',ready:true,c1:'#4c6a78',c2:'#12181d',
+  img:'https://4kwallpapers.com/images/wallpapers/rover-wuthering-3440x1440-19497.jpg',chips:['Eksplorasi','Daily Commision','Quest','Dan masih banyak lagi']},
  {id:'sp',logo:'sp.png',name:'Silver Palace',sub:'Silvernia',href:'sp.html',ready:false,c1:'#8d9bbd',c2:'#1d2234',
   img:'https://s.elementagames.com/uploads/file/20260624/3ae4043903b25b0ac443b70209ce4c06.jpg',chips:[]},
- {id:'wuwa',logo:'wuwa.png',name:'Wuthering Waves',sub:'Solaris-3',href:'wuwa.html',ready:false,c1:'#4c6a78',c2:'#12181d',
-  img:'https://4kwallpapers.com/images/wallpapers/rover-wuthering-3440x1440-19497.jpg',chips:[]},
  {id:'nte',logo:'nte.png',name:'Neverness to Everness',sub:'Hethereau',href:'nte.html',ready:false,c1:'#8a4fc0',c2:'#1d1230',
   img:'https://image.api.playstation.com/vulcan/ap/rnd/202610/0908/e665ed6098027ca74647e281e73d28a2aa293cf047e58058.jpg',chips:[]}
 ];

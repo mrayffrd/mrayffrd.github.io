@@ -7,7 +7,7 @@
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="theme-color" content="#03030a">
 <title>Zenless Zone Zero</title>
-<meta name="description" content="Pricelist joki Zenless Zone Zero EMU. Cepat, aman, privasi terjaga.">
+<meta name="description" content="Pricelist joki Zenless Zone Zero neve. Cepat, aman, privasi terjaga.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://script.google.com">
@@ -102,6 +102,9 @@ body.leaving main{ transform:scale(1.03); transition:transform .2s; }
 .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; color:#fff; font-weight:700; letter-spacing:5px; font-size:16px; white-space:nowrap; }
 .brand .dot{ width:9px; height:9px; border-radius:50%; background:var(--ac); box-shadow:0 0 12px var(--ac), 0 0 26px rgba(var(--ac-rgb),.6); animation:pulse 2.4s ease-in-out infinite; }
 .brand small{ letter-spacing:2px; color:var(--tx-3); font-weight:400; font-size:11px; }
+.brand .nv,#emu-boot .nv{ display:block; aspect-ratio:1755/340; background:url('logo.png') 48.15% 48.57%/123.08% auto no-repeat; flex:none; }
+.brand .nv{ height:22px; }
+#emu-boot b .nv{ height:46px; margin:0 auto; filter:drop-shadow(0 0 18px rgba(var(--ac-rgb),.55)); }
 @keyframes pulse{ 50%{ opacity:.45; transform:scale(.8); } }
 .header-actions{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
 
@@ -283,11 +286,11 @@ footer.emu-footer nav a{ text-decoration:none; color:var(--tx-2); } footer.emu-f
 </style>
 </head>
 <body data-accent="zzz">
-<div id="emu-boot"><b>E M U &nbsp; J O K I</b><i></i><span>menyalakan mesin dimensi...</span></div>
+<div id="emu-boot"><b><span class="nv" role="img" aria-label="neve"></span></b><i></i><span>menyalakan mesin dimensi...</span></div>
 
 <header class="emu-header">
   <div class="wrap header-wrap">
-    <a class="brand" href="index.html"><span class="dot"></span>EMU<small>| JASA JOKI</small></a>
+    <a class="brand" href="index.html"><span class="dot"></span><span class="nv" role="img" aria-label="neve"></span><small>| JASA JOKI</small></a>
     <nav class="header-actions" aria-label="Menu utama">
       <a href="index.html" class="icon-btn">Beranda</a>
       <a href="cek.html" class="icon-btn">Cek Pesanan</a>
@@ -331,11 +334,11 @@ footer.emu-footer nav a{ text-decoration:none; color:var(--tx-2); } footer.emu-f
   <div class="empty" id="shopEmpty" hidden></div>
 </main>
 
-<a href="https://wa.me/6285150886538" target="_blank" rel="noopener" class="btn-float wa">💬 CS</a>
+<a href="https://wa.me/6287870014032" target="_blank" rel="noopener" class="btn-float wa">💬 CS</a>
 
 <footer class="emu-footer">
   <nav aria-label="Tautan bawah"><a href="index.html">Beranda</a><a href="portal.html">Portal</a><a href="snk.html">Syarat &amp; Ketentuan</a></nav>
-  Tips: tekan <b>/</b> untuk mencari, <b>C</b> untuk keranjang, <b>Esc</b> untuk menutup.<br>© 2026 EMU Joki. All rights reserved.
+  Tips: tekan <b>/</b> untuk mencari, <b>C</b> untuk keranjang, <b>Esc</b> untuk menutup.<br>© 2026 neve Joki. All rights reserved.
 </footer>
 
 <script>
@@ -427,8 +430,8 @@ document.addEventListener('click', e => {
 function boot() {
   const first = !SS.get('emu.booted', false);
   let el = document.getElementById('emu-boot');           // pakai elemen statis di HTML (anti-kedip) kalau ada
-  if (!el) { el = document.createElement('div'); el.id = 'emu-boot'; el.innerHTML = '<b>E M U &nbsp; J O K I</b><i></i><span></span>'; document.body.append(el); }
-  const sp = el.querySelector('span'); if (sp) sp.textContent = first ? 'menyalakan mesin dimensi...' : 'menembus dimensi...';
+  if (!el) { el = document.createElement('div'); el.id = 'emu-boot'; el.innerHTML = '<b><span class="nv" role="img" aria-label="neve"></span></b><i></i><span></span>'; document.body.append(el); }
+  const sp = el.querySelector(':scope > span'); if (sp) sp.textContent = first ? 'menyalakan mesin dimensi...' : 'menembus dimensi...';
   SS.set('emu.booted', true);
   const done = () => { el.classList.add('off'); setTimeout(() => el.remove(), 520); };
   const wait = first ? 650 : 200;
@@ -646,8 +649,8 @@ function count(el, dur = 1200) {
    ===================================================================== */
 const API_URL = 'https://script.google.com/macros/s/AKfycbxL3kVn_10-yypGSc8wnH9QzRxOZ2c_gXEmf2HzOV6-hOgcTaLzD-PSlVTFn3EHzYc3/exec';
 const TOKEN   = 'emu118201';
-const WA_NUM  = '6285150886538';
-const PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200"><rect width="300" height="200" fill="#0a0d22"/><g fill="none" stroke="#3a4487" stroke-width="1"><circle cx="150" cy="100" r="34"/><circle cx="150" cy="100" r="58" stroke-dasharray="3 6"/></g><text x="150" y="105" text-anchor="middle" fill="#6f79b4" font-family="monospace" font-size="13" letter-spacing="5">EMU</text></svg>');
+const WA_NUM  = '6287870014032';
+const PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200"><rect width="300" height="200" fill="#0a0d22"/><g fill="none" stroke="#3a4487" stroke-width="1"><circle cx="150" cy="100" r="34"/><circle cx="150" cy="100" r="58" stroke-dasharray="3 6"/></g><text x="150" y="105" text-anchor="middle" fill="#6f79b4" font-family="monospace" font-size="13" letter-spacing="5">neve</text></svg>');
 
 function shop(cfg) {
   const KEY = cfg.key;
@@ -821,7 +824,7 @@ function shop(cfg) {
     fd.append('uid', o.uid); fd.append('items', o.items); fd.append('total', o.total); fd.append('nickname', o.name); fd.append('status', 'Menunggu Pembayaran');
     try { toast('⏳ Menyimpan ke database...'); await fetch(API_URL, { method: 'POST', body: fd }); toast('✅ Pesanan tersimpan! ID: ' + o.orderId); }
     catch (err) { toast('⚠️ Gagal simpan ke sheet'); }
-    let pesan = 'Halo Admin EMU\nID: #' + o.orderId + '\nPesanan ' + cfg.game + ':\n';
+    let pesan = 'Halo Admin neve\nID: #' + o.orderId + '\nPesanan ' + cfg.game + ':\n';
     o.lines.forEach(l => { pesan += '- ' + l.nama + (l.qty > 1 ? ' x' + l.qty : '') + ' : ' + rp(l.harga * l.qty) + '\n'; });
     pesan += '\nTotal: ' + rp(o.total) + '\nUID: ' + o.uid + '\nNama: ' + o.name;
     const url = 'https://wa.me/' + WA_NUM + '?text=' + encodeURIComponent(pesan);
