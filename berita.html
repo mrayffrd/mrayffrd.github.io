@@ -5,8 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#ffffff">
-<link rel="icon" href="icon.png" type="image/png">
-<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="preconnect" href="https://script.google.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="dns-prefetch" href="https://drive.google.com">
+<meta name="description" content="Portal berita yang bisa dibaca oleh siapa saja.">
 <title>Berita</title>
 <style>
 /* ============ WARNA & UKURAN (UBAH DI SINI) ============ */
@@ -246,6 +252,15 @@ html[data-theme="dark"] .box{box-shadow:none}
   .card{flex:0 0 78%;scroll-snap-align:start}
 }
 
+/* performa: lewati render baris di luar layar, cegah layout bergeser */
+.row{content-visibility:auto;contain-intrinsic-size:auto 96px}
+.row img{aspect-ratio:4/3}
+.hero{min-height:clamp(260px,38vw,340px)}
+.cards,.gal{contain:layout}
+.card .im{background:linear-gradient(135deg,var(--hover),var(--line))}
+.row,.chip,.card,.ib{-webkit-tap-highlight-color:transparent}
+@media(max-width:760px){.card{scroll-snap-stop:always}}
+
 /* pop-out berita */
 body.lock{overflow:hidden}
 .modal{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:20px;background:rgba(10,14,22,.65);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);animation:fade .18s}
@@ -268,16 +283,127 @@ body.lock{overflow:hidden}
   .mpad{padding:16px 16px calc(24px + env(safe-area-inset-bottom))}
   .mdl h1{font-size:1.6rem}
 }
+
+/* ============ TEMA BARU: NEVE ============ */
+:root{--sans:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--serif:var(--sans);--maxw:1680px;
+ --bg:#f3f4fb;--fg:#11132b;--link:#4650e6;--visit:#4650e6;--muted:#646a8d;--line:#e0e3f3;--box:#fff;--boxline:#e3e6f5;--hover:#eef0fc;--inp:#fff;--inpline:#d3d8ee;--btn:#fff;--chipon:#4650e6;--chipfg:#fff;
+ --ac1:#6d7bff;--ac2:#b06bff;--sh:0 1px 2px rgba(20,24,70,.05),0 10px 26px -10px rgba(20,24,70,.14)}
+html[data-theme="dark"]{--bg:#070914;--fg:#e9ecff;--link:#9aa6ff;--visit:#9aa6ff;--muted:#8d95c3;--line:#1c2142;--box:#0e1122;--boxline:#1d2347;--hover:#151a34;--inp:#0e1122;--inpline:#2a3166;--btn:#121631;--chipon:#8491ff;--chipfg:#080a18;--sh:0 1px 2px rgba(0,0,0,.4),0 14px 32px -12px rgba(0,0,0,.65)}
+body{font-family:var(--sans);letter-spacing:-.005em}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(60% 46% at 10% -6%,rgba(109,123,255,.24),transparent 70%),radial-gradient(44% 38% at 96% 2%,rgba(176,107,255,.18),transparent 70%)}
+/* tampilan (setting) disembunyikan */
+.tabs,.panel,#panel{display:none!important}
+.layout,body.pin .layout{grid-template-columns:minmax(0,1fr)!important;gap:0!important}
+/* header */
+#top{position:sticky;top:0;background:var(--bg);background:color-mix(in srgb,var(--bg) 78%,transparent);-webkit-backdrop-filter:saturate(1.5) blur(14px);backdrop-filter:saturate(1.5) blur(14px);border-bottom:1px solid var(--line)}
+.brand img{width:40px;height:40px;border-radius:12px;object-fit:contain}
+.wm b{font:800 1.5rem/1 var(--sans);font-variant:normal;letter-spacing:-.045em;text-transform:lowercase;background:linear-gradient(90deg,var(--link),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.wm small{font:700 .6rem/1.5 var(--sans);letter-spacing:.16em;text-transform:uppercase}
+#q{border-radius:99px 0 0 99px;background:var(--box);border-color:var(--boxline);padding-left:38px}
+.search>button{border-radius:0 99px 99px 0;background:var(--chipon);border-color:var(--chipon);color:var(--chipfg);padding:0 18px}
+.ib{border-radius:12px}
+.wrap{padding-top:4px}
+/* masthead */
+.mast{padding:34px 0 28px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font:700 .7rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--link);background:rgba(109,123,255,.13);padding:8px 13px;border-radius:99px}
+.eyebrow i{width:7px;height:7px;border-radius:50%;background:currentColor;animation:pulse 2.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(109,123,255,.7)}70%,100%{box-shadow:0 0 0 9px rgba(109,123,255,0)}}
+.mast h1{margin:16px 0 12px;font:800 clamp(2.1rem,5.6vw,3.8rem)/1.04 var(--sans);letter-spacing:-.04em}
+.mast h1 em{font-style:normal;background:linear-gradient(90deg,var(--ac1),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.mast p{margin:0;color:var(--muted);font-size:1.05rem;max-width:46ch}
+.stat{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.stat a{display:inline-flex;gap:6px;align-items:baseline;padding:9px 16px;border-radius:99px;background:var(--box);border:1px solid var(--boxline);color:var(--muted);font-size:.9rem;text-decoration:none!important;box-shadow:var(--sh);transition:transform .15s,border-color .15s}
+.stat a b{color:var(--fg);font-weight:800}
+.stat a:hover{transform:translateY(-2px);border-color:var(--link)}
+/* hero + sedang hangat */
+.top{display:grid;grid-template-columns:minmax(0,1.85fr) minmax(0,1fr);gap:18px;margin-bottom:38px}
+.top .hero{min-height:clamp(380px,46vw,500px);height:100%;border-radius:26px;background:linear-gradient(135deg,#312e81,#6d28d9 55%,#c026d3);box-shadow:var(--sh)}
+.hero::after{background:linear-gradient(to top,rgba(5,7,20,.93),rgba(5,7,20,.3) 62%,rgba(5,7,20,.04))}
+.hc{padding:30px 32px}
+.hb{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.3);color:#fff;font:700 .72rem/1 var(--sans);letter-spacing:.1em;text-transform:uppercase;padding:8px 13px;margin-bottom:14px}
+.hb i{width:7px;height:7px;border-radius:50%;background:#ffd166}
+.hc h2{font:800 clamp(1.6rem,3.4vw,2.6rem)/1.1 var(--sans);letter-spacing:-.03em;margin-bottom:8px}
+.hbtn{background:#fff;color:#11132b;font-weight:800;padding:11px 22px}
+.hbtn::after{content:" →"}
+.hot{display:flex;flex-direction:column;background:var(--box);border:1px solid var(--boxline);border-radius:26px;padding:20px 16px 8px;box-shadow:var(--sh)}
+.hot h2{margin:0 6px 8px;font:800 1.1rem var(--sans);letter-spacing:-.02em}
+.hi{display:flex;align-items:center;gap:12px;padding:12px 6px;flex:1;border-top:1px solid var(--line);color:var(--fg)!important;text-decoration:none!important}
+.hi .no{flex:none;width:28px;font:800 2rem/1 var(--sans);background:linear-gradient(var(--ac1),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hi .ht{flex:1;min-width:0}
+.hi b{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;font-size:.95rem;line-height:1.3;font-weight:700}
+.hi small{color:var(--muted);font-size:.78rem}
+.hi img{flex:none;width:68px;height:68px;border-radius:16px;object-fit:cover;background:var(--hover)}
+.hi:hover b{color:var(--link)}
+/* judul bagian */
+.box,html[data-theme="dark"] .box{background:transparent;border:0;box-shadow:none;border-radius:0;overflow:visible}
+.bh{display:flex;align-items:center;gap:12px;padding:0 2px 14px;border:0;background:none;font:800 1.4rem/1.2 var(--sans);letter-spacing:-.025em}
+.bh::before{content:"";width:6px;height:1.15em;border-radius:4px;background:linear-gradient(var(--ac1),var(--ac2))}
+.bb{padding:0}
+#main>.box,#main>.cols{margin-bottom:40px}
+.cols{gap:30px 22px}
+.cards{padding:0 0 4px;gap:18px}
+.card{background:var(--box);border-color:var(--boxline);border-radius:22px;box-shadow:var(--sh)}
+.card:hover{transform:translateY(-4px)}
+.card b{color:var(--fg);font-weight:700;font-size:1.02rem}
+.card:hover b{color:var(--link)}
+.card .tag{background:rgba(10,12,30,.7);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.gal{gap:14px}
+.gal a{position:relative;border-radius:18px;overflow:hidden;box-shadow:var(--sh)}
+.gal img{border:0;border-radius:0;transition:transform .5s}
+.gal a:hover img{transform:scale(1.07)}
+.gal a::after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,rgba(5,7,20,.88));pointer-events:none}
+.gal span{position:absolute;z-index:1;left:0;right:0;bottom:10px;margin:0;padding:0 12px;color:#fff;font-weight:700;font-size:.8rem;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.b-vid .bb{background:var(--box);border:1px solid var(--boxline);border-radius:22px;padding:14px 22px 8px;box-shadow:var(--sh)}
+.bl li{padding-bottom:.4em;border-bottom:1px solid var(--line)}.bl li:last-child{border:0}
+.bl a{color:var(--fg);font-weight:700}.bl a:hover{color:var(--link)}
+/* semua berita */
+#semua{background:var(--box);border:1px solid var(--boxline);border-radius:26px;padding:22px 10px 10px;box-shadow:var(--sh)}
+#semua .bh{padding:0 12px 12px}
+.ctl{border:0;padding:2px 12px 12px}
+.info{border:0;padding:4px 16px 10px}
+.chip{border-radius:99px;font-weight:600}
+.chip.on{box-shadow:0 6px 16px -6px var(--chipon)}
+.grp{background:none;border:0;padding:18px 16px 6px;font:800 .72rem var(--sans);letter-spacing:.14em;text-transform:uppercase}
+.row{margin:2px 4px;padding:12px;gap:16px;border:0;border-radius:18px;transition:background .15s}
+.row img{width:128px;height:88px;border:0;border-radius:14px}
+.row b{color:var(--fg);font-weight:700}
+.row:hover b{color:var(--link);text-decoration:none}
+.more{padding:14px 14px 18px}
+/* modal & artikel */
+.mdl{border-radius:26px}
+.mdl h1,.art h1{font:800 clamp(1.5rem,3.4vw,2.1rem)/1.15 var(--sans);letter-spacing:-.03em;border:0}
+.tgl{background:rgba(109,123,255,.14);color:var(--link);font-weight:700}
+.prev,.pn a{border-radius:16px}
+.foot{text-align:center;border:0}
+@media(max-width:900px){.top{grid-template-columns:1fr}.hot .hi{flex:none}.row img{width:112px;height:80px}}
+@media(max-width:760px){
+  .mast{padding:22px 0 20px}
+  .top{margin-bottom:30px}
+  .top .hero{min-height:360px;border-radius:22px}
+  .hc{padding:20px 18px}
+  .cards{padding:2px 2px 12px}
+  .card{border-radius:20px}
+  .row img{width:88px;height:68px}
+  .row{padding:10px 6px;margin:0}
+  #semua{padding:18px 4px 6px;border-radius:22px}
+  .mdl{border-radius:22px 22px 0 0}
+}
+/* desktop: konten lebih mepet ke kiri-kanan layar */
+@media(min-width:900px){.bar,.wrap{padding-left:clamp(16px,2vw,32px);padding-right:clamp(16px,2vw,32px)}}
+/* header: hanya logo besar */
+.brand img{width:auto;height:56px;max-width:min(240px,60vw);border-radius:0;object-fit:contain}
+.mast{padding:26px 0 22px}
+.mast h1{margin:0;font:800 clamp(2rem,5vw,3rem)/1.1 var(--sans);letter-spacing:-.035em}
+@media(max-width:760px){.brand img{height:46px}.mast{padding:16px 0 16px}}
+@media(prefers-reduced-motion:reduce){.eyebrow i{animation:none}}
 </style>
 </head>
 <body class="pin">
 <header id="top">
   <div class="bar">
     <button class="ib" data-act="menu" aria-label="Menu utama" title="Menu utama"><svg width="22" height="22" viewBox="0 0 20 20" fill="currentColor"><path d="M1 3h18v2H1zm0 6h18v2H1zm0 6h18v2H1z"/></svg></button>
-    <a class="brand" href="#/"><img id="logo" src="icon.png" alt=""><span class="wm"><b id="wmNama">Berita</b><small id="wmTag"></small></span></a>
+    <a class="brand" href="#/"><img id="logo" src="logo.png" alt="Beranda"></a>
     <div class="links">
-      <button class="ib lk" data-act="refresh" aria-label="Segarkan berita" title="Segarkan berita"><svg width="22" height="22" viewBox="0 0 20 20" fill="currentColor"><path d="M10 3a7 7 0 1 0 6.9 8.2h-2.1A5 5 0 1 1 10 5v3l4-4-4-4z"/></svg><span class="lbl">Segarkan</span></button>
-      <button class="ib lk" data-act="tampil" aria-label="Tampilan" title="Tampilan"><svg width="22" height="22" viewBox="0 0 20 20" fill="currentColor"><path d="M3 17 8 3h2l5 14h-2.2l-1.2-3.6H6.5L5.3 17zm4.2-5h4.6L9.5 5.3z"/></svg><span class="lbl">Tampilan</span></button>
     </div>
     <form id="sf" class="search" role="search">
       <div class="sbx">
@@ -300,8 +426,6 @@ body.lock{overflow:hidden}
   <a href="#/" data-f="link">Berita bertautan</a>
   <hr>
   <a href="#/" data-act="random">Berita acak</a>
-  <a href="#/" data-act="refresh">Segarkan</a>
-  <a href="#/" data-act="tampil">Tampilan</a>
 </nav>
 
 <div class="wrap">
@@ -337,11 +461,11 @@ body.lock{overflow:hidden}
 <script>
 /* ============ KONFIGURASI ============ */
 // 1) URL Web App Google Apps Script yang berisi daftar berita.
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyxuzwnY24Tl7FyuJFicDzo7BYvhMtRjtt8G146vKglqEkU2YJGd7KEuO5WhOGRVZF3/exec";
-// 2) Logo di pojok kiri atas (file icon.png di folder yang sama)
-const LOGO = "icon.png";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbymMQiiQiZrnnhyxA03mP5_9IlwZAq5wNsDbU7rXQgZbOK9EF78XiTqQ_TjB8-DqAL4/exec";
+// 2) Logo di pojok kiri atas (file logo.png di folder yang sama)
+const LOGO = "logo.png";
 // 3) Nama situs, tagline, dan kalimat sambutan di Halaman Utama
-const SITUS = {nama:"Berita", tagline:"Portal Berita"};
+const SITUS = {nama:"Berita", tagline:""};
 const BERANDA = {sub:"portal berita yang bisa dibaca oleh siapa saja"};
 // 4) Refresh otomatis data (ms). 0 = mati
 const REFRESH_MS = 60000;
@@ -352,7 +476,7 @@ const PER_HALAMAN = 30;
 const $=s=>document.querySelector(s);
 const esc=t=>String(t==null?"":t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const root=document.documentElement,qi=$("#q");
-$("#logo").src=LOGO;$("#wmNama").textContent=SITUS.nama;$("#wmTag").textContent=SITUS.tagline;
+$("#logo").src=LOGO;
 history.scrollRestoration="manual";
 
 const svgIcon=(e,c)=>"data:image/svg+xml,"+encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='${c}'/></svg>`);
@@ -417,8 +541,9 @@ let S=Object.assign({},DEFS);
 try{
   const sv=localStorage.getItem("berita.tampilan");
   if(sv)S=Object.assign(S,JSON.parse(sv));
-  else{const old=localStorage.getItem("tema");if(old==="dark")S.warna="gelap";else if(old==="light")S.warna="terang"}
 }catch(e){}
+/* setting Tampilan disembunyikan: selalu otomatis (ikut tema perangkat) */
+S.warna="auto";S.teks="std";S.lebar="std";S.pin=false;
 const saveS=()=>{try{localStorage.setItem("berita.tampilan",JSON.stringify(S))}catch(e){}};
 const mq=matchMedia("(prefers-color-scheme: dark)");
 const wide=()=>matchMedia("(min-width:1100px)").matches;
@@ -448,31 +573,33 @@ let _nt;function note(m){const n=$("#note");n.textContent=m;n.classList.add("sho
 const box=(ico,title,inner,cls,id)=>`<section class="box ${cls||""}"${id?` id="${id}"`:""}><h2 class="bh">${title}</h2>${inner}</section>`;
 const aN=n=>`<a href="#/b/${n.id}">${esc(n.judul)}</a>`;
 function setTabs(){
-  $("#tabs").innerHTML=`<div><a class="on" href="#/">Utama</a><a href="#/" data-act="arsip">Arsip</a></div><div><a class="on" href="#/">Baca</a><a href="#/" data-act="refresh">Segarkan</a></div>`;
+  $("#tabs").innerHTML="";
 }
 function rowHtml(n){
-  return`<a class="row" href="#/b/${n.id}"><img loading="lazy" src="${esc(thumb(n))}" alt=""><div><b>${esc(n.judul)}</b><small>${esc(fmt(n))}${n.video?" · Video":""}${n.link?" · Tautan":""}</small><p>${ex(n,160)}</p></div></a>`;
+  return`<a class="row" href="#/b/${n.id}"><img loading="lazy" decoding="async" src="${esc(thumb(n))}" alt=""><div><b>${esc(n.judul)}</b><small>${esc(fmt(n))}${n.video?" · Video":""}${n.link?" · Tautan":""}</small><p>${ex(n,160)}</p></div></a>`;
 }
 function cardHtml(n){
-  return`<a class="card" href="#/b/${n.id}"><div class="im"><img loading="lazy" src="${esc(thumb(n))}" alt="">${n.video?`<span class="tag">Video</span>`:""}</div><div class="ct"><b>${esc(n.judul)}</b><small>${esc(fmt(n))}</small><p>${ex(n,110)}</p></div></a>`;
+  return`<a class="card" href="#/b/${n.id}"><div class="im"><img loading="lazy" decoding="async" src="${esc(thumb(n))}" alt="">${n.video?`<span class="tag">Video</span>`:""}</div><div class="ct"><b>${esc(n.judul)}</b><small>${esc(fmt(n))}</small><p>${ex(n,110)}</p></div></a>`;
 }
 
 /* ---- Halaman Utama ---- */
 function homeHtml(){
   const L=DATA,n=L.length,nv=L.filter(x=>x.video).length,nf=L.filter(x=>x.foto).length;
   const num=x=>x.toLocaleString("id-ID");
-  let h=`<section class="welcome"><div class="wl"><h1>Selamat datang di <a href="#/">${esc(SITUS.nama)}</a>,</h1><p>sebuah ${BERANDA.sub}.</p>
-   <p class="portals">${[["all","Terbaru"],["foto","Bergambar"],["video","Bervideo"],["link","Bertautan"]].map(([f,t])=>`<a href="#/" data-f="${f}">${t}</a>`).join(" · ")} · <a href="#/" data-f="all" class="semua">Semua berita</a></p></div>
-   <div class="wr"><a href="#/" data-f="all"><b>${num(n)} berita</b></a> dalam portal ini.<br>${num(nf)} bergambar, ${num(nv)} bervideo.</div></section>`;
+  const sub=String(BERANDA.sub||"");
+  let h=`<section class="mast"><h1>${esc(SITUS.nama)}</h1></section>`;
   if(!n)return h+box("","Berita","<div class='bb'>Belum ada berita.</div>");
-  const f=L[0];
-  h+=`<a class="hero" href="#/b/${f.id}">${f.foto?`<img src="${esc(imgUrl(f.foto,1200))}" alt="">`:""}<div class="hc"><span class="hb">Berita pilihan</span><h2>${esc(f.judul)}</h2><div class="hm">${esc(fmt(f))}${f.video?" · Video":""}</div><p>${ex(f,220)}</p><span class="hbtn">Baca berita</span></div></a>`;
-  if(n>1)h+=box("","Berita terbaru",`<div class="cards">${L.slice(1,7).map(cardHtml).join("")}</div>`,"b-new");
+  const f=L[0],hot=L.slice(1,4);
+  const hero=`<a class="hero" href="#/b/${f.id}">${f.foto?`<img src="${esc(imgUrl(f.foto,1200))}" alt="" fetchpriority="high" decoding="async">`:""}<div class="hc"><span class="hb"><i></i>Berita pilihan</span><h2>${esc(f.judul)}</h2><div class="hm">${esc(fmt(f))}${f.video?" · Video":""}</div><p>${ex(f,200)}</p><span class="hbtn">Baca berita</span></div></a>`;
+  const side=hot.length?`<aside class="hot"><h2>Sedang hangat</h2>${hot.map((x,i)=>`<a class="hi" href="#/b/${x.id}"><span class="no">${i+1}</span><span class="ht"><b>${esc(x.judul)}</b><small>${esc(fmt(x))}${x.video?" · Video":""}</small></span><img loading="lazy" decoding="async" src="${esc(thumb(x))}" alt=""></a>`).join("")}</aside>`:"";
+  h+=`<div class="top">${hero}${side}</div>`;
+  const rest=L.slice(4,10);
+  if(rest.length)h+=box("","Berita terbaru",`<div class="cards">${rest.map(cardHtml).join("")}</div>`,"b-new");
   const bx=[];
   const fo=L.filter(x=>x.foto).slice(0,6);
-  if(fo.length)bx.push(box("","Berita bergambar",`<div class="bb"><div class="gal">${fo.map(x=>`<a href="#/b/${x.id}"><img loading="lazy" src="${esc(imgUrl(x.foto,400))}" alt=""><span>${esc(x.judul)}</span></a>`).join("")}</div></div>`,"b-gal"));
+  if(fo.length)bx.push(box("","Berita bergambar",`<div class="bb"><div class="gal">${fo.map(x=>`<a href="#/b/${x.id}"><img loading="lazy" decoding="async" src="${esc(imgUrl(x.foto,400))}" alt=""><span>${esc(x.judul)}</span></a>`).join("")}</div></div>`,"b-gal"));
   const vi=L.filter(x=>x.video).slice(0,6);
-  if(vi.length)bx.push(box("","Berita bervideo",`<div class="bb"><ul class="bl">${vi.map(x=>`<li>${aN(x)}<small>${esc(fmt(x))}</small></li>`).join("")}</ul><p><a href="#/" data-f="video"><b>Semua yang bervideo</b></a></p></div>`,"b-vid"));
+  if(vi.length)bx.push(box("","Berita bervideo",`<div class="bb"><ul class="bl">${vi.map(x=>`<li>${aN(x)}<small>${esc(fmt(x))}</small></li>`).join("")}</ul><p><a href="#/" data-f="video"><b>Semua yang bervideo →</b></a></p></div>`,"b-vid"));
   if(bx.length)h+=`<div class="cols${bx.length===1?" one":""}">${bx.join("")}</div>`;
   h+=box("","Semua berita",`<div id="semuaBody"></div>`,"","semua");
   return h;
@@ -501,7 +628,7 @@ function showHome(){
 let curId=null,modalOpen=false,homeDrawn=false;
 function hideModal(){
   $("#modal").hidden=true;document.body.classList.remove("lock");
-  modalOpen=false;curId=null;document.title=SITUS.nama+" – "+SITUS.tagline;
+  modalOpen=false;curId=null;document.title=SITUS.nama;
 }
 function closeModalUser(){
   history.replaceState(null,"",location.pathname+location.search+"#/");
@@ -547,18 +674,29 @@ function apply(list){
   const m=location.hash.match(/^#\/b\/([^/]+)$/);
   if(m)openArt(decodeURIComponent(m[1]));
 }
+function showErr(e){
+  const m=e&&e.name==="AbortError"?"Server terlalu lama merespons.":String((e&&e.message)||e||"Tidak diketahui");
+  $("#main").innerHTML=`<section class="mast"><h1 style="font-size:1.8rem">Berita belum bisa dimuat</h1><p>${esc(m)}</p><p style="margin-top:8px;font-size:.92rem">Pastikan Web App Google Apps Script di-deploy dengan akses <b>Anyone</b> dan URL di SCRIPT_URL benar.</p><div class="stat"><a href="#/" data-act="refresh">Coba lagi</a></div></section>`;
+}
+let loading=false,lastLoad=0,loadStart=0;
+const CACHE_KEY="berita.cache";
+function readCache(){try{const c=JSON.parse(localStorage.getItem(CACHE_KEY)||"null");return Array.isArray(c)?c:null}catch(e){return null}}
+function writeCache(l){try{localStorage.setItem(CACHE_KEY,JSON.stringify(l))}catch(e){}}
 async function load(manual){
+  if(loading&&Date.now()-loadStart<95000)return;
+  loading=true;loadStart=Date.now();
+  const ac=new AbortController(),to=setTimeout(()=>ac.abort(),90000);
   try{
     let list=[];
-    if(SCRIPT_URL){const r=await fetch(SCRIPT_URL);const d=await r.json();list=d.berita||d}
+    if(SCRIPT_URL){const r=await fetch(SCRIPT_URL,{signal:ac.signal});if(!r.ok)throw new Error("HTTP "+r.status);const d=await r.json();list=d.berita||d}
     if(!Array.isArray(list))throw new Error("format data");
-    apply(list);
+    apply(list);writeCache(list);lastLoad=Date.now();
     if(manual)note("Berita disegarkan");
   }catch(e){
     console.error(e);
-    if(!ready)apply([]);
-    if(manual||!ready)note("Gagal memuat berita. Coba lagi.");
-  }
+    if(!ready)showErr(e);
+    if(manual||!ready)note(ready&&DATA.length?"Gagal menyegarkan. Menampilkan berita tersimpan.":"Gagal memuat berita. Coba lagi.");
+  }finally{clearTimeout(to);loading=false}
 }
 
 /* ---- pencarian & saran ---- */
@@ -636,8 +774,12 @@ addEventListener("scroll",()=>{
 
 applyLook();
 route();
+/* tampilkan berita tersimpan lebih dulu (instan), lalu segarkan dari server */
+{const c=readCache();if(c&&c.length)apply(c)}
 load();
-if(REFRESH_MS)setInterval(load,REFRESH_MS);
+/* segarkan otomatis hanya saat tab terlihat; hemat baterai & kuota */
+if(REFRESH_MS)setInterval(()=>{if(!document.hidden)load()},REFRESH_MS);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&REFRESH_MS&&Date.now()-lastLoad>REFRESH_MS)load()});
 </script>
 </body>
 </html>

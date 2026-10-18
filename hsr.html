@@ -7,19 +7,13 @@
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="theme-color" content="#03030a">
 <title>Honkai Star Rail</title>
-<meta name="description" content="Pricelist joki Honkai Star Rail neve. Cepat, aman, privasi terjaga.">
+<meta name="description" content="Pricelist joki Honkai Star Rail. Cepat, aman, privasi terjaga.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://script.google.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* ===== TEMA BERSAMA EMU ===== */
-/* =====================================================================
-   EMU JOKI — TEMA BERSAMA  (emu.css)
-   Diturunkan dari beranda.html "Multiverse": ruang gelap #03030a, font
-   monospace, cahaya indigo, panel kaca, kontrol segmented + tab bergaris
-   neon. Dipakai oleh index / genshin / hsr / portal (dan halaman lain).
-   ===================================================================== */
+
 :root{
   color-scheme: dark;
   --ac-rgb: 148,168,255;                 /* warna aksen aktif (ikut data-accent di <body>) */
@@ -286,7 +280,7 @@ footer.emu-footer nav a{ text-decoration:none; color:var(--tx-2); } footer.emu-f
 </style>
 </head>
 <body data-accent="abu">
-<div id="emu-boot"><b><span class="nv" role="img" aria-label="neve"></span></b><i></i><span>menyalakan mesin dimensi...</span></div>
+<div id="emu-boot"><b><span class="nv" role="img" aria-label="neve"></span></b><i></i><span>memuat hsr...</span></div>
 
 <header class="emu-header">
   <div class="wrap header-wrap">
@@ -295,7 +289,6 @@ footer.emu-footer nav a{ text-decoration:none; color:var(--tx-2); } footer.emu-f
       <a href="index.html" class="icon-btn">Beranda</a>
       <a href="cek.html" class="icon-btn">Cek Pesanan</a>
       <button type="button" class="icon-btn" data-emu="history">Riwayat</button>
-      <a href="portal.html" class="icon-btn">Portal</a>
       <button type="button" class="icon-btn" data-emu="bg">Background</button>
     </nav>
   </div>
@@ -337,7 +330,7 @@ footer.emu-footer nav a{ text-decoration:none; color:var(--tx-2); } footer.emu-f
 <a href="https://wa.me/6285150886538" target="_blank" rel="noopener" class="btn-float wa">💬 CS</a>
 
 <footer class="emu-footer">
-  <nav aria-label="Tautan bawah"><a href="index.html">Beranda</a><a href="portal.html">Portal</a><a href="snk.html">Syarat &amp; Ketentuan</a></nav>
+  <nav aria-label="Tautan bawah"><a href="index.html">Beranda</a><a href="snk.html">Syarat &amp; Ketentuan</a></nav>
   Tips: tekan <b>/</b> untuk mencari, <b>C</b> untuk keranjang, <b>Esc</b> untuk menutup.<br>© 2026 neve Joki. All rights reserved.
 </footer>
 
@@ -431,7 +424,7 @@ function boot() {
   const first = !SS.get('emu.booted', false);
   let el = document.getElementById('emu-boot');           // pakai elemen statis di HTML (anti-kedip) kalau ada
   if (!el) { el = document.createElement('div'); el.id = 'emu-boot'; el.innerHTML = '<b><span class="nv" role="img" aria-label="neve"></span></b><i></i><span></span>'; document.body.append(el); }
-  const sp = el.querySelector(':scope > span'); if (sp) sp.textContent = first ? 'menyalakan mesin dimensi...' : 'menembus dimensi...';
+  const sp = el.querySelector(':scope > span'); if (sp) sp.textContent = first ? 'menyalakan mesin dimensi...' : 'memuat...';
   SS.set('emu.booted', true);
   const done = () => { el.classList.add('off'); setTimeout(() => el.remove(), 520); };
   const wait = first ? 650 : 200;

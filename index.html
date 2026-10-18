@@ -6,8 +6,8 @@
 <link rel="icon" href="icon.png" type="image/png">
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="theme-color" content="#191c2b">
-<title>NEVE Jasa Joki Game Open World</title>
-<meta name="description" content="Jasa Joki Genshin Impact & Honkai Star Rail. Proses cepat 1-4 hari, 100% aman, garansi selesai.">
+<title>neve | Jasa Joki Game RPG Open World</title>
+<meta name="description" content="neve Joki: jasa joki Genshin Impact, Honkai Star Rail, Zenless Zone Zero, Wuthering Waves, dan Lainnya. Proses cepat 1-4 hari, privasi akun terjaga, garansi telat."><meta property="og:title" content="neve Enterprise"><meta property="og:description" content="Joki game cepat, aman & terpercaya. Selesai 1-4 hari dengan garansi telat.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://script.google.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -87,7 +87,7 @@ svg.i.sm{width:14px;height:14px}
 .chmenu button:hover,.chmenu button.on{background:var(--card2)}
 .chmenu button.on{color:var(--ac-tx)}
 .chmenu .mini{width:32px;height:32px;border-radius:10px}
-.umenu{position:fixed;top:68px;right:max(16px,calc((100vw - 1210px)/2 + 16px));width:340px;padding:14px 8px 10px}
+.umenu{position:fixed;top:68px;right:max(20px,calc((100vw - 1400px)/2 + 20px));width:340px;padding:14px 8px 10px}
 .um-head{display:flex;align-items:center;gap:12px;padding:0 10px 12px}
 .um-head img{width:46px;height:46px;border-radius:50%;object-fit:cover;background:var(--card2)}
 .um-head b{display:block;font-size:16px;line-height:1.2;word-break:break-word}
@@ -102,6 +102,11 @@ svg.i.sm{width:14px;height:14px}
 /* ---------- STAGE: banner + channel ---------- */
 .stage{position:relative;overflow:hidden;isolation:isolate}
 .art{position:absolute;inset:0;z-index:-2;background-color:#1a1c2c;background-size:cover;background-position:center 28%;background-repeat:no-repeat;transition:opacity .35s}
+/* crossfade background: dua lapisan bergantian, gambar lama bertahan sampai gambar baru siap */
+.al{position:absolute;inset:0;background-size:cover;background-position:center 28%;background-repeat:no-repeat;opacity:0;transform:scale(1.045);transition:opacity .8s cubic-bezier(.4,0,.2,1),transform 1.3s cubic-bezier(.2,.6,.2,1);will-change:opacity,transform}
+.al.on{opacity:1;transform:none}
+.al.first{transition:none}
+@media (prefers-reduced-motion:reduce){.al{transition:opacity .2s;transform:none}}
 .stage{--fade:66%}
 .art,.stage::before{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 var(--fade),rgba(0,0,0,.55) calc(var(--fade) + 14%),rgba(0,0,0,.18) calc(var(--fade) + 26%),transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 var(--fade),rgba(0,0,0,.55) calc(var(--fade) + 14%),rgba(0,0,0,.18) calc(var(--fade) + 26%),transparent 100%)}
 .stage::before{content:"";position:absolute;inset:0;z-index:-1;background:
@@ -201,7 +206,7 @@ svg.i.sm{width:14px;height:14px}
 .row:hover h3{color:var(--ac-tx)}
 .row p{margin:0 0 10px;color:var(--tx2);font-size:14px;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .row .meta{margin-top:auto;display:flex;align-items:center;gap:10px;color:var(--tx3);font-size:13px;flex-wrap:wrap}
-.row .thumb{width:234px;height:132px;border-radius:12px}
+.row .thumb{width:234px;height:auto;aspect-ratio:16/9;align-self:flex-start;border-radius:12px}
 .row.soon .thumb img{filter:grayscale(.55) brightness(.85)}
 .st{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:99px;font-size:12px;font-weight:700;background:rgba(61,220,151,.14);color:var(--ok)}
 html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
@@ -281,13 +286,13 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
 @media (max-width:1000px){
   .layout{grid-template-columns:1fr}
   .nav{display:none}
-  .row .thumb{width:200px;height:113px}
+  .row .thumb{width:200px;height:auto;aspect-ratio:16/9}
 }
 @media (max-width:720px){
   body{padding-bottom:calc(76px + var(--safe-b))}
   .top{display:none}
   .wrap{padding:0 16px}
-  .channels{gap:12px;padding:calc(18px + var(--safe-t)) 0 6px;align-items:center}
+  .channels{gap:12px;padding:12px 0 6px;align-items:center}
   .ch{padding:6px 0 10px}
   .ch span{display:none}
   .ch::after{display:none}
@@ -310,7 +315,7 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
   .m-search{display:flex;align-items:center;gap:8px;height:42px;margin:14px 0 4px;padding:0 14px;border-radius:99px;background:var(--card2);color:var(--tx3)}
   .m-search input{flex:1;min-width:0;height:100%;border:0;outline:0;background:none;color:var(--tx);font:500 14px var(--sans)}
   .row{gap:14px}
-  .row .thumb{width:38vw;max-width:180px;height:auto;aspect-ratio:16/9;border-radius:8px}
+  .row .thumb{width:38vw;max-width:180px;height:auto;aspect-ratio:16/9;align-self:flex-start;border-radius:8px}
   .row h3{font-size:16px}
   .feat{grid-template-columns:1fr}
   .side{padding:12px}
@@ -327,6 +332,24 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
   .umenu{left:12px;right:12px;top:auto;bottom:calc(76px + var(--safe-b));width:auto}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+
+.st-g{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+.st-g:first-of-type{border-top:0}
+.st-l b{display:block;font-size:14px}.st-l small{color:var(--tx3);font-size:12.5px}
+.st-btns{display:flex;gap:8px}
+.mdl-box .btn{height:38px;padding:0 16px}
+.mdl-box .btn-gl{background:var(--card2);color:var(--tx)}
+@media (max-width:480px){.st-g{flex-direction:column;align-items:flex-start}}
+.feat .ic svg{width:22px;height:22px;color:var(--ac-tx)}
+.mt a[aria-disabled="true"]{opacity:.6;pointer-events:none}
+
+.wrap{max-width:1400px;padding:0 20px}
+.bn{position:relative}
+.bn.on:not(.bn-plus){background:var(--ac-soft)}
+.bn.on:not(.bn-plus)::before{content:"";position:absolute;top:-6px;left:50%;width:24px;height:3px;border-radius:0 0 3px 3px;background:var(--ac);transform:translateX(-50%)}
+.logo.mlogo{display:none}
+.mlogo small{color:rgba(255,255,255,.75)}
+@media (max-width:720px){.wrap{padding:0 16px}.logo.mlogo{display:flex;padding:calc(16px + var(--safe-t)) 0 0}.logo.mlogo .nv{height:26px}}
 </style>
 </head>
 <body>
@@ -350,6 +373,13 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
   <symbol id="i-theme" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></symbol>
   <symbol id="i-out" viewBox="0 0 24 24"><path d="M12 3v8"/><path d="M6.5 6.5a7.5 7.5 0 1 0 11 0"/></symbol>
 
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.2-2.9 7.6-7 9.5-4.1-1.9-7-5.3-7-9.5V6z"/><path d="M9 12l2.2 2.2L15.5 10"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24"><path d="M3.5 12.5v-8a1 1 0 0 1 1-1h8l8 8-9 9z"/><circle cx="8" cy="8" r="1.4"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5.5"/><path d="M8.5 13.5L7 21l5-3 5 3-1.5-7.5"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+
   <!-- ikon "stiker" untuk All Tools -->
   <symbol id="t-track" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h10v14H5z"/><path d="M8 3V1.5h4V3"/><path d="M7.5 10.5l2 2 3.5-4"/></g></symbol>
   <symbol id="t-q" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7.5a3 3 0 1 1 4.5 2.6c-1 .6-1.5 1.2-1.5 2.4"/><path d="M10 16v.2"/></g></symbol>
@@ -372,7 +402,7 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
       </div>
     </div>
     <div class="hr">
-      <a class="hbtn" href="saran.html" title="Kotak Saran" aria-label="Kotak Saran"><svg class="i"><use href="#i-pen"/></svg></a>
+      <button type="button" class="hbtn" data-modal="setModal" title="Pengaturan Sistem" aria-label="Pengaturan Sistem"><svg class="i"><use href="#i-sliders"/></svg></button>
       <a class="hbtn" href="berita.html" title="Berita" aria-label="Berita"><svg class="i"><use href="#i-bell"/></svg></a>
       <button type="button" class="avbtn" data-pop="uMenu" aria-label="Menu akun"><img class="avimg js-av" alt="Foto profil" referrerpolicy="no-referrer"></button>
     </div>
@@ -388,17 +418,16 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
   <a class="um-it" href="Inventori.html"><svg class="i"><use href="#i-bubble"/></svg>Inventori<span class="v"><svg class="i sm"><use href="#i-right"/></svg></span></a>
   <div class="um-sep"></div>
   <h5>Pengaturan Sistem</h5>
-  <button type="button" class="um-it" id="umTheme"><svg class="i"><use href="#i-theme"/></svg>Tampilan<span class="v"><span id="umThemeVal">Sistem</span><svg class="i sm"><use href="#i-right"/></svg></span></button>
-  <button type="button" class="um-it" data-emu="bg"><svg class="i"><use href="#i-img"/></svg>Ganti Background</button>
-  <button type="button" class="um-it" id="umReset" hidden><svg class="i"><use href="#i-img"/></svg>Reset Background</button>
+  <button type="button" class="um-it" data-modal="setModal"><svg class="i"><use href="#i-sliders"/></svg>Pengaturan<span class="v"><span id="umThemeVal">Sistem</span><svg class="i sm"><use href="#i-right"/></svg></span></button>
   <div class="um-sep"></div>
   <a class="um-it" id="umAuth" href="login.html"><svg class="i"><use href="#i-out"/></svg><span id="umAuthTx">Login / Daftar</span></a>
 </div>
 
 <!-- ============ STAGE ============ -->
 <section class="stage">
-  <div class="art" id="art" aria-hidden="true"></div>
+  <div class="art" id="art" aria-hidden="true"><div class="al"></div><div class="al"></div></div>
   <div class="wrap">
+    <a class="logo mlogo" href="index.html" aria-label="neve Joki"><span class="nv" role="img" aria-label="neve"></span><small>JOKI</small></a>
     <nav class="channels" id="channels" aria-label="Pilih game"></nav>
 
     <div class="hero">
@@ -414,7 +443,7 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
 
     <div class="mt">
       <h2 id="mTitle">Genshin Impact</h2>
-      <a href="cek.html"><i></i>Cek Pesanan</a>
+      <a href="genshin.html" id="mtGo"><i></i>Pricelist</a>
     </div>
   </div>
 </section>
@@ -443,17 +472,9 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
           <div class="tx">
             <h3>Berita terbaru dari <span class="nv-in" role="img" aria-label="neve"></span></h3>
             <p>Info terbaru, update game, bansos, dan pengumuman dari neve joki.</p>
-            <div class="by"><img src="icon.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'E'}))">neve Joki</div>
+            <div class="by"><img src="icon.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'N'}))">neve Joki</div>
           </div>
         </a>
-        </div>
-
-        <div class="sec-h" style="padding-top:16px"><span class="sec-ico" style="border-radius:50%"><svg class="i"><use href="#i-bubble"/></svg></span>Pintasan<a class="lt" href="#toolsCard" data-scroll="toolsCard">Lihat tools</a></div>
-        <div class="pills">
-          <a class="pillb" href="cek.html"><svg class="i"><use href="#i-lines"/></svg>Cek Pesanan</a>
-          <a class="pillb" href="Game.html"><svg class="i"><use href="#i-planet"/></svg>Mini Game</a>
-          <a class="pillb" href="Gacha.html"><svg class="i"><use href="#i-clock"/></svg>Gacha</a>
-          <a class="pillb" href="saran.html"><svg class="i"><use href="#i-bubble"/></svg>Kotak Saran</a>
         </div>
 
         <div class="m-search"><svg class="i"><use href="#i-search"/></svg><input id="mq" type="text" enterkeyhint="search" placeholder="Cari game joki" autocomplete="off" aria-label="Cari game joki"></div>
@@ -473,10 +494,10 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
       <!-- KEUNGGULAN -->
       <section class="pane" id="pane-plus" role="tabpanel" hidden>
         <div class="feat">
-          <div><div class="ic">⚡</div><h4>Proses Cepat</h4><p>Rata-rata selesai 1-4 hari. Ada update progress yang bisa di cek dari Web.</p></div>
-          <div><div class="ic">🔒</div><h4>100% Aman</h4><p>Privasi terjaga, Kami tak pernah meminta Customer mendownload suatu Software ataupun memasukan password dari Web.</p></div>
-          <div><div class="ic">💰</div><h4>Harga Bersahabat</h4><p>Mulai 10rb. Bisa nego(Syarat &amp; Ketentuan berlaku). Bayar via QRIS.</p></div>
-          <div><div class="ic">⭐</div><h4>Garansi Telat</h4><p>Kami akan mengembalikan Dana 50% jika melebihi Estimasi Telat (Syarat &amp; Ketentuan berlaku)</p></div>
+          <div><div class="ic"><svg class="i"><use href="#i-bolt"/></svg></div><h4>Proses Cepat</h4><p>Rata-rata selesai 1-4 hari. Ada update progress yang bisa di cek dari Web.</p></div>
+          <div><div class="ic"><svg class="i"><use href="#i-shield"/></svg></div><h4>100% Aman</h4><p>Privasi terjaga, Kami tak pernah meminta Customer mendownload suatu Software ataupun memasukan password dari Web.</p></div>
+          <div><div class="ic"><svg class="i"><use href="#i-tag"/></svg></div><h4>Harga Bersahabat</h4><p>Mulai 10rb. Bisa nego(Syarat &amp; Ketentuan berlaku). Bayar via QRIS.</p></div>
+          <div><div class="ic"><svg class="i"><use href="#i-award"/></svg></div><h4>Garansi Telat</h4><p>Kami akan mengembalikan Dana 50% jika melebihi Estimasi Telat (Syarat &amp; Ketentuan berlaku)</p></div>
         </div>
       </section>
 
@@ -497,7 +518,7 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
           <details><summary>Berapa lama pengerjaannya?</summary><p>Rata-rata selesai dalam 1-4 hari. Progress bisa kamu cek dari web lewat halaman Cek Pesanan.</p></details>
           <details><summary>Bagaimana cara bayar dan berapa harganya?</summary><p>Pembayaran lewat QRIS dengan harga mulai 10rb. Beberapa layanan bisa dinego, dengan Syarat &amp; Ketentuan berlaku.</p></details>
           <details><summary>Bagaimana jika pengerjaan melebihi estimasi?</summary><p>Jika melebihi estimasi, dana dikembalikan 50%. Detail lengkapnya ada di halaman Syarat &amp; Ketentuan.</p></details>
-          <details><summary>Fitur lain apa saja yang ada?</summary><p>Lihat All Tools untuk Mini Game, Inventori, Gacha, Profile, Kotak Saran, dan lainnya. Gunakan menu akun untuk mengganti gambar latar.</p></details>
+          <details><summary>Fitur lain apa saja yang ada?</summary><p>Lihat All Tools untuk Mini Game, Inventori, Gacha, Profile, Kotak Saran, dan lainnya. Tema dan gambar latar bisa diatur lewat Pengaturan Sistem.</p></details>
         </div>
       </section>
 
@@ -524,13 +545,13 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
         <a class="tool" href="Inventori.html"><img src="inventori.png" alt="">Inventori</a>
         <a class="tool" href="Gacha.html"><img src="gacha.png" alt="">Gacha</a>
         <a class="tool" href="Profile.html"><img src="profile.png" alt="">Profile</a>
-        <a class="tool" href="cek.html"><img src="cekorder.png"/></svg>Cek Pesanan</a>
+        <a class="tool" href="cek.html"><img src="cekorder.png" alt="">Cek Pesanan</a>
         <a class="tool" href="https://enka.network/"><img src="cekakun.png" alt="">Cek Akun</a>
         <a class="tool" href="saran.html"><img src="kotaksaran.png" alt="">Kotak Saran Produk</a>
         <a class="tool" href="berita.html"><img src="berita.png" alt="">Berita</a>
         <a class="tool" href="snk.html"><img src="syaratdanketentuan.png" alt="">Syarat dan Ketentuan</a>
         <button class="tool" type="button" data-modal="aboutModal"><img src="tentang.png" alt="">Tentang</button>
-        <button class="tool" type="button" data-soon style="opacity:.55"><svg><use href="#t-q"/></svg>???</button>
+        <button class="tool" type="button" data-soon style="opacity:.55"><svg><use href="#t-q"/></svg>Segera Hadir</button>
       </div>
     </div>
     <div class="card sp-s" id="spSmall" hidden><h4>SPONSOR</h4><div class="g" id="spSmallG"></div></div>
@@ -553,17 +574,28 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
 
 <!-- nav bawah mobile -->
 <nav class="bnav" aria-label="Navigasi">
-  <button class="bn on" type="button" id="bnHome" aria-label="Refresh halaman"><svg class="i"><use href="#i-home"/></svg></button>
+  <button class="bn on" aria-current="page" type="button" id="bnHome" aria-label="Refresh halaman"><svg class="i"><use href="#i-home"/></svg></button>
   <a class="bn" href="Game.html" id="bnCh" aria-label="Mini Game"><svg class="i"><use href="#i-planet"/></svg></a>
   <button class="bn bn-plus" type="button" id="bnPlus" aria-label="Pesan joki"><svg class="i"><use href="#i-plus"/></svg></button>
   <a class="bn" href="saran.html" aria-label="Kotak Saran"><svg class="i"><use href="#i-mail"/></svg></a>
   <button class="bn" type="button" data-pop="uMenu" aria-label="Menu akun"><img class="avimg js-av" alt="Foto profil" referrerpolicy="no-referrer"></button>
 </nav>
 
+<div class="mdl" id="setModal" role="dialog" aria-modal="true" aria-labelledby="setTitle">
+  <div class="mdl-box">
+    <h3 id="setTitle">Pengaturan Sistem</h3>
+    <div class="st-g"><div class="st-l"><b>Tampilan</b><small>Pilih tema halaman</small></div>
+      <div class="seg" id="thSeg" role="group" aria-label="Tema"><button type="button" data-th="system">Sistem</button><button type="button" data-th="dark">Gelap</button><button type="button" data-th="light">Terang</button></div></div>
+    <div class="st-g"><div class="st-l"><b>Gambar Latar</b><small>Banner di bagian atas halaman</small></div>
+      <div class="st-btns"><button type="button" class="btn btn-ac" data-emu="bg">Ganti</button><button type="button" class="btn btn-gl" id="umReset" hidden>Reset</button></div></div>
+    <div class="mdl-act" style="margin-top:8px"><button class="btn btn-gl" data-close type="button">Tutup</button></div>
+  </div>
+</div>
+
 <div class="mdl" id="aboutModal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
   <div class="mdl-box">
     <h3 id="aboutTitle">Tentang <span class="nv-in" role="img" aria-label="neve"></span></h3>
-    <p>neve Joki adalah layanan joki Genshin Impact dan Honkai Star Rail dengan proses cepat dan privasi akun yang dijaga.</p>
+    <p>neve Joki adalah layanan joki Genshin Impact, Honkai Star Rail, dan Lainnya dengan proses cepat dan privasi akun yang dijaga.</p>
     <ul>
       <li>Estimasi pengerjaan rata-rata 1-4 hari</li>
       <li>Tidak ada permintaan download software atau password lewat web</li>
@@ -595,7 +627,7 @@ const GAMES=[
  {id:'genshin',logo:'genshin.png',name:'Genshin Impact',sub:'Teyvat',href:'genshin.html',ready:true,c1:'#c9a24a',c2:'#3b2a14',
   img:'https://images8.alphacoders.com/112/1129503.jpg',chips:['Quest Archon','Spiral Abyss 12','Eksplorasi','Build Karakter']},
  {id:'hsr',logo:'hsr.png',name:'Honkai Star Rail',sub:'Astral Express',href:'hsr.html',ready:true,c1:'#7d86c9',c2:'#1f2240',
-  img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIQo91ANLulKswsuHrtO1Fx-o6XZLWVZKrxWYg61KjubipGDi2mqY4QrU&s=10',chips:['MoC',,'Event','Farming Relic','Dan masih banyak lagi']},
+  img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIQo91ANLulKswsuHrtO1Fx-o6XZLWVZKrxWYg61KjubipGDi2mqY4QrU&s=10',chips:['MoC','Event','Farming Relic','Dan masih banyak lagi']},
  {id:'zzz',logo:'zzz.png',name:'Zenless Zone Zero',sub:'New Eridu',href:'zzz.html',ready:true,c1:'#5a3bd1',c2:'#14103a',
   img:'https://zenlesslab.com/wp-content/uploads/2023/09/Zenless-Zone-Zero-Combat-System.jpg',chips:['Shiyu Defense','Deadly Assault','Build Agent','Dan masih banyak lagi']},
  {id:'wuwa',logo:'wuwa.png',name:'Wuthering Waves',sub:'Solaris-3',href:'wuwa.html',ready:true,c1:'#4c6a78',c2:'#12181d',
@@ -627,11 +659,36 @@ function renderRows(){
   const list=GAMES.filter(g=>(flt==='all'||(flt==='ready')===g.ready)&&(!k||(g.name+' '+g.sub+' '+g.chips.join(' ')).toLowerCase().includes(k)));
   $('#rows').innerHTML=list.length?list.map(rowHTML).join(''):'<div class="empty"><b>Tidak ditemukan</b>Coba kata kunci lain atau ubah filter.</div>';
 }
+let artKey='',artTok=0;
+const artReady=new Map();
+function preloadArt(u){
+  if(!u)return Promise.resolve();
+  if(!artReady.has(u))artReady.set(u,new Promise(res=>{
+    const im=new Image(); im.referrerPolicy='no-referrer';
+    const done=()=>res(); im.onload=()=>{(im.decode?im.decode().catch(()=>{}):Promise.resolve()).then(done)}; im.onerror=done;
+    setTimeout(done,1500); im.src=u;
+  }));
+  return artReady.get(u);
+}
 function setArt(){
   const g=byId(cur), custom=LS.get('customBackground','');
-  $('#art').style.backgroundImage=custom?"url('"+custom+"')":"url('"+g.img+"'),"+grad(g);
+  const url=custom||g.img, val=custom?"url('"+custom+"')":"url('"+g.img+"'),"+grad(g);
   $('#umReset').hidden=!custom;
+  if(url+'|'+(custom?1:0)===artKey)return;
+  artKey=url+'|'+(custom?1:0);
+  const L=[...document.querySelectorAll('#art .al')], tok=++artTok;
+  const cu=L.find(x=>x.classList.contains('on')), nx=L.find(x=>x!==cu)||L[0];
+  const show=()=>{
+    if(tok!==artTok)return;                       // klik lebih baru sudah menggantikan
+    nx.style.backgroundImage=val;
+    if(!cu){nx.classList.add('first','on');requestAnimationFrame(()=>nx.classList.remove('first'));return}
+    nx.style.zIndex=1;cu.style.zIndex=0;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{nx.classList.add('on');cu.classList.remove('on')}));
+  };
+  if(!cu)show(); else preloadArt(url).then(show);
 }
+/* muat semua gambar game di latar belakang supaya pindah game terasa instan */
+(window.requestIdleCallback||function(f){setTimeout(f,900)})(()=>GAMES.forEach(g=>preloadArt(g.img)));
 function setChannel(id){
   cur=id; const g=byId(id);
   renderChannels(); setArt();
@@ -640,6 +697,7 @@ function setChannel(id){
   $('#htags').innerHTML=g.ready?g.chips.map(c=>'<span>'+esc(c)+'</span>').join(''):'<span>Segera hadir</span>';
   const go=$('#heroGo'); go.href=g.href; go.textContent=g.ready?'Lihat Pricelist':'Segera Hadir'; go.setAttribute('aria-disabled',g.ready?'false':'true');
   $('#selIco').style.cssText=logoOf(g);
+  const mg=$('#mtGo'); mg.href=g.href; mg.lastChild.nodeValue=g.ready?'Pricelist':'Segera Hadir'; mg.setAttribute('aria-disabled',g.ready?'false':'true');
   const act=$('#channels .ch.on'); if(act&&act.scrollIntoView)act.scrollIntoView({inline:'center',block:'nearest'});
 }
 
@@ -683,9 +741,10 @@ function applyTheme(){
   const light=p==='light'||(p==='system'&&matchMedia('(prefers-color-scheme: light)').matches);
   document.documentElement.dataset.theme=light?'light':'dark';
   $('#umThemeVal').textContent=TL[p]||'Sistem';
+  $$('#thSeg [data-th]').forEach(b=>{const on=b.dataset.th===p;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
   const m=$('meta[name="theme-color"]');if(m)m.content=light?'#eeecf7':'#191c2b';
 }
-$('#umTheme').addEventListener('click',()=>{const p=LS.get('emu.theme','dark');LS.set('emu.theme',ORDER[(ORDER.indexOf(p)+1)%3]);applyTheme()});
+$('#thSeg').addEventListener('click',e=>{const b=e.target.closest('[data-th]');if(!b)return;LS.set('emu.theme',b.dataset.th);applyTheme()});
 try{matchMedia('(prefers-color-scheme: light)').addEventListener('change',applyTheme)}catch(e){}
 
 /* ===================== BACKGROUND SENDIRI ===================== */
@@ -833,7 +892,7 @@ async function loadSponsor(){
 loadSponsor();
 
 /* ===================== BERITA (sumber sama dengan berita.html) ===================== */
-const NEWS_URL="https://script.google.com/macros/s/AKfycbyxuzwnY24Tl7FyuJFicDzo7BYvhMtRjtt8G146vKglqEkU2YJGd7KEuO5WhOGRVZF3/exec";
+const NEWS_URL="https://script.google.com/macros/s/AKfycbymMQiiQiZrnnhyxA03mP5_9IlwZAq5wNsDbU7rXQgZbOK9EF78XiTqQ_TjB8-DqAL4/exec";
 const NEWS_MAX=8;
 let newsState=0; // 0 belum, 1 memuat, 2 selesai
 const nEsc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

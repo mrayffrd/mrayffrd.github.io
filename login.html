@@ -3,15 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#03030a">
-<link rel="icon" href="icon.png" type="image/png">
-<link rel="apple-touch-icon" href="icon.png">
-<meta name="theme-color" content="#03030a">
+<meta name="description" content="Masuk atau daftar akun neve">
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <title>Login - EMU Log</title>
+  <title>Login</title>
   <style>
 /* =====================================================================
-   TEMA BERSAMA — diselaraskan dengan index.html (EMU Joki)
+   TEMA BERSAMA — diselaraskan dengan index.html (neve Joki)
    Ruang gelap #03030a, aksen indigo, font Inter, panel kaca.
    ===================================================================== */
 :root{
@@ -68,13 +69,13 @@ body::after{
 }
 
 /* ---------- boot screen ---------- */
-#emu-boot{ position:fixed; inset:0; z-index:9000; background:#03030a; display:flex; flex-direction:column;
+#neve-boot{ position:fixed; inset:0; z-index:9000; background:#03030a; display:flex; flex-direction:column;
   align-items:center; justify-content:center; gap:14px; letter-spacing:3px; font-size:13px; color:#9aa4d8;
   font-family:var(--mono); transition:opacity .45s ease; }
-#emu-boot.off{ opacity:0; pointer-events:none; }
-#emu-boot b{ font-size:18px; letter-spacing:6px; color:#e6ecff; text-shadow:0 0 22px rgba(var(--ac-rgb),.7); }
-#emu-boot i{ display:block; width:150px; height:2px; overflow:hidden; border-radius:2px; background:rgba(120,140,220,.18); }
-#emu-boot i::after{ content:""; display:block; width:40%; height:100%; background:linear-gradient(90deg,transparent,var(--ac),transparent); animation:bootbar 1.1s ease-in-out infinite; }
+#neve-boot.off{ opacity:0; pointer-events:none; }
+#neve-boot b{ font-size:18px; letter-spacing:6px; color:#e6ecff; text-shadow:0 0 22px rgba(var(--ac-rgb),.7); }
+#neve-boot i{ display:block; width:150px; height:2px; overflow:hidden; border-radius:2px; background:rgba(120,140,220,.18); }
+#neve-boot i::after{ content:""; display:block; width:40%; height:100%; background:linear-gradient(90deg,transparent,var(--ac),transparent); animation:bootbar 1.1s ease-in-out infinite; }
 @keyframes bootbar{ from{ transform:translateX(-100%); } to{ transform:translateX(260%); } }
 
 /* ---------- nav (header) ---------- */
@@ -153,6 +154,18 @@ body::after{
   width:100%; padding:12px 14px; margin:8px 0; border-radius:var(--r-md); border:1px solid rgba(96,110,190,.4);
   background:rgba(9,12,30,.92); color:var(--tx); font-size:15px; outline:none; transition:.2s;
 }
+.login-box input{ font-size:16px; } /* cegah zoom otomatis di iOS */
+.login-box .lg{ display:block; width:64px; height:64px; margin:0 auto 10px; object-fit:contain; border-radius:16px; }
+.login-box .sub{ margin-bottom:18px; color:var(--tx-2); }
+.login-box .sw{ margin-top:14px; font-size:14px; color:var(--tx-2); }
+.login-box .sw a{ color:var(--ac); font-weight:600; text-decoration:none; }
+.login-box .sw a:hover{ text-decoration:underline; }
+.login-box .showpw{ display:flex; align-items:center; gap:8px; justify-content:flex-start; margin:4px 2px 2px; font-size:13px; color:var(--tx-2); cursor:pointer; user-select:none; }
+.login-box .showpw input{ width:auto; margin:0; accent-color:rgb(var(--ac-rgb)); }
+.login-box #msg{ margin-top:16px; min-height:1.4em; font-size:14px; color:var(--danger); }
+.login-box #msg.info{ color:var(--tx-2); }
+.sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+.btn:focus-visible,.login-box a:focus-visible,.login-box input:focus-visible{ outline:2px solid var(--ac); outline-offset:2px; }
 .login-box input:focus{ border-color:var(--line-hi); box-shadow:0 0 0 3px rgba(var(--ac-rgb),.18); }
 
 /* ---------- grid item ---------- */
@@ -215,12 +228,12 @@ body::after{
 </style>
 </head>
 <body>
-<div id="emu-boot"><b>E M U &nbsp; L O G</b><i></i><span>menyalakan mesin dimensi...</span></div>
+<div id="neve-boot"><b>N E V E &nbsp; L O G</b><i></i><span>loading...</span></div>
 <script>
 (function(){
   var first = !sessionStorage.getItem('popit_booted');
   sessionStorage.setItem('popit_booted','1');
-  var el = document.getElementById('emu-boot');
+  var el = document.getElementById('neve-boot');
   var wait = first ? 700 : 200;
   function done(){ el.classList.add('off'); setTimeout(function(){ el.remove(); }, 450); }
   if (document.readyState === 'complete') setTimeout(done, wait);
@@ -229,31 +242,33 @@ body::after{
 })();
 </script>
   <div class="login-box card">
-    <h1>🎮 Emu Log</h1>
-    <p style="margin-bottom:18px;color:#aaa;">Login atau Daftar untuk mulai bermain</p>
+    <img class="lg" src="logo.png" alt="" width="64" height="64" onerror="this.remove()">
+    <h1>  </h1>
+    <p class="sub">Login atau Daftar untuk mulai bermain</p>
 
-    <div id="login-form">
-      <input type="text" id="username" placeholder="Username" autocomplete="username">
-      <input type="password" id="password" placeholder="Password" autocomplete="current-password">
-      <button class="btn" style="width:100%;margin-top:10px;" onclick="doLogin()">Masuk</button>
-      <p style="margin-top:14px;font-size:14px;">
-        Belum punya akun?
-        <a href="#" onclick="showRegister()" style="color:var(--accent);">Daftar di sini</a>
-      </p>
-    </div>
+    <form id="login-form" novalidate>
+      <label class="sr-only" for="username">Username</label>
+      <input type="text" id="username" placeholder="Username" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next">
+      <label class="sr-only" for="password">Password</label>
+      <input type="password" id="password" placeholder="Password" autocomplete="current-password" enterkeyhint="go">
+      <label class="showpw"><input type="checkbox" data-showpw="password"> Tampilkan password</label>
+      <button class="btn" id="btn-login" type="submit" style="width:100%;margin-top:10px;">Masuk</button>
+      <p class="sw">Belum punya akun? <a href="#" onclick="showRegister();return false;">Daftar di sini</a></p>
+    </form>
 
-    <div id="register-form" class="hidden">
-      <input type="text" id="reg-username" placeholder="Username baru">
-      <input type="password" id="reg-password" placeholder="Password">
-      <input type="password" id="reg-password2" placeholder="Ulangi Password">
-      <button class="btn btn-gold" style="width:100%;margin-top:10px;" onclick="doRegister()">Daftar</button>
-      <p style="margin-top:14px;font-size:14px;">
-        Sudah punya akun?
-        <a href="#" onclick="showLogin()" style="color:var(--accent);">Login di sini</a>
-      </p>
-    </div>
+    <form id="register-form" class="hidden" novalidate>
+      <label class="sr-only" for="reg-username">Username baru</label>
+      <input type="text" id="reg-username" placeholder="Username baru (min. 3 karakter)" autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next">
+      <label class="sr-only" for="reg-password">Password</label>
+      <input type="password" id="reg-password" placeholder="Password" autocomplete="new-password" enterkeyhint="next">
+      <label class="sr-only" for="reg-password2">Ulangi password</label>
+      <input type="password" id="reg-password2" placeholder="Ulangi Password" autocomplete="new-password" enterkeyhint="go">
+      <label class="showpw"><input type="checkbox" data-showpw="reg-password,reg-password2"> Tampilkan password</label>
+      <button class="btn btn-gold" id="btn-register" type="submit" style="width:100%;margin-top:10px;">Daftar</button>
+      <p class="sw">Sudah punya akun? <a href="#" onclick="showLogin();return false;">Login di sini</a></p>
+    </form>
 
-    <p id="msg" style="margin-top:16px;color:var(--danger);font-size:14px;"></p>
+    <p id="msg" role="status" aria-live="polite"></p>
   </div>
 
   <script>
@@ -439,66 +454,68 @@ function timeAgo(ts) {
       if (ok) window.location.href = "Game.html";
     })();
 
+    const $ = id => document.getElementById(id);
+    const setMsg = (t, info) => { const m = $("msg"); m.textContent = t || ""; m.classList.toggle("info", !!info); };
+    const busy = (btn, on, label) => { btn.disabled = on; if (label) btn.textContent = on ? "Mohon tunggu..." : label; };
+
     function showRegister() {
-      document.getElementById("login-form").classList.add("hidden");
-      document.getElementById("register-form").classList.remove("hidden");
-      document.getElementById("msg").textContent = "";
+      $("login-form").classList.add("hidden");
+      $("register-form").classList.remove("hidden");
+      setMsg("");
+      $("reg-username").focus();
     }
 
     function showLogin() {
-      document.getElementById("register-form").classList.add("hidden");
-      document.getElementById("login-form").classList.remove("hidden");
-      document.getElementById("msg").textContent = "";
+      $("register-form").classList.add("hidden");
+      $("login-form").classList.remove("hidden");
+      setMsg("");
+      $("username").focus();
     }
 
+    /* tampilkan / sembunyikan password */
+    document.querySelectorAll("[data-showpw]").forEach(cb => {
+      cb.addEventListener("change", () => {
+        cb.dataset.showpw.split(",").forEach(id => { $(id).type = cb.checked ? "text" : "password"; });
+      });
+    });
+
     async function doLogin() {
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value;
-      if (!username || !password) {
-        document.getElementById("msg").textContent = "Isi username & password!";
-        return;
-      }
-      document.getElementById("msg").textContent = "Sedang masuk...";
+      const username = $("username").value.trim();
+      const password = $("password").value;
+      if (!username || !password) { setMsg("Isi username & password!"); return; }
+      const btn = $("btn-login");
+      setMsg("Sedang masuk...", true); busy(btn, true, "Masuk");
       const res = await login(username, password);
       if (res.success) {
         window.location.href = "Game.html";
       } else {
-        document.getElementById("msg").textContent = res.message || "Login gagal";
+        busy(btn, false, "Masuk");
+        setMsg(res.message || "Login gagal");
+        $("password").select();
       }
     }
 
     async function doRegister() {
-      const username = document.getElementById("reg-username").value.trim();
-      const password = document.getElementById("reg-password").value;
-      const password2 = document.getElementById("reg-password2").value;
-      if (!username || !password) {
-        document.getElementById("msg").textContent = "Isi semua field!";
-        return;
-      }
-      if (password !== password2) {
-        document.getElementById("msg").textContent = "Password tidak sama!";
-        return;
-      }
-      if (username.length < 3) {
-        document.getElementById("msg").textContent = "Username minimal 3 karakter";
-        return;
-      }
-      document.getElementById("msg").textContent = "Sedang mendaftar...";
+      const username = $("reg-username").value.trim();
+      const password = $("reg-password").value;
+      const password2 = $("reg-password2").value;
+      if (!username || !password) { setMsg("Isi semua field!"); return; }
+      if (username.length < 3) { setMsg("Username minimal 3 karakter"); return; }
+      if (password !== password2) { setMsg("Password tidak sama!"); return; }
+      const btn = $("btn-register");
+      setMsg("Sedang mendaftar...", true); busy(btn, true, "Daftar");
       const res = await register(username, password);
       if (res.success) {
         window.location.href = "Game.html";
       } else {
-        document.getElementById("msg").textContent = res.message || "Gagal daftar";
+        busy(btn, false, "Daftar");
+        setMsg(res.message || "Gagal daftar");
       }
     }
 
-    // Enter key
-    document.addEventListener("keydown", e => {
-      if (e.key === "Enter") {
-        if (!document.getElementById("login-form").classList.contains("hidden")) doLogin();
-        else doRegister();
-      }
-    });
+    /* Enter / tombol "Go" di HP dikirim lewat form, jadi tidak perlu handler keydown lagi */
+    $("login-form").addEventListener("submit", e => { e.preventDefault(); doLogin(); });
+    $("register-form").addEventListener("submit", e => { e.preventDefault(); doRegister(); });
   </script>
 </body>
 </html>

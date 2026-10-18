@@ -3,10 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Staff — mrayffrd</title>
+<title>Staff — neve Enterprise</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,600;0,700;1,700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#06070d">
+<meta name="description" content="Daftar staff">
 <style>
   :root {
     --bg: #06070d;
@@ -18,7 +20,8 @@
   body {
     font-family: 'Chakra Petch', system-ui, sans-serif;
     background: var(--bg); color: var(--text);
-    min-height: 100vh; overflow-x: hidden;
+    min-height: 100vh; min-height: 100dvh; overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
   }
 
   /* latar: gradasi gelap lembut + belah ketupat besar tipis senada tombol */
@@ -133,6 +136,13 @@
   .tile.filler .face { display: none; }
 
   /* ===== Dibuka: hover, fokus, atau ketukan pertama ===== */
+  .tile.soon:hover .dia, .tile.soon.reveal .dia { border-color: #4a4f6a; box-shadow: none; }
+  .tile.soon { cursor: default; }
+  .tile { will-change: scale; }
+  @media (prefers-reduced-motion: reduce) {
+    .tile, .tile::before, .bg, .nm, .shade, .sil, .dia { transition: none !important; animation: none !important; }
+    .tile { opacity: 1; }
+  }
   .tile:hover, .tile:focus-visible, .tile.reveal { scale: 1.32; z-index: 10; }
   .tile:hover::before, .tile:focus-visible::before, .tile.reveal::before {
     opacity: .14; transform: translate(15%, -13%) rotate(45deg) scale(1);
@@ -176,11 +186,11 @@
   const STAFF = [
     { name: "emurice",     img: "", page: "staff.emu.rice.html" },
     { name: "subar",   img: "", page: "staff.###.html" },
-    { name: "###",   img: "", page: "staff.###.html" },
-    { name: "###", img: "", page: "staff.###.html" },
-    { name: "###",  img: "", page: "staff.###.html" },
-    { name: "###", img: "", page: "staff.###.html" },
-    { name: "###",   img: "", page: "staff.###.html" }
+    { name: "   ",   img: "", page: "staff.###.html" },
+    { name: "   ", img: "", page: "staff.###.html" },
+    { name: "   ",  img: "", page: "staff.###.html" },
+    { name: "   ", img: "", page: "staff.###.html" },
+    { name: "   ",   img: "", page: "staff.###.html" }
   ];
 
   const lattice = document.getElementById('lattice');
@@ -190,8 +200,12 @@
   STAFF.forEach((s, i) => {
     const a = document.createElement('a');
     a.className = 'tile';
-    a.href = s.page;
-    a.setAttribute('aria-label', s.name);
+    /* halaman yang belum dibuat (masih "###") tidak dijadikan tautan agar tidak error 404 */
+    const placeholder = /#/.test(s.page);
+    const label = /^#+$/.test(s.name) ? 'Segera' : s.name;
+    if (placeholder) { a.classList.add('soon'); a.setAttribute('aria-disabled', 'true'); a.removeAttribute('href'); }
+    else a.href = s.page;
+    a.setAttribute('aria-label', label);
     a.style.setProperty('--delay', (i * 0.08) + 's');
     if (s.img) a.style.setProperty('--img', `url("${s.img}")`);
     a.innerHTML = `
@@ -203,7 +217,7 @@
         </div>
       </div>
       <div class="nm"></div>`;
-    a.querySelector('.nm').textContent = s.name;
+    a.querySelector('.nm').textContent = label;
     lattice.appendChild(a);
     tiles.push(a);
   });
@@ -255,7 +269,16 @@
     lattice.style.height = ((rowsCap.length - 1) * py + d) + 'px';
   }
   layout();
-  addEventListener('resize', layout);
+  /* hemat kerja: susun ulang hanya sekali per frame, abaikan perubahan tinggi kecil (bilah alamat HP) */
+  let lastW = innerWidth, lastH = innerHeight, raf = 0;
+  addEventListener('resize', () => {
+    if (raf) return;
+    raf = requestAnimationFrame(() => {
+      raf = 0;
+      if (innerWidth === lastW && Math.abs(innerHeight - lastH) < 100) return;
+      lastW = innerWidth; lastH = innerHeight; layout();
+    });
+  });
 
   /* Perangkat sentuh: ketukan pertama membuka siluet, ketukan kedua pindah halaman */
   if (window.matchMedia('(hover: none)').matches) {

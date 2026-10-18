@@ -7,10 +7,10 @@
 <link rel="icon" href="icon.png" type="image/png">
 <link rel="apple-touch-icon" href="icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<title>Warp</title>
+<title>Gacha | neve Enterprise</title>
 <script>
 /* Tema (Sistem / Gelap / Terang) dipasang sebelum halaman tampil, sama seperti index.html */
-(function(){function ap(){try{var p=localStorage.getItem('emu.theme')||'system';var l=p==='light'||(p==='system'&&matchMedia('(prefers-color-scheme: light)').matches);document.documentElement.dataset.theme=l?'light':'dark';var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=l?'#ffffff':'#191c2b';}catch(e){}}
+(function(){function ap(){try{var p=localStorage.getItem('emu.theme')||'dark';var l=p==='light'||(p==='system'&&matchMedia('(prefers-color-scheme: light)').matches);document.documentElement.dataset.theme=l?'light':'dark';var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=l?'#ffffff':'#191c2b';}catch(e){}}
 ap();try{matchMedia('(prefers-color-scheme: light)').addEventListener('change',ap)}catch(e){}})();
 </script>
 <style>
@@ -156,7 +156,9 @@ button{font:inherit;color:inherit}
 @keyframes flash{0%{background:var(--fxc)}100%{}}
 .st{position:absolute;left:110%;height:2px;width:140px;background:linear-gradient(90deg,transparent,var(--fxc));animation:st linear infinite}
 @keyframes st{to{transform:translateX(-140vw)}}
-#skip{position:absolute;right:24px;bottom:24px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.4);color:#fff;padding:7px 18px;border-radius:99px;cursor:pointer;font-size:12px}
+#skip{position:absolute;z-index:10;right:20px;bottom:calc(24px + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.55);color:#fff;padding:11px 24px;border-radius:99px;cursor:pointer;font-size:14px;font-weight:600;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+#skip:active{transform:scale(.95)}
+.st{pointer-events:none}
 #res{position:fixed;inset:0;z-index:1500;display:none;overflow:hidden;background:radial-gradient(80% 70% at 50% 25%,#1d2660,#070915 72%)}
 #res.show{display:block}
 .rt{position:absolute;top:calc(16px + env(safe-area-inset-top,0px));left:24px;z-index:3;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600}
@@ -195,10 +197,112 @@ button{font:inherit;color:inherit}
   .rg:not(.one) .rc:nth-child(n+6){top:0}
   .rg .ra{width:40px;height:50px;font-size:22px}
 }
+
+/* ===== HEADER BERSAMA (sama dengan index) ===== */
+:root{--hxn:60px}
+#top{display:contents}
+.wrap{max-width:1240px;padding:0 20px}
+.hx-wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 20px}
+.hx-nav{position:sticky;top:0;z-index:100;height:var(--hxn);background:var(--nav);border-bottom:1px solid var(--line)}
+html[data-theme="light"] .hx-nav{background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.hx-nav .hx-wrap{height:100%;display:flex;align-items:center;gap:26px}
+.hx-logo{display:flex;align-items:flex-end;gap:8px;text-decoration:none;color:var(--tx3)}
+.hx-nv{display:block;height:26px;aspect-ratio:1755/340;background:url('logo.png') 48.15% 48.57%/123.08% auto no-repeat;flex:none}
+.hx-logo small{font-size:11px;font-weight:700;letter-spacing:2.5px;line-height:1;margin-bottom:1px}
+.hx-links{display:flex;gap:22px;flex:1}
+.hx-links a{position:relative;text-decoration:none;font-weight:700;font-size:15px;color:var(--tx3);padding:18px 0}
+.hx-links a.on{color:var(--tx)}
+.hx-links a.on::after{content:"";position:absolute;left:50%;bottom:6px;width:20px;height:3px;border-radius:3px;background:var(--ac);transform:translateX(-50%)}
+.hx-act{display:flex;align-items:center;gap:6px;margin-left:auto}
+.hx-ib{appearance:none;border:0;background:none;color:var(--tx);width:40px;height:40px;border-radius:50%;display:grid;place-items:center;cursor:pointer;text-decoration:none}
+.hx-ib:hover{background:var(--card2)}
+.hx-ib svg,.hx-bn svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hx-ib svg{width:24px;height:24px}
+.hx-av{width:40px;height:40px;border-radius:50%;object-fit:cover;display:block;border:2px solid var(--line);background:var(--card2);margin-left:6px}
+.hx-hero{position:relative;isolation:isolate;background:var(--card);border-bottom:1px solid var(--line)}
+.hx-hero.full{min-height:230px;display:flex;align-items:flex-end;background:linear-gradient(135deg,#4452dd,#1b1f33);border-bottom:0}
+.hx-banner{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center}
+.hx-hero.full::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(9,11,22,.1) 30%,rgba(9,11,22,.72))}
+.hx-hrow{display:flex;align-items:center;gap:18px;padding-top:16px;padding-bottom:16px}
+.hx-hero.full .hx-hrow{padding-top:80px;padding-bottom:22px}
+.hx-pic{flex:none;width:88px;height:88px;border-radius:50%;overflow:hidden;border:3px solid rgba(255,255,255,.9);background:var(--card2);box-shadow:0 6px 18px rgba(0,0,0,.4);display:block}
+.hx-pic img{width:100%;height:100%;object-fit:cover;display:block}
+.hx-hero.compact .hx-pic{width:52px;height:52px;border:2px solid var(--line);box-shadow:none}
+.hx-id{min-width:0;flex:1}
+.hx-name{margin:0;font-size:28px;font-weight:800;letter-spacing:-.5px;line-height:1.2;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.55);word-break:break-word}
+.hx-hero.compact .hx-name{font-size:18px;color:var(--tx);text-shadow:none;letter-spacing:0}
+.hx-stats{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px;margin-top:4px;color:rgba(255,255,255,.8);font-size:13px}
+.hx-stats b{font-size:20px;font-weight:600;color:#fff;margin-right:5px}
+.hx-stats span+span::before{content:"/";margin-right:14px;opacity:.5}
+.hx-hero.compact .hx-stats{color:var(--tx3);margin-top:0}.hx-hero.compact .hx-stats b{font-size:15px;color:var(--tx)}
+.hx-edit{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.hx-edit .btn{background:rgba(15,17,30,.62);color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);min-height:38px;font-size:13px}
+.hx-tabsbar{position:sticky;top:var(--hxn);z-index:99;background:var(--nav);border-bottom:1px solid var(--line)}
+.hx-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.hx-tabs::-webkit-scrollbar{display:none}
+.hx-tabs a{position:relative;flex:none;height:48px;padding:0 18px;display:flex;align-items:center;color:var(--tx3);text-decoration:none;font-weight:700;font-size:15.5px;transition:color .2s}
+.hx-tabs a:hover{color:var(--tx2)}.hx-tabs a.on{color:var(--tx)}
+.hx-tabs a.on::after{content:"";position:absolute;left:50%;bottom:0;width:20px;height:3px;border-radius:3px;background:var(--ac);transform:translateX(-50%)}
+.hx-bnav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:100;padding:6px 8px calc(6px + var(--safe-b));background:var(--card);border-top:1px solid var(--line);align-items:center;justify-content:space-around}
+.hx-bn{position:relative;width:58px;height:48px;display:grid;place-items:center;color:var(--tx3);text-decoration:none;border-radius:14px}
+.hx-bn svg{width:28px;height:28px}
+.hx-bn.on{color:var(--ac-tx);background:var(--ac-soft)}
+.hx-bn.on::before{content:"";position:absolute;top:-6px;left:50%;width:24px;height:3px;border-radius:0 0 3px 3px;background:var(--ac);transform:translateX(-50%)}
+.hx-bn.plus{width:64px;height:42px;border-radius:21px;background:var(--ac);color:#fff}
+.hx-bn img{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid var(--line)}
+.hx-seg{display:flex;gap:4px;padding:3px;border-radius:99px;background:var(--card2);border:1px solid var(--line)}
+.hx-seg button{flex:1;appearance:none;border:0;background:none;height:34px;border-radius:99px;color:var(--tx2);font:600 13px var(--sans);cursor:pointer}
+.hx-seg button.on{background:var(--ac);color:#fff}
+.hx-lb{text-align:left;font-weight:700;margin-bottom:8px}
+.hx-grid{display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:24px;align-items:start;padding-top:24px;padding-bottom:36px}
+.hx-grid .card{max-width:none;margin:0 0 20px}
+.hx-h{margin:0 0 6px;font-size:17px;font-weight:800;text-align:left}
+.hx-kv{display:flex;justify-content:space-between;padding:10px 12px;margin-top:8px;border-radius:12px;background:var(--card2);color:var(--tx2)}
+.hx-kv b{color:var(--tx)}
+@media (min-width:761px){.side,.prev{top:calc(var(--hxn) + 62px)}}
+.side{top:calc(var(--hxn) + 62px)}
+.panel{height:calc(100dvh - 270px)}
+body[data-hx="g"] #warp{inset:auto 0 0 0;top:var(--gtop,calc(var(--hxn) + 49px + 85px))}
+.hx-cur{display:none}
+@media (max-width:1000px){.hx-grid{grid-template-columns:1fr}}
+@media (max-width:720px){
+  :root{--hxn:calc(52px + var(--safe-t))}
+  .wrap,.hx-wrap{padding:0 16px}
+  .hx-nav{padding-top:var(--safe-t)}
+  .hx-nav .hx-wrap{gap:8px}
+  .hx-links,.hx-av{display:none}
+  .hx-nv{height:24px}
+  .hx-bnav{display:flex}
+  body{padding-bottom:calc(72px + var(--safe-b))}
+  body[data-hx="g"]{padding-bottom:0}
+  body[data-hx="g"] #warp{bottom:calc(var(--navh,64px) + 40px)}
+  body[data-hx="g"] .hx-hero.compact .hx-stats{display:none}
+  body[data-hx="g"] .stage{top:112px;bottom:112px}
+  body[data-hx="g"] .info{padding:24px 14px 8px}
+  body[data-hx="g"] .info h2{font-size:20px;margin-bottom:2px}
+  body[data-hx="g"] .timer{margin-bottom:6px;font-size:13px}
+  body[data-hx="g"] .desc{font-size:13px;line-height:1.4}
+  body[data-hx="g"] .bot{bottom:10px;gap:8px}
+  body[data-hx="g"] .bl,body[data-hx="g"] .br{gap:8px;flex-wrap:nowrap}
+  body[data-hx="g"] .pill{padding:8px 14px;font-size:12px}
+  body[data-hx="g"] .pull span{padding:8px 11px;font-size:12px}
+  body[data-hx="g"] .hx-hero.compact .hx-hrow{padding-top:10px;padding-bottom:10px}
+  .hx-cur{display:flex;position:fixed;left:0;right:0;bottom:var(--navh,61px);height:40px;z-index:100;align-items:center;justify-content:center;gap:10px;padding:0 12px;background:var(--card);border-top:1px solid var(--line)}
+  .hx-cur span{display:flex;align-items:center;gap:6px;background:var(--card2);border-radius:99px;padding:3px 14px 3px 8px;font-size:12.5px;font-weight:600;color:var(--tx3)}
+  .hx-cur b{color:var(--tx);font-weight:700;font-size:14px}
+  .hx-cur img{width:18px;height:18px;object-fit:contain}
+  .hx-hero.full{min-height:200px}
+  .hx-hero.full .hx-hrow{padding-top:56px;flex-wrap:wrap;gap:14px}
+  .hx-pic{width:72px;height:72px}
+  .hx-name{font-size:22px}
+  .hx-edit{width:100%;justify-content:flex-start}
+  .panel{height:calc(100dvh - 360px)}
+  .toast{bottom:calc(84px + var(--safe-b))}
+}
 </style>
 </head>
-<body>
-<div id="emu-boot"><b>G A C H A</b><i></i><span>membuka gerbang gacha...</span></div>
+<body data-tab="Gacha.html">
+<div id="emu-boot"><b>G A C H A</b><i></i><span>memuat gacha...</span></div>
 <script>
 (function(){
   var first = !sessionStorage.getItem('popit_booted');
@@ -212,12 +316,12 @@ button{font:inherit;color:inherit}
 })();
 </script>
 
+<header id="top"></header>
 <div id="warp" data-b="zero">
   <div class="topbar">
     <div class="ttl"><small>Warp</small><h1 id="bn-title">Contract Zero</h1></div>
     <div class="top-r">
-      <div class="chip"><img src="https://static.wikia.nocookie.net/houkai-star-rail/images/d/d9/Item_Credit.png/revision/latest?cb=20230722075044" alt="Credit" onerror="this.replaceWith('💎')"><span class="credit-count">0</span></div>
-      <div class="chip"><img src="https://media.printables.com/media/prints/274692/images/2440991_fbc314d8-5e72-465c-b7f6-13397d418cc8/thumbs/inside/1280x960/png/icon_mora_274692.webp" alt="Mora" onerror="this.replaceWith('🪙')"><span class="mora-count">0</span><button onclick="openRd()" aria-label="Redeem">+</button></div>
+      <div class="chip"><button onclick="openRd()" aria-label="Redeem" style="font-size:13px;font-weight:700;padding:0 4px">＋ Redeem</button></div>
       <a class="x" href="Game.html" aria-label="Tutup">×</a>
     </div>
   </div>
@@ -444,7 +548,6 @@ async function requireLogin() {
     return false;
   }
   updateCurrencyDisplay();
-  claimPetEarnings();
   return true;
 }
 
@@ -456,6 +559,60 @@ function timeAgo(ts) {
   return Math.floor(m / 60) + " jam lalu";
 }
 
+</script>
+<script>
+function hxAv(u){return u.profilePic||"https://api.dicebear.com/9.x/initials/svg?seed="+encodeURIComponent(u.username||"?")}
+function hxE(t){return String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function hxMark(p){document.querySelectorAll("#hx-seg button").forEach(function(b){b.classList.toggle("on",b.dataset.th===p)})}
+function hxTheme(p){try{localStorage.setItem("emu.theme",p)}catch(e){}var l=p==="light"||(p==="system"&&matchMedia("(prefers-color-scheme: light)").matches);document.documentElement.dataset.theme=l?"light":"dark";var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=l?"#ffffff":"#191c2b";hxMark(p)}
+function hxSet(v){var o=document.getElementById("hx-set");if(o)o.classList.toggle("show",v)}
+function mountHeader(){
+  var el=document.getElementById("top");if(!el||!currentUser)return;
+  var u=currentUser,at=document.body.dataset.tab||location.pathname.split("/").pop()||"";
+  var isP=at==="Profile.html",isG=at==="Gacha.html";
+  if(isG)document.body.dataset.hx="g";
+  var T=[["Game.html","Game"],["Inventori.html","Inventori"],["Gacha.html","Gacha"],["Chat.html","Chat"]];
+  var S=function(d){return '<svg viewBox="0 0 24 24" aria-hidden="true">'+d+'</svg>'};
+  var ic={set:'<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',bell:'<path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',home:'<path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>',planet:'<circle cx="12" cy="12" r="5.5"/><ellipse cx="12" cy="12" rx="10" ry="3.6" transform="rotate(-25 12 12)"/>',plus:'<path d="M12 5v14M5 12h14"/>',mail:'<rect x="3.5" y="6" width="17" height="12" rx="2.5"/><path d="M4 8l8 6 8-6"/>'};
+  var n=function(a){return Array.isArray(a)?a.length:0};
+  var av=hxE(hxAv(u)),stats='<span><b class="mora-count">0</b>Mora</span><span><b class="credit-count">0</b>Credit</span>'+(isP?'<span><b>'+n(u.pets)+'</b>Pet</span><span><b>'+n(u.banners)+'</b>Banner</span>':'');
+  var nav='<div class="hx-nav"><div class="hx-wrap"><a class="hx-logo" href="index.html" aria-label="neve Joki"><span class="hx-nv" role="img" aria-label="neve"></span><small>JOKI</small></a><nav class="hx-links" aria-label="Menu utama"><a href="index.html">Home</a><a class="on" href="Profile.html">Profil</a></nav><div class="hx-act"><button type="button" class="hx-ib" onclick="hxSet(true)" title="Pengaturan Sistem" aria-label="Pengaturan Sistem">'+S(ic.set)+'</button><a class="hx-ib" href="berita.html" title="Berita" aria-label="Berita">'+S(ic.bell)+'</a><a href="Profile.html" aria-label="Profil"><img class="hx-av" src="'+av+'" alt="Foto profil" referrerpolicy="no-referrer"></a></div></div></div>';
+  var hero="";
+  if(isP)hero='<section class="hx-hero full" id="profile-header"><div class="hx-banner" id="banner-bg"></div><div class="hx-wrap hx-hrow"><div class="hx-pic"><img id="profile-pic" src="'+av+'" alt="Foto profil" referrerpolicy="no-referrer"></div><div class="hx-id"><h1 class="hx-name" id="profile-name">'+hxE(u.username)+'</h1><div class="hx-stats">'+stats+'</div></div><div class="hx-edit"><label class="btn">Ganti Foto<input type="file" id="pic-input" accept="image/*" hidden onchange="changePhoto(event)"></label><button class="btn" type="button" onclick="openUrlPhoto()">Link Foto</button><button class="btn" type="button" onclick="removeBanner()">Lepas Banner</button></div></div></section>';
+  else hero='<section class="hx-hero compact"><div class="hx-wrap hx-hrow"><a class="hx-pic" href="Profile.html"><img src="'+av+'" alt="Foto profil" referrerpolicy="no-referrer"></a><div class="hx-id"><div class="hx-name">'+hxE(u.username)+'</div><div class="hx-stats">'+stats+'</div></div></div></section>';
+  var tabs='<div class="hx-tabsbar"><div class="hx-wrap"><nav class="hx-tabs" aria-label="Menu profil">'+T.map(function(t){return '<a href="'+t[0]+'" data-t="'+t[0]+'" class="'+(t[0]===at?"on":"")+'">'+t[1]+'</a>'}).join("")+'</nav></div></div>';
+  el.innerHTML=nav+hero+tabs;
+  if(!document.getElementById("hx-bnav")){
+    var b=document.createElement("nav");b.id="hx-bnav";b.className="hx-bnav";b.setAttribute("aria-label","Navigasi");
+    b.innerHTML='<a class="hx-bn" href="index.html" aria-label="Beranda">'+S(ic.home)+'</a><a class="hx-bn'+(at!=="Profile.html"?' on" aria-current="page':'')+'" href="Game.html" aria-label="Mini Game">'+S(ic.planet)+'</a><a class="hx-bn plus" href="index.html#game" aria-label="Pesan joki">'+S(ic.plus)+'</a><a class="hx-bn" href="saran.html" aria-label="Kotak Saran">'+S(ic.mail)+'</a><a class="hx-bn'+(at==="Profile.html"?' on" aria-current="page':'')+'" href="Profile.html" aria-label="Profil"><img src="'+av+'" alt="" referrerpolicy="no-referrer"></a>';
+    document.body.appendChild(b);
+  }
+  if(!document.getElementById("hx-set")){
+    var o=document.createElement("div");o.id="hx-set";o.className="popup-overlay";o.onclick=function(e){if(e.target===o)hxSet(false)};
+    o.innerHTML='<div class="popup"><button class="close-btn" onclick="hxSet(false)" aria-label="Tutup">×</button><h2>Pengaturan Sistem</h2><p class="hx-lb">Tampilan</p><div class="hx-seg" id="hx-seg"><button type="button" data-th="system">Sistem</button><button type="button" data-th="dark">Gelap</button><button type="button" data-th="light">Terang</button></div><button class="btn btn-outline" style="width:100%;margin-top:18px" type="button" onclick="logout()">Keluar dari akun</button></div>';
+    document.body.appendChild(o);
+    o.querySelector("#hx-seg").onclick=function(e){var x=e.target.closest("button[data-th]");if(x)hxTheme(x.dataset.th)};
+    hxMark(localStorage.getItem("emu.theme")||"dark");
+  }
+  if(isG){
+    if(!document.getElementById("hx-cur")){
+      var c=document.createElement("div");c.id="hx-cur";c.className="hx-cur";c.setAttribute("aria-label","Mora dan Credit");
+      c.innerHTML='<span><img src="https://media.printables.com/media/prints/274692/images/2440991_fbc314d8-5e72-465c-b7f6-13397d418cc8/thumbs/inside/1280x960/png/icon_mora_274692.webp" alt="Mora" referrerpolicy="no-referrer" onerror="this.replaceWith(\'🪙\')"><b class="mora-count">0</b>Mora</span><span><img src="https://static.wikia.nocookie.net/houkai-star-rail/images/d/d9/Item_Credit.png/revision/latest?cb=20230722075044" alt="Credit" referrerpolicy="no-referrer" onerror="this.replaceWith(\'💎\')"><b class="credit-count">0</b>Credit</span>';
+      document.body.appendChild(c);
+    }
+    hxGeo();
+  }
+}
+function hxGeo(){
+  var q=function(x){var e=document.querySelector(x);return e?e.offsetHeight:0};
+  var top=q(".hx-nav")+q(".hx-hero")+q(".hx-tabsbar");
+  if(top>0)document.body.style.setProperty("--gtop",top+"px");
+  var nb=q("#hx-bnav");
+  if(nb>0)document.body.style.setProperty("--navh",nb+"px");else document.body.style.removeProperty("--navh");
+}
+addEventListener("resize",function(){if(document.body.dataset.hx==="g")hxGeo()});
+addEventListener("load",function(){if(document.body.dataset.hx==="g")hxGeo()});
+(function(){var _r=requireLogin;requireLogin=async function(){var ok=await _r();if(ok){try{mountHeader();updateCurrencyDisplay()}catch(x){console.error(x)}}return ok}})();
 </script>
 <script>
 async function showRate(type) {
@@ -570,6 +727,10 @@ async function pull(times) {
     pet: (currentUser.pets || []).map(x => x.name),
     banner: (currentUser.banners || []).map(x => x.name)
   };
+  // Tombol Lewati aktif sejak awal animasi (bukan baru setelah server membalas)
+  let skipped = false;
+  $("skip").onclick = () => { skipped = true; };
+  const skipWait = ms => new Promise(r => { const t0 = Date.now(), iv = setInterval(() => { if (skipped || Date.now() - t0 >= ms) { clearInterval(iv); r(); } }, 40); });
   const fx = $("fx");
   fx.querySelectorAll(".st").forEach(e => e.remove());
   for (let i = 0; i < 45; i++) {
@@ -580,7 +741,7 @@ async function pull(times) {
   }
   fx.className = "show";
 
-  const [res] = await Promise.all([doGacha(cur, times), sleep(1500)]);
+  const [res] = await Promise.all([doGacha(cur, times), skipWait(1500)]);
   if (!res.success) {
     fx.className = "";
     showToast(res.message || "Gagal melakukan gacha");
@@ -590,7 +751,7 @@ async function pull(times) {
   const items = res.results || [];
   await settleDuplicates(items, before, b.cur);
   fx.className = "show c" + Math.max(3, ...items.map(rarityOf));
-  await Promise.race([sleep(1100), new Promise(r => $("skip").onclick = r)]);
+  if (!skipped) await skipWait(1100);
   showResult(items);
   fx.className = "";
   running = false; setDis(false);

@@ -637,7 +637,7 @@ function begin(){reset();st="run";$("rdy").classList.add("off")}
 function again(){if(performance.now()>lockT)begin()}
 function act(){if(st==="over")again();else if(st==="ready")begin();else if(y===0)vy=JUMP;else jb=.12}
 function end(){st="over";const s=Math.floor(score);if(s>best){best=s;try{localStorage.setItem("dino_best",s)}catch(e){}}
-  flush();hud();$("fs").textContent=s;$("fr2").innerHTML=`Hadiah: ${ci("mora")} ${got.mora} Mora · ${ci("credit")} ${got.credit} Credit`;
+  emuScore("dino",s);flush();hud();$("fs").textContent=s;$("fr2").innerHTML=`Hadiah: ${ci("mora")} ${got.mora} Mora · ${ci("credit")} ${got.credit} Credit`;
   lockT=performance.now()+250;setTimeout(()=>$("over").classList.add("on"),200)}
 
 function spawn(){
@@ -694,6 +694,29 @@ function flush(){clearTimeout(ft);const m=pend.mora,c=pend.credit;if(!m&&!c)retu
   fl=fl.then(async()=>{if(!currentUser)throw 0;const u={};if(m)u.mora=(currentUser.mora||0)+m;if(c)u.credit=(currentUser.credit||0)+c;
     const r=await updateUser(u);if(!r||!r.success)throw 0;updateCurrencyDisplay()}).catch(()=>{pend.mora+=m;pend.credit+=c})}
 addEventListener("pagehide",flush);
+/* ===== REKOR TERTINGGI (dibaca Profile.html) =====
+   Disimpan di perangkat (emu.hs.<username>) dan disinkronkan ke akun (kolom highScores) bila server mengizinkan. */
+let _hsT=0,_hsDirty=false;
+function emuScore(key,score){
+  score=Math.floor(Number(score)||0);if(score<=0)return;
+  try{
+    const u=(currentUser&&currentUser.username)||JSON.parse(localStorage.getItem("popit_session")).username;
+    const k="emu.hs."+u,h=JSON.parse(localStorage.getItem(k))||{};
+    if(score>(Number(h[key])||0)){h[key]=score;localStorage.setItem(k,JSON.stringify(h));_hsDirty=true}
+  }catch(e){}
+  clearTimeout(_hsT);_hsT=setTimeout(emuScoreSync,1500);
+}
+async function emuScoreSync(){
+  if(!_hsDirty||!currentUser)return;_hsDirty=false;
+  try{
+    const h=JSON.parse(localStorage.getItem("emu.hs."+currentUser.username))||{};
+    const c=(currentUser.highScores&&typeof currentUser.highScores==="object")?currentUser.highScores:{};
+    const m={...c};let ch=false;
+    for(const k in h)if((Number(h[k])||0)>(Number(m[k])||0)){m[k]=h[k];ch=true}
+    if(ch)await updateUser({highScores:m});
+  }catch(e){}
+}
+addEventListener("pagehide",emuScoreSync);
 reset();requestAnimationFrame(loop);
 requireLogin().catch(e=>console.error("Login error:",e));
 </script>

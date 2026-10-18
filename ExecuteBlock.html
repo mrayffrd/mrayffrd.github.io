@@ -892,6 +892,30 @@
       if (rest.length && !rest.some(canPlay)) end();
     }
 
+    /* ===== REKOR TERTINGGI (dibaca Profile.html) =====
+       Disimpan di perangkat (emu.hs.<username>) dan disinkronkan ke akun (kolom highScores) bila server mengizinkan. */
+    let _hsT=0,_hsDirty=false;
+    function emuScore(key,score){
+      score=Math.floor(Number(score)||0);if(score<=0)return;
+      try{
+        const u=(currentUser&&currentUser.username)||JSON.parse(localStorage.getItem("popit_session")).username;
+        const k="emu.hs."+u,h=JSON.parse(localStorage.getItem(k))||{};
+        if(score>(Number(h[key])||0)){h[key]=score;localStorage.setItem(k,JSON.stringify(h));_hsDirty=true}
+      }catch(e){}
+      clearTimeout(_hsT);_hsT=setTimeout(emuScoreSync,1500);
+    }
+    async function emuScoreSync(){
+      if(!_hsDirty||!currentUser)return;_hsDirty=false;
+      try{
+        const h=JSON.parse(localStorage.getItem("emu.hs."+currentUser.username))||{};
+        const c=(currentUser.highScores&&typeof currentUser.highScores==="object")?currentUser.highScores:{};
+        const m={...c};let ch=false;
+        for(const k in h)if((Number(h[k])||0)>(Number(m[k])||0)){m[k]=h[k];ch=true}
+        if(ch)await updateUser({highScores:m});
+      }catch(e){}
+    }
+    addEventListener("pagehide",emuScoreSync);
+    
     function end() {
       over = true;
       flush();
@@ -902,6 +926,7 @@
 
       // ★ SAVE HIGH SCORE
       saveHighScore(score);
+      emuScore("execute", score);
 
       setTimeout(() => document.getElementById("over").classList.add("on"), 350);
     }

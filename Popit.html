@@ -342,7 +342,7 @@ body[data-tab="Profile.html"] .profile-pic-wrap{width:112px;height:112px}
 #main-character.clicked{transform:translate(-50%,-50%) scale(.95);image-rendering:pixelated}
 </style></head>
 <body data-tab="Game.html">
-<div id="emu-boot"><b>P O P &nbsp; C A T</b><i></i><span>menyalakan dunia klik...</span></div>
+<div id="emu-boot"><b>P O P &nbsp; C A T</b><i></i><span>memuat dunia klik...</span></div>
 <script>
 (function(){
   var first = !sessionStorage.getItem('popit_booted');
@@ -609,6 +609,30 @@ async function fAct(a,x){const r=await apiCall(a,{username:currentUser.username,
     const IMG_CLICK = "https://popcat.click/icons/favicon-32x32.png";
     [IMG_IDLE, IMG_CLICK].forEach(u => { new Image().src = u; }); // preload supaya tidak kedip
 
+    /* ===== REKOR TERTINGGI (dibaca Profile.html) =====
+       Disimpan di perangkat (emu.hs.<username>) dan disinkronkan ke akun (kolom highScores) bila server mengizinkan. */
+    let _hsT=0,_hsDirty=false;
+    function emuScore(key,score){
+      score=Math.floor(Number(score)||0);if(score<=0)return;
+      try{
+        const u=(currentUser&&currentUser.username)||JSON.parse(localStorage.getItem("popit_session")).username;
+        const k="emu.hs."+u,h=JSON.parse(localStorage.getItem(k))||{};
+        if(score>(Number(h[key])||0)){h[key]=score;localStorage.setItem(k,JSON.stringify(h));_hsDirty=true}
+      }catch(e){}
+      clearTimeout(_hsT);_hsT=setTimeout(emuScoreSync,1500);
+    }
+    async function emuScoreSync(){
+      if(!_hsDirty||!currentUser)return;_hsDirty=false;
+      try{
+        const h=JSON.parse(localStorage.getItem("emu.hs."+currentUser.username))||{};
+        const c=(currentUser.highScores&&typeof currentUser.highScores==="object")?currentUser.highScores:{};
+        const m={...c};let ch=false;
+        for(const k in h)if((Number(h[k])||0)>(Number(m[k])||0)){m[k]=h[k];ch=true}
+        if(ch)await updateUser({highScores:m});
+      }catch(e){}
+    }
+    addEventListener("pagehide",emuScoreSync);
+    
     let totalClicks = 0, rewardToggle = true, owed = 0, paying = false;
 
     async function pay() {
@@ -623,6 +647,7 @@ async function fAct(a,x){const r=await apiCall(a,{username:currentUser.username,
     }
     function press() {
       totalClicks++;
+      emuScore("popit", totalClicks);
       document.getElementById("click-count").textContent = totalClicks;
       character.src = IMG_CLICK;
       character.classList.add("clicked");

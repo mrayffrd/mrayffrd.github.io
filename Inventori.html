@@ -1,7 +1,7 @@
-<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><meta name="theme-color" content="#191c2b"><link rel="icon" href="icon.png"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><title>Inventori</title>
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><meta name="theme-color" content="#191c2b"><link rel="icon" href="icon.png"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><title>Inventori | neve Enterprise</title>
 <script>
 /* Tema (Sistem / Gelap / Terang) dipasang sebelum halaman tampil, sama seperti index.html */
-(function(){function ap(){try{var p=localStorage.getItem('emu.theme')||'system';var l=p==='light'||(p==='system'&&matchMedia('(prefers-color-scheme: light)').matches);document.documentElement.dataset.theme=l?'light':'dark';var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=l?'#ffffff':'#191c2b';}catch(e){}}
+(function(){function ap(){try{var p=localStorage.getItem('emu.theme')||'dark';var l=p==='light'||(p==='system'&&matchMedia('(prefers-color-scheme: light)').matches);document.documentElement.dataset.theme=l?'light':'dark';var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=l?'#ffffff':'#191c2b';}catch(e){}}
 ap();try{matchMedia('(prefers-color-scheme: light)').addEventListener('change',ap)}catch(e){}})();
 </script>
 <style>
@@ -215,8 +215,162 @@ body[data-tab="Profile.html"] .profile-pic-wrap{width:112px;height:112px}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
 @media (max-width:480px){.card{margin:12px;padding:16px}.brand{font-size:21px}}
 
+
+/* ===== HEADER BERSAMA (sama dengan index) ===== */
+:root{--hxn:60px}
+#top{display:contents}
+.wrap{max-width:1240px;padding:0 20px}
+.hx-wrap{width:100%;max-width:1240px;margin:0 auto;padding:0 20px}
+.hx-nav{position:sticky;top:0;z-index:100;height:var(--hxn);background:var(--nav);border-bottom:1px solid var(--line)}
+html[data-theme="light"] .hx-nav{background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.hx-nav .hx-wrap{height:100%;display:flex;align-items:center;gap:26px}
+.hx-logo{display:flex;align-items:flex-end;gap:8px;text-decoration:none;color:var(--tx3)}
+.hx-nv{display:block;height:26px;aspect-ratio:1755/340;background:url('logo.png') 48.15% 48.57%/123.08% auto no-repeat;flex:none}
+.hx-logo small{font-size:11px;font-weight:700;letter-spacing:2.5px;line-height:1;margin-bottom:1px}
+.hx-links{display:flex;gap:22px;flex:1}
+.hx-links a{position:relative;text-decoration:none;font-weight:700;font-size:15px;color:var(--tx3);padding:18px 0}
+.hx-links a.on{color:var(--tx)}
+.hx-links a.on::after{content:"";position:absolute;left:50%;bottom:6px;width:20px;height:3px;border-radius:3px;background:var(--ac);transform:translateX(-50%)}
+.hx-act{display:flex;align-items:center;gap:6px;margin-left:auto}
+.hx-ib{appearance:none;border:0;background:none;color:var(--tx);width:40px;height:40px;border-radius:50%;display:grid;place-items:center;cursor:pointer;text-decoration:none}
+.hx-ib:hover{background:var(--card2)}
+.hx-ib svg,.hx-bn svg{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hx-ib svg{width:24px;height:24px}
+.hx-av{width:40px;height:40px;border-radius:50%;object-fit:cover;display:block;border:2px solid var(--line);background:var(--card2);margin-left:6px}
+.hx-hero{position:relative;isolation:isolate;background:var(--card);border-bottom:1px solid var(--line)}
+.hx-hero.full{min-height:230px;display:flex;align-items:flex-end;background:linear-gradient(135deg,#4452dd,#1b1f33);border-bottom:0}
+.hx-banner{position:absolute;inset:0;z-index:-2;background-size:cover;background-position:center}
+.hx-hero.full::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(9,11,22,.1) 30%,rgba(9,11,22,.72))}
+.hx-hrow{display:flex;align-items:center;gap:18px;padding-top:16px;padding-bottom:16px}
+.hx-hero.full .hx-hrow{padding-top:80px;padding-bottom:22px}
+.hx-pic{flex:none;width:88px;height:88px;border-radius:50%;overflow:hidden;border:3px solid rgba(255,255,255,.9);background:var(--card2);box-shadow:0 6px 18px rgba(0,0,0,.4);display:block}
+.hx-pic img{width:100%;height:100%;object-fit:cover;display:block}
+.hx-hero.compact .hx-pic{width:52px;height:52px;border:2px solid var(--line);box-shadow:none}
+.hx-id{min-width:0;flex:1}
+.hx-name{margin:0;font-size:28px;font-weight:800;letter-spacing:-.5px;line-height:1.2;color:#fff;text-shadow:0 2px 16px rgba(0,0,0,.55);word-break:break-word}
+.hx-hero.compact .hx-name{font-size:18px;color:var(--tx);text-shadow:none;letter-spacing:0}
+.hx-stats{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px;margin-top:4px;color:rgba(255,255,255,.8);font-size:13px}
+.hx-stats b{font-size:20px;font-weight:600;color:#fff;margin-right:5px}
+.hx-stats span+span::before{content:"/";margin-right:14px;opacity:.5}
+.hx-hero.compact .hx-stats{color:var(--tx3);margin-top:0}.hx-hero.compact .hx-stats b{font-size:15px;color:var(--tx)}
+.hx-edit{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.hx-edit .btn{background:rgba(15,17,30,.62);color:#fff;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);min-height:38px;font-size:13px}
+.hx-tabsbar{position:sticky;top:var(--hxn);z-index:99;background:var(--nav);border-bottom:1px solid var(--line)}
+.hx-tabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.hx-tabs::-webkit-scrollbar{display:none}
+.hx-tabs a{position:relative;flex:none;height:48px;padding:0 18px;display:flex;align-items:center;color:var(--tx3);text-decoration:none;font-weight:700;font-size:15.5px;transition:color .2s}
+.hx-tabs a:hover{color:var(--tx2)}.hx-tabs a.on{color:var(--tx)}
+.hx-tabs a.on::after{content:"";position:absolute;left:50%;bottom:0;width:20px;height:3px;border-radius:3px;background:var(--ac);transform:translateX(-50%)}
+.hx-bnav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:100;padding:6px 8px calc(6px + var(--safe-b));background:var(--card);border-top:1px solid var(--line);align-items:center;justify-content:space-around}
+.hx-bn{position:relative;width:58px;height:48px;display:grid;place-items:center;color:var(--tx3);text-decoration:none;border-radius:14px}
+.hx-bn svg{width:28px;height:28px}
+.hx-bn.on{color:var(--ac-tx);background:var(--ac-soft)}
+.hx-bn.on::before{content:"";position:absolute;top:-6px;left:50%;width:24px;height:3px;border-radius:0 0 3px 3px;background:var(--ac);transform:translateX(-50%)}
+.hx-bn.plus{width:64px;height:42px;border-radius:21px;background:var(--ac);color:#fff}
+.hx-bn img{width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid var(--line)}
+.hx-seg{display:flex;gap:4px;padding:3px;border-radius:99px;background:var(--card2);border:1px solid var(--line)}
+.hx-seg button{flex:1;appearance:none;border:0;background:none;height:34px;border-radius:99px;color:var(--tx2);font:600 13px var(--sans);cursor:pointer}
+.hx-seg button.on{background:var(--ac);color:#fff}
+.hx-lb{text-align:left;font-weight:700;margin-bottom:8px}
+.hx-grid{display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:24px;align-items:start;padding-top:24px;padding-bottom:36px}
+.hx-grid .card{max-width:none;margin:0 0 20px}
+.hx-h{margin:0 0 6px;font-size:17px;font-weight:800;text-align:left}
+.hx-kv{display:flex;justify-content:space-between;padding:10px 12px;margin-top:8px;border-radius:12px;background:var(--card2);color:var(--tx2)}
+.hx-kv b{color:var(--tx)}
+@media (min-width:761px){.side,.prev{top:calc(var(--hxn) + 62px)}}
+.side{top:calc(var(--hxn) + 62px)}
+.panel{height:calc(100dvh - 270px)}
+body[data-hx="g"] #warp{inset:auto 0 0 0;top:calc(var(--hxn) + 48px)}
+@media (max-width:1000px){.hx-grid{grid-template-columns:1fr}}
+@media (max-width:720px){
+  :root{--hxn:calc(52px + var(--safe-t))}
+  .wrap,.hx-wrap{padding:0 16px}
+  .hx-nav{padding-top:var(--safe-t)}
+  .hx-nav .hx-wrap{gap:8px}
+  .hx-links,.hx-av{display:none}
+  .hx-nv{height:24px}
+  .hx-bnav{display:flex}
+  body{padding-bottom:calc(72px + var(--safe-b))}
+  body[data-hx="g"]{padding-bottom:0}
+  body[data-hx="g"] #warp{bottom:calc(64px + var(--safe-b))}
+  .hx-hero.full{min-height:200px}
+  .hx-hero.full .hx-hrow{padding-top:56px;flex-wrap:wrap;gap:14px}
+  .hx-pic{width:72px;height:72px}
+  .hx-name{font-size:22px}
+  .hx-edit{width:100%;justify-content:flex-start}
+  .panel{height:calc(100dvh - 360px)}
+  .toast{bottom:calc(84px + var(--safe-b))}
+}
+
+/* ---------- padang rumput pet ---------- */
+.pet-area{
+  position:relative; overflow:hidden; margin-top:12px; height:clamp(380px,112vw,520px);
+  border-radius:var(--r-lg); border:1px solid rgba(255,255,255,.18); isolation:isolate;
+  background:linear-gradient(180deg,#90d67f 0 30%,#84cf70 30% 62%,#76c862 62% 100%);
+  -webkit-user-select:none; user-select:none; touch-action:manipulation;
+}
+.pet-area .deco{ position:absolute; pointer-events:none; }
+.pet-area .tree{ width:0; height:0; }
+.pet-area .tree i{ position:absolute; border-radius:50%; }
+.pet-area .tree .tr{ left:-9px; top:0; width:18px; height:var(--th,50px); border-radius:6px; background:#9b6447; }
+.pet-area .tree .l1{ background:#57c46a; }
+.pet-area .tree .l2{ background:#4db862; }
+.pet-area .tree .l3{ background:#3fae59; }
+.pet-area .tree .sh{ background:rgba(0,0,0,.09); }
+.pet-area .tuft{ width:22px; height:13px; opacity:.85; }
+.pet-area .pdot{ border-radius:50%; animation:dotTw 3.2s ease-in-out infinite; }
+@keyframes dotTw{ 0%,100%{ opacity:.35; transform:scale(.85);} 50%{ opacity:1; transform:scale(1.15);} }
+.pet-area .blobL{ right:-14%; bottom:-22%; width:64%; aspect-ratio:1; border-radius:50%; background:rgba(210,245,170,.42); }
+.pet-area .blobO{ left:-10%; bottom:-14%; width:38%; aspect-ratio:1; border-radius:50%; background:radial-gradient(circle,#ecc55a 0 55%,rgba(236,197,90,0) 72%); }
+.pet-area .empty{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:5; width:max-content; max-width:86%;
+  background:rgba(255,255,255,.92); color:#2b3a2f; padding:8px 16px; border-radius:99px; font-size:13px; font-weight:600;
+  box-shadow:0 4px 14px rgba(0,0,0,.12); text-align:center;
+}
+.pet{ position:absolute; left:0; top:0; width:0; height:0; will-change:transform; }
+.pet-in{ position:absolute; left:0; top:0; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:3px; cursor:pointer; }
+.pet-sprite{ width:74px; height:74px; display:block; transition:transform .25s; }
+.pet-sprite img{ width:100%; height:100%; object-fit:contain; display:block; pointer-events:none; -webkit-user-drag:none; image-rendering:auto; filter:none; border-radius:0; margin:0; }
+.pet-sprite.idle{ animation:petBreath 2.6s ease-in-out infinite; transform-origin:50% 100%; }
+.pet-sprite.walk{ animation:petWalk .5s ease-in-out infinite; transform-origin:50% 100%; }
+.pet-sprite.hop{ animation:petHop .55s ease-out 1; }
+.pet.ready .pet-sprite{ animation:petHop 1.1s ease-out infinite; }
+@keyframes petBreath{ 0%,100%{ transform:scale(1,1);} 50%{ transform:scale(1.03,.97);} }
+@keyframes petWalk{ 0%,100%{ transform:translateY(0) rotate(-2deg);} 50%{ transform:translateY(-6px) rotate(2deg);} }
+@keyframes petHop{ 0%{ transform:translateY(0) scale(1,1);} 35%{ transform:translateY(-14px) scale(.97,1.05);} 65%{ transform:translateY(0) scale(1.06,.94);} 100%{ transform:translateY(0) scale(1,1);} }
+.pill{
+  display:flex; align-items:center; gap:6px; white-space:nowrap; background:rgba(255,255,255,.94); color:#26332b;
+  border-radius:99px; padding:3px 10px; font-size:12px; font-weight:700; box-shadow:0 3px 10px rgba(30,70,30,.18);
+}
+.pill .cur-ico{ width:15px!important; height:15px!important; margin:0!important; }
+.pill .pet-timer{ font-size:12px; color:#26332b; margin:0; font-variant-numeric:tabular-nums; }
+.pill.tm.ready .pet-timer{ color:#c27a00; font-weight:800; }
+.pill.tm.ready{ box-shadow:0 0 0 2px rgba(255,205,80,.9),0 3px 12px rgba(200,140,0,.35); }
+.pill.nm{ padding:2px 10px 2px 3px; }
+.pill .rb{ width:20px; height:20px; border-radius:50%; display:grid; place-items:center; color:#fff; font-size:11px; font-weight:800; background:#8a95a5; }
+.pill .rb.r3{ background:#1e90d6; } .pill .rb.r4{ background:#8f5be0; } .pill .rb.r5{ background:#e0a020; }
+.pill.nm.norb{ padding:2px 10px; }
+.pet-menu{
+  position:absolute; left:0; top:64px; transform:translateX(-50%); z-index:9999; display:none; min-width:150px;
+  background:rgba(255,255,255,.97); color:#26332b; border-radius:14px; padding:9px; text-align:center;
+  box-shadow:0 8px 22px rgba(20,60,20,.3); font-size:12px;
+}
+.pet-menu.up{ top:auto; bottom:64px; }
+.pet.open .pet-menu{ display:block; }
+.pet-menu .inf{ display:flex; justify-content:center; align-items:center; gap:4px; font-weight:600; margin-bottom:7px; }
+.pet-menu .acts{ display:flex; gap:6px; justify-content:center; }
+.pet-menu button{ border:0; cursor:pointer; border-radius:99px; padding:5px 12px; font-size:12px; font-weight:700; font-family:inherit; }
+.pet-menu .b-claim{ background:#f4b93a; color:#3d2a00; }
+.pet-menu .b-sell{ background:#ffdcdc; color:#a3222c; }
+@media (prefers-reduced-motion:reduce){ .pet-sprite, .pet-area .pdot{ animation:none!important; } }
+
+
+.inv.petmode{grid-template-columns:68px 1fr}
+.inv.petmode .prev{display:none}
+.pet-note{color:var(--tx2);font-size:13px;margin-bottom:2px}
+@media(max-width:760px){.inv.petmode{grid-template-columns:56px 1fr}}
 </style>
-</head><body data-tab="Inventori.html"><div id="emu-boot"><b>I N V EN T O R I</b><i></i><span>membuka tas...</span></div>
+</head><body data-tab="Inventori.html"><div id="emu-boot"><b>I N V EN T O R I</b><i></i><span>membuka inventori...</span></div>
 <script>
 (function(){
   var first = !sessionStorage.getItem('popit_booted');
@@ -229,7 +383,7 @@ body[data-tab="Profile.html"] .profile-pic-wrap{width:112px;height:112px}
   setTimeout(done, 2200);
 })();
 </script><header id="top"></header><div class="wrap"><div class="inv"><div class="side" id="side"></div>
-<div class="mainp"><div class="mh"><b id="ct"></b><span id="ctl"></span></div><div class="gridm" id="gm"></div></div>
+<div class="mainp"><div class="mh"><b id="ct"></b><span id="ctl"></span></div><div class="gridm" id="gm"></div><div id="petwrap" hidden><p class="pet-note">Pet menghasilkan mata uang. Setelah waktu habis, pet menunggu sampai kamu klaim &mdash; hitung mundur baru mulai lagi setelah diklaim. Ketuk pet untuk klaim atau jual.</p><div class="pet-area" id="pet-area"></div></div></div>
 <div class="prev" id="pv"><button class="x" onclick="closeP()">×</button><div id="pc"></div></div></div></div>
 <div class="veil" id="vl" onclick="closeP()"></div>
 <div class="popup-overlay" id="rp"><div class="popup"><button class="close-btn" onclick="$('rp').classList.remove('show')">×</button><h2>Redeem Kode</h2><input id="rc" placeholder="Contoh: WELCOME100" maxlength="30"><button class="btn" style="width:100%" onclick="doRedeem()">Redeem</button><p id="rm" style="margin-top:10px;font-size:13px"></p></div></div><script>/* =====================================================
@@ -395,7 +549,6 @@ async function requireLogin() {
     return false;
   }
   updateCurrencyDisplay();
-  claimPetEarnings();
   return true;
 }
 
@@ -418,14 +571,42 @@ const $=id=>document.getElementById(id);
 const esc=t=>String(t??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
 const ci=t=>`<img class="cur-ico" src="${t==="mora"?ICON_MORA:ICON_CREDIT}" alt="${t}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${t==="mora"?SVG_MORA:SVG_CREDIT}'">`;
 const avatar=(n,p)=>p||"https://api.dicebear.com/9.x/initials/svg?seed="+encodeURIComponent(n||"?");
+function hxAv(u){return u.profilePic||"https://api.dicebear.com/9.x/initials/svg?seed="+encodeURIComponent(u.username||"?")}
+function hxE(t){return String(t==null?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+function hxMark(p){document.querySelectorAll("#hx-seg button").forEach(function(b){b.classList.toggle("on",b.dataset.th===p)})}
+function hxTheme(p){try{localStorage.setItem("emu.theme",p)}catch(e){}var l=p==="light"||(p==="system"&&matchMedia("(prefers-color-scheme: light)").matches);document.documentElement.dataset.theme=l?"light":"dark";var m=document.querySelector('meta[name="theme-color"]');if(m)m.content=l?"#ffffff":"#191c2b";hxMark(p)}
+function hxSet(v){var o=document.getElementById("hx-set");if(o)o.classList.toggle("show",v)}
 function mountHeader(){
-  const el=$("top");if(!el||!currentUser)return;
-  const at=document.body.dataset.tab||location.pathname.split("/").pop();
-  const T=[["Game.html","Game"],["Inventori.html","Inventori"],["Gacha.html","Gacha"],["Chat.html","Chat"]];
-  el.innerHTML=`<div class="bar"><a class="brand" href="index.html" aria-label="Kembali ke beranda">EMU<small>INVENTORI</small></a><span class="chip">${ci("mora")}<b class="mora-count">0</b></span><span class="chip">${ci("credit")}<b class="credit-count">0</b></span><a href="Profile.html" title="Profil"><img class="av" src="${esc(avatar(currentUser.username,currentUser.profilePic))}"></a></div><div class="tabs">${T.map(t=>`<a href="${t[0]}" data-t="${t[0]}" class="${t[0]===at?"on":""}">${t[1]}</a>`).join("")}</div>`;
+  var el=document.getElementById("top");if(!el||!currentUser)return;
+  var u=currentUser,at=document.body.dataset.tab||location.pathname.split("/").pop()||"";
+  var isP=at==="Profile.html",isG=at==="Gacha.html";
+  if(isG)document.body.dataset.hx="g";
+  var T=[["Game.html","Game"],["Inventori.html","Inventori"],["Gacha.html","Gacha"],["Chat.html","Chat"]];
+  var S=function(d){return '<svg viewBox="0 0 24 24" aria-hidden="true">'+d+'</svg>'};
+  var ic={set:'<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',bell:'<path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',home:'<path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>',planet:'<circle cx="12" cy="12" r="5.5"/><ellipse cx="12" cy="12" rx="10" ry="3.6" transform="rotate(-25 12 12)"/>',plus:'<path d="M12 5v14M5 12h14"/>',mail:'<rect x="3.5" y="6" width="17" height="12" rx="2.5"/><path d="M4 8l8 6 8-6"/>'};
+  var n=function(a){return Array.isArray(a)?a.length:0};
+  var av=hxE(hxAv(u)),stats='<span><b class="mora-count">0</b>Mora</span><span><b class="credit-count">0</b>Credit</span>'+(isP?'<span><b>'+n(u.pets)+'</b>Pet</span><span><b>'+n(u.banners)+'</b>Banner</span>':'');
+  var nav='<div class="hx-nav"><div class="hx-wrap"><a class="hx-logo" href="index.html" aria-label="neve Joki"><span class="hx-nv" role="img" aria-label="neve"></span><small>JOKI</small></a><nav class="hx-links" aria-label="Menu utama"><a href="index.html">Home</a><a class="on" href="Profile.html">Profil</a></nav><div class="hx-act"><button type="button" class="hx-ib" onclick="hxSet(true)" title="Pengaturan Sistem" aria-label="Pengaturan Sistem">'+S(ic.set)+'</button><a class="hx-ib" href="berita.html" title="Berita" aria-label="Berita">'+S(ic.bell)+'</a><a href="Profile.html" aria-label="Profil"><img class="hx-av" src="'+av+'" alt="Foto profil" referrerpolicy="no-referrer"></a></div></div></div>';
+  var hero="";
+  if(isP)hero='<section class="hx-hero full" id="profile-header"><div class="hx-banner" id="banner-bg"></div><div class="hx-wrap hx-hrow"><div class="hx-pic"><img id="profile-pic" src="'+av+'" alt="Foto profil" referrerpolicy="no-referrer"></div><div class="hx-id"><h1 class="hx-name" id="profile-name">'+hxE(u.username)+'</h1><div class="hx-stats">'+stats+'</div></div><div class="hx-edit"><label class="btn">Ganti Foto<input type="file" id="pic-input" accept="image/*" hidden onchange="changePhoto(event)"></label><button class="btn" type="button" onclick="openUrlPhoto()">Link Foto</button><button class="btn" type="button" onclick="removeBanner()">Lepas Banner</button></div></div></section>';
+  else if(!isG)hero='<section class="hx-hero compact"><div class="hx-wrap hx-hrow"><a class="hx-pic" href="Profile.html"><img src="'+av+'" alt="Foto profil" referrerpolicy="no-referrer"></a><div class="hx-id"><div class="hx-name">'+hxE(u.username)+'</div><div class="hx-stats">'+stats+'</div></div></div></section>';
+  var tabs='<div class="hx-tabsbar"><div class="hx-wrap"><nav class="hx-tabs" aria-label="Menu profil">'+T.map(function(t){return '<a href="'+t[0]+'" data-t="'+t[0]+'" class="'+(t[0]===at?"on":"")+'">'+t[1]+'</a>'}).join("")+'</nav></div></div>';
+  el.innerHTML=nav+hero+tabs;
+  if(!document.getElementById("hx-bnav")){
+    var b=document.createElement("nav");b.id="hx-bnav";b.className="hx-bnav";b.setAttribute("aria-label","Navigasi");
+    b.innerHTML='<a class="hx-bn" href="index.html" aria-label="Beranda">'+S(ic.home)+'</a><a class="hx-bn'+(at!=="Profile.html"?' on" aria-current="page':'')+'" href="Game.html" aria-label="Mini Game">'+S(ic.planet)+'</a><a class="hx-bn plus" href="index.html#game" aria-label="Pesan joki">'+S(ic.plus)+'</a><a class="hx-bn" href="saran.html" aria-label="Kotak Saran">'+S(ic.mail)+'</a><a class="hx-bn'+(at==="Profile.html"?' on" aria-current="page':'')+'" href="Profile.html" aria-label="Profil"><img src="'+av+'" alt="" referrerpolicy="no-referrer"></a>';
+    document.body.appendChild(b);
+  }
+  if(!document.getElementById("hx-set")){
+    var o=document.createElement("div");o.id="hx-set";o.className="popup-overlay";o.onclick=function(e){if(e.target===o)hxSet(false)};
+    o.innerHTML='<div class="popup"><button class="close-btn" onclick="hxSet(false)" aria-label="Tutup">×</button><h2>Pengaturan Sistem</h2><p class="hx-lb">Tampilan</p><div class="hx-seg" id="hx-seg"><button type="button" data-th="system">Sistem</button><button type="button" data-th="dark">Gelap</button><button type="button" data-th="light">Terang</button></div><button class="btn btn-outline" style="width:100%;margin-top:18px" type="button" onclick="logout()">Keluar dari akun</button></div>';
+    document.body.appendChild(o);
+    o.querySelector("#hx-seg").onclick=function(e){var x=e.target.closest("button[data-th]");if(x)hxTheme(x.dataset.th)};
+    hxMark(localStorage.getItem("emu.theme")||"dark");
+  }
 }
 let _n=null;
-function badge(f,n){const a=document.querySelector(`.tabs a[data-t="${f}"]`);if(!a)return;let b=a.querySelector(".bdg");if(!n){b&&b.remove();return}if(!b){b=document.createElement("span");b.className="bdg";a.appendChild(b)}b.textContent=n>9?"9+":n}
+function badge(f,n){const a=document.querySelector(`.hx-tabs a[data-t="${f}"]`);if(!a)return;let b=a.querySelector(".bdg");if(!n){b&&b.remove();return}if(!b){b=document.createElement("span");b.className="bdg";a.appendChild(b)}b.textContent=n>9?"9+":n}
 async function poll(){
   if(!currentUser)return;const r=await apiCall("notifs",{username:currentUser.username});if(!r.success)return;
   if(!_n?r.inbox>0:r.inbox>_n.inbox)showToast("✉️ Ada pesan baru di Kotak Pesan");
@@ -505,5 +686,248 @@ async function delAll(){if(!confirm("Hapus semua isi kotak pesan?"))return;await
 async function doRedeem(){const c=$("rc").value.trim(),m=$("rm");if(!c){m.textContent="Masukkan kode!";return}m.textContent="Memproses...";
  const r=await redeemCode(c);m.style.color=r.success?"var(--success)":"var(--danger)";m.textContent=r.message||"";if(r.success){render();setTimeout(()=>$("rp").classList.remove("show"),1200)}}
 window.onNotif=n=>{if(n.inbox&&cat!=="mail")loadMail()};
+
+/* ================= AREA PET (dipindah dari Profil) ================= */
+    let timerInterval = null;
+    const PET_FALLBACK = "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="28" fill="#5b6bbf"/><text x="32" y="42" font-size="28" text-anchor="middle">🐾</text></svg>');
+
+    function getPetRemaining(pet) {
+      if (!pet.lastClaim) return 0;
+      const last = new Date(pet.lastClaim).getTime();
+      const intervalMs = (pet.intervalMinutes || 60) * 60 * 1000;
+      return Math.max(0, last + intervalMs - Date.now());
+    }
+
+    function formatTime(ms) {
+      if (ms <= 0) return "Siap diklaim!";
+      const totalSec = Math.ceil(ms / 1000);
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      if (h > 0) return `${h}j ${m.toString().padStart(2,"0")}m`;
+      return `${m}m ${s.toString().padStart(2,"0")}s`;
+    }
+
+    /* ================= PADANG PET ================= */
+    const MEADOW_HTML = `
+      <div class="deco blobL"></div><div class="deco blobO"></div>
+      <div class="deco tree" style="left:88%;top:8%;--th:60px"><i class="sh" style="left:-70px;top:-46px;width:150px;height:110px"></i><i class="l3" style="left:-24px;top:-90px;width:110px;height:110px"></i><i class="l2" style="left:-72px;top:-74px;width:104px;height:104px"></i><i class="l1" style="left:-46px;top:-118px;width:104px;height:104px"></i><i class="tr"></i></div>
+      <div class="deco tree" style="left:15%;top:31%;--th:44px"><i class="sh" style="left:-56px;top:-38px;width:120px;height:90px"></i><i class="l3" style="left:-14px;top:-70px;width:92px;height:92px"></i><i class="l2" style="left:-62px;top:-58px;width:88px;height:88px"></i><i class="l1" style="left:-40px;top:-92px;width:84px;height:84px"></i><i class="tr"></i></div>
+      <div class="deco tree" style="left:66%;top:29%;--th:32px"><i class="sh" style="left:-36px;top:-26px;width:80px;height:64px"></i><i class="l3" style="left:-4px;top:-44px;width:60px;height:60px"></i><i class="l2" style="left:-38px;top:-36px;width:58px;height:58px"></i><i class="l1" style="left:-26px;top:-58px;width:54px;height:54px"></i><i class="tr" style="width:14px;left:-7px"></i></div>
+      ${[[9,52],[38,36],[58,14],[86,42],[22,18],[74,68],[47,78],[12,84],[90,88]].map(([x,y])=>`<svg class="deco tuft" style="left:${x}%;top:${y}%" viewBox="0 0 24 14"><path d="M4 13 2 3M12 13V1M20 13l2-9" stroke="#3f9a55" stroke-width="2.6" stroke-linecap="round" fill="none"/></svg>`).join("")}
+      ${[[60,8,'#f4a6c1',9],[70,18,'#fff',8],[47,20,'#fff',7],[78,10,'#f7e08a',6],[54,30,'#f4a6c1',8],[33,44,'#f7e08a',6],[84,50,'#fff',8],[64,42,'#f4a6c1',7],[26,60,'#fff',6],[42,52,'#f7e08a',7],[92,24,'#f7e08a',6]].map(([x,y,c,z],i)=>`<i class="deco pdot" style="left:${x}%;top:${y}%;width:${z}px;height:${z}px;background:${c};animation-delay:${(i*.37).toFixed(2)}s"></i>`).join("")}
+      <div id="pet-layer"></div>`;
+
+    let meadowReady = false, petSig = "", petNodes = [], petPos = [], wanderOn = true, openPet = -1;
+
+    function ensureMeadow() {
+      const area = document.getElementById("pet-area");
+      if (!meadowReady) { area.innerHTML = MEADOW_HTML; meadowReady = true; }
+      return area;
+    }
+
+    function rarityBadge(p) {
+      const v = p.rarity ?? p.rar ?? p.tier;
+      if (v === undefined || v === null || v === "") return null;
+      const n = parseInt(v);
+      if (!isNaN(n)) return n >= 5 ? ["L", 5] : n === 4 ? ["E", 4] : n === 3 ? ["R", 3] : ["N", 2];
+      const ch = String(v).trim().charAt(0).toUpperCase();
+      return [ch, ch === "R" ? 3 : ch === "E" ? 4 : (ch === "L" || ch === "S") ? 5 : 2];
+    }
+
+    function arenaSize() {
+      const a = document.getElementById("pet-area");
+      return { w: a.clientWidth, h: a.clientHeight };
+    }
+    const rnd = (a, b) => a + Math.random() * (b - a);
+
+    function randomSpot() {
+      const { w, h } = arenaSize();
+      return { x: rnd(58, Math.max(60, w - 58)), y: rnd(84, Math.max(86, h - 62)) };
+    }
+
+    function placePet(i, x, y, dur) {
+      const n = petNodes[i]; if (!n) return;
+      petPos[i] = { x, y };
+      n.el.style.transition = dur ? `transform ${dur}s linear` : "none";
+      n.el.style.transform = `translate3d(${x}px,${y}px,0)`;
+      n.el.style.zIndex = Math.round(y);
+    }
+
+    function wander(i) {
+      const n = petNodes[i]; if (!n) return;
+      clearTimeout(n.t);
+      if (!wanderOn || openPet === i) { n.t = setTimeout(() => wander(i), 1500); return; }
+      const roll = Math.random();
+      if (roll < .3) {                                   // diam sebentar / lompat kecil
+        if (roll < .12) { n.spr.classList.remove("idle"); n.spr.classList.add("hop"); setTimeout(() => { n.spr.classList.remove("hop"); n.spr.classList.add("idle"); }, 600); }
+        n.t = setTimeout(() => wander(i), rnd(1500, 3800));
+        return;
+      }
+      const cur = petPos[i], { w, h } = arenaSize();
+      const tx = Math.min(w - 58, Math.max(58, cur.x + rnd(-150, 150)));
+      const ty = Math.min(h - 62, Math.max(84, cur.y + rnd(-90, 90)));
+      const dist = Math.hypot(tx - cur.x, ty - cur.y);
+      if (dist < 20) { n.t = setTimeout(() => wander(i), 900); return; }
+      const dur = dist / rnd(22, 36);
+      n.face = tx >= cur.x ? 1 : -1;
+      n.spr.style.setProperty("--fx", n.face);
+      n.img.style.transform = `scaleX(${n.face})`;
+      n.spr.classList.remove("idle"); n.spr.classList.add("walk");
+      placePet(i, tx, ty, dur);
+      n.t = setTimeout(() => {
+        n.spr.classList.remove("walk"); n.spr.classList.add("idle");
+        n.t = setTimeout(() => wander(i), rnd(1200, 4200));
+      }, dur * 1000);
+    }
+
+    function freezePet(i) {                              // hentikan gerak di posisi sekarang
+      const n = petNodes[i]; if (!n) return;
+      clearTimeout(n.t);
+      const m = new DOMMatrixReadOnly(getComputedStyle(n.el).transform);
+      placePet(i, m.m41, m.m42, 0);
+      n.spr.classList.remove("walk"); n.spr.classList.add("idle");
+    }
+
+    function closeMenus() {
+      if (openPet < 0) return;
+      const n = petNodes[openPet];
+      if (n) n.el.classList.remove("open");
+      const i = openPet; openPet = -1;
+      if (n) n.t = setTimeout(() => wander(i), 800);
+    }
+
+    function togglePet(i, ev) {
+      ev.stopPropagation();
+      if (openPet === i) { closeMenus(); return; }
+      closeMenus();
+      openPet = i;
+      freezePet(i);
+      const n = petNodes[i];
+      const { h } = arenaSize();
+      n.menu.classList.toggle("up", petPos[i].y > h * .55);
+      updatePetMenu(i);
+      n.el.classList.add("open");
+      n.el.style.zIndex = 9999;
+    }
+
+    function updatePetMenu(i) {
+      const p = currentUser?.pets?.[i], n = petNodes[i];
+      if (!p || !n) return;
+      const ready = getPetRemaining(p) <= 0;
+      n.menu.querySelector(".b-claim").style.display = ready ? "" : "none";
+      n.menu.querySelector(".inf").innerHTML = `${esc(p.earnAmount)} ${ci(p.earnType)} / ${esc(p.intervalMinutes)}m`;
+    }
+
+    document.addEventListener("click", closeMenus);
+    addEventListener("resize", () => {
+      const { w, h } = arenaSize();
+      petPos.forEach((pos, i) => { if (pos) placePet(i, Math.min(w - 58, Math.max(58, pos.x)), Math.min(h - 62, Math.max(84, pos.y)), 0); });
+    });
+    document.addEventListener("visibilitychange", () => { wanderOn = !document.hidden && !matchMedia("(prefers-reduced-motion: reduce)").matches; });
+
+    function renderPets() {
+      const area = ensureMeadow();
+      const layer = area.querySelector("#pet-layer");
+      const pets = currentUser.pets || [];
+
+      area.querySelectorAll(".empty").forEach(e => e.remove());
+      if (pets.length === 0) {
+        petNodes.forEach(n => clearTimeout(n.t));
+        petNodes = []; petPos = []; petSig = ""; layer.innerHTML = "";
+        area.insertAdjacentHTML("beforeend", '<div class="empty">Belum ada pet. Dapatkan dari Gacha!</div>');
+        return;
+      }
+
+      // data pet tidak berubah -> cukup segarkan timer, jangan reset posisi pet
+      const sig = pets.map(p => [p.name, p.imageUrl, p.earnAmount, p.earnType, p.intervalMinutes].join("|")).join("~");
+      if (sig === petSig) { refreshPetTimers(); return; }
+      petSig = sig;
+
+      const oldNames = petNodes.map(n => n.name), oldPos = petPos.slice();
+      petNodes.forEach(n => clearTimeout(n.t));
+      openPet = -1;
+      layer.innerHTML = pets.map((p, i) => {
+        const remain = getPetRemaining(p), ready = remain <= 0, rb = rarityBadge(p);
+        return `
+          <div class="pet${ready ? " ready" : ""}" data-i="${i}">
+            <div class="pet-in" onclick="togglePet(${i}, event)">
+              <div class="pill tm${ready ? " ready" : ""}">${ci(p.earnType)}<span class="pet-timer ${ready ? "ready" : ""}" data-index="${i}">${formatTime(remain)}</span></div>
+              <div class="pet-sprite idle"><img src="${esc(p.imageUrl || PET_FALLBACK)}" alt="" referrerpolicy="no-referrer"
+                   onerror="this.onerror=null;this.src=PET_FALLBACK"></div>
+              <div class="pill nm${rb ? "" : " norb"}">${rb ? `<span class="rb r${rb[1]}">${esc(rb[0])}</span>` : ""}${esc(p.name)}</div>
+            </div>
+            <div class="pet-menu" onclick="event.stopPropagation()">
+              <div class="inf"></div>
+              <div class="acts">
+                <button class="b-claim" onclick="claimFromMenu()">Klaim</button>
+                <button class="b-sell" onclick="closeMenus();sellP(${i})">Jual</button>
+              </div>
+            </div>
+          </div>`;
+      }).join("");
+
+      petNodes = [...layer.querySelectorAll(".pet")].map((el, i) => ({
+        el, name: pets[i].name, face: 1, t: 0,
+        spr: el.querySelector(".pet-sprite"), img: el.querySelector(".pet-sprite img"), menu: el.querySelector(".pet-menu")
+      }));
+      petPos = [];
+      petNodes.forEach((n, i) => {
+        const keep = oldNames[i] === n.name && oldPos[i];
+        const sp = keep ? oldPos[i] : randomSpot();
+        placePet(i, sp.x, sp.y, 0);
+        n.t = setTimeout(() => wander(i), rnd(400, 2500));
+      });
+      wanderOn = !document.hidden && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+
+    function refreshPetTimers() {
+      (currentUser?.pets || []).forEach((p, i) => {
+        const n = petNodes[i]; if (!n) return;
+        const ready = getPetRemaining(p) <= 0;
+        n.el.classList.toggle("ready", ready);
+        const t = n.el.querySelector(".pet-timer");
+        t.textContent = formatTime(getPetRemaining(p));
+        t.classList.toggle("ready", ready);
+        n.el.querySelector(".pill.tm").classList.toggle("ready", ready);
+        if (openPet === i) updatePetMenu(i);
+      });
+    }
+
+    async function claimFromMenu() {
+      closeMenus();
+      await manualClaimPets();
+    }
+
+    function startPetTimers() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(refreshPetTimers, 1000);
+    }
+
+
+    // Pet yang sudah habis cooldown TIDAK mulai hitung mundur lagi sampai diklaim manual.
+    async function manualClaimPets() {
+      const pets = currentUser?.pets || [];
+      if (!pets.some(p => getPetRemaining(p) <= 0)) { showToast("Belum ada pet yang siap diklaim"); return; }
+      await claimPetEarnings();
+      renderPets();
+    }
+    function stopPets() {
+      petNodes.forEach(n => clearTimeout(n.t));
+      petNodes = []; petPos = []; petSig = ""; openPet = -1;
+      const l = document.getElementById("pet-layer"); if (l) l.innerHTML = "";
+    }
+    const _render0 = render;
+    render = function () {
+      const pet = cat === "pet";
+      $("petwrap").hidden = !pet; $("gm").hidden = pet;
+      document.querySelector(".inv").classList.toggle("petmode", pet);
+      _render0();
+      if (pet) {
+        $("ctl").innerHTML = '<button class="btn btn-gold" style="padding:6px 12px;font-size:12px" onclick="manualClaimPets()">Klaim Semua</button>';
+        renderPets();
+      } else stopPets();
+    };
+    startPetTimers();
 (async()=>{if(await requireLogin()){render();loadMail()}})();
 </script></body></html>
