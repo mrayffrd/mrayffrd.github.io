@@ -104,8 +104,8 @@ svg.i.sm{width:14px;height:14px}
 .stage{position:relative;overflow:hidden;isolation:isolate}
 .art{position:absolute;inset:0;z-index:-2;background-color:#1a1c2c;background-size:cover;background-position:center 28%;background-repeat:no-repeat;transition:opacity .35s}
 /* crossfade background: dua lapisan bergantian, gambar lama bertahan sampai gambar baru siap */
-.al{position:absolute;inset:0;background-size:cover;background-position:center 28%;background-repeat:no-repeat;opacity:0;transform:scale(1.045);transition:opacity .8s cubic-bezier(.4,0,.2,1),transform 1.3s cubic-bezier(.2,.6,.2,1);will-change:opacity,transform}
-.al.on{opacity:1;transform:none}
+.al{position:absolute;inset:0;background-size:cover;background-position:center 28%;background-repeat:no-repeat;opacity:0;transition:opacity .6s ease;will-change:opacity;backface-visibility:hidden}
+.al.on{opacity:1}
 .al.first{transition:none}
 @media (prefers-reduced-motion:reduce){.al{transition:opacity .2s;transform:none}}
 .stage{--fade:66%}
@@ -118,7 +118,7 @@ svg.i.sm{width:14px;height:14px}
 .ch{appearance:none;border:0;background:none;color:#fff;opacity:.62;display:flex;align-items:center;gap:10px;padding:4px 20px 12px 0;position:relative;font:600 17px/1 var(--sans);white-space:nowrap;cursor:pointer;transition:opacity .2s}
 .ch:hover,.ch.on{opacity:1}
 .ch.on::after{content:"";position:absolute;left:10px;bottom:0;width:20px;height:3px;border-radius:3px;background:var(--ac)}
-.ch i{width:40px;height:40px;border-radius:12px;background-size:contain;background-repeat:no-repeat;background-position:center;flex:none}
+.ch i{transition:width .25s,height .25s,border-radius .25s,box-shadow .25s;width:40px;height:40px;border-radius:12px;background-size:contain;background-repeat:no-repeat;background-position:center;flex:none}
 .hero{padding:30px 0 110px;max-width:640px}
 .kick{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#cdd3ff}
 .kick::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(61,220,151,.2)}
@@ -710,7 +710,7 @@ function renderRows(){
   const list=GAMES.filter(g=>(flt==='all'||(flt==='ready')===g.ready)&&(!k||(g.name+' '+g.sub+' '+g.chips.join(' ')).toLowerCase().includes(k)));
   $('#rows').innerHTML=list.length?list.map(rowHTML).join(''):'<div class="empty"><b>Tidak ditemukan</b>Coba kata kunci lain atau ubah filter.</div>';
 }
-let artKey='',artTok=0;
+let artKey='',artTok=0,topL=null;
 const artReady=new Map();
 function preloadArt(u){
   if(!u)return Promise.resolve();
@@ -728,13 +728,17 @@ function setArt(){
   if(url+'|'+(custom?1:0)===artKey)return;
   artKey=url+'|'+(custom?1:0);
   const L=[...document.querySelectorAll('#art .al')], tok=++artTok;
-  const cu=L.find(x=>x.classList.contains('on')), nx=L.find(x=>x!==cu)||L[0];
+  const cu=topL, nx=L.find(x=>x!==cu)||L[0];
   const show=()=>{
     if(tok!==artTok)return;                       // klik lebih baru sudah menggantikan
-    nx.style.backgroundImage=val;
-    if(!cu){nx.classList.add('first','on');requestAnimationFrame(()=>nx.classList.remove('first'));return}
-    nx.style.zIndex=1;cu.style.zIndex=0;
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{nx.classList.add('on');cu.classList.remove('on')}));
+    if(!cu){nx.style.backgroundImage=val;nx.classList.add('first','on');requestAnimationFrame(()=>nx.classList.remove('first'));topL=nx;return}
+    /* lapisan baru muncul DI ATAS lapisan lama (lama tetap penuh), lalu lama dimatikan setelah selesai */
+    nx.classList.add('first');nx.classList.remove('on');
+    nx.style.backgroundImage=val;nx.style.zIndex=2;cu.style.zIndex=1;
+    void nx.offsetWidth;nx.classList.remove('first');
+    requestAnimationFrame(()=>nx.classList.add('on'));
+    topL=nx;
+    setTimeout(()=>{if(tok!==artTok)return;cu.classList.add('first');cu.classList.remove('on');requestAnimationFrame(()=>cu.classList.remove('first'))},750);
   };
   if(!cu)show(); else preloadArt(url).then(show);
 }
@@ -742,14 +746,20 @@ function setArt(){
 (window.requestIdleCallback||function(f){setTimeout(f,900)})(()=>GAMES.forEach(g=>preloadArt(g.img)));
 function setChannel(id){
   cur=id; const g=byId(id);
-  renderChannels(); setArt();
+  if(!$('#channels').children.length)renderChannels();
+  else{
+    $$('#channels .ch').forEach(b=>{const on=b.dataset.id===id;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on)});
+    $$('#chMenu button').forEach(b=>b.classList.toggle('on',b.dataset.id===id));
+  }
+  setArt();
   $('#kick').textContent=(g.name+' · '+g.sub).toUpperCase();
   $('#mTitle').textContent=g.name;
   $('#htags').innerHTML=g.ready?g.chips.map(c=>'<span>'+esc(c)+'</span>').join(''):'<span>Segera hadir</span>';
   const go=$('#heroGo'); go.href=g.href; go.textContent=g.ready?'Lihat Pricelist':'Segera Hadir'; go.setAttribute('aria-disabled',g.ready?'false':'true');
   $('#selIco').style.cssText=logoOf(g);
   const mg=$('#mtGo'); mg.href=g.href; mg.lastChild.nodeValue=g.ready?'Pricelist':'Segera Hadir'; mg.setAttribute('aria-disabled',g.ready?'false':'true');
-  const act=$('#channels .ch.on'); if(act&&act.scrollIntoView)act.scrollIntoView({inline:'center',block:'nearest'});
+  const box=$('#channels'),act=$('#channels .ch.on');
+  if(act){const l=act.getBoundingClientRect().left-box.getBoundingClientRect().left+box.scrollLeft-(box.clientWidth-act.offsetWidth)/2;box.scrollTo({left:l,behavior:'smooth'})}
 }
 
 /* ===================== TAB ===================== */
