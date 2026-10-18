@@ -400,6 +400,16 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
     margin:0;
     padding:8px 16px calc(92px + var(--safe-b));
   }
+
+  /* ukuran ikon game SAMA semua; yang aktif hanya diberi cincin (tidak membesar) */
+  .channels{padding:8px 4px 8px;gap:12px}
+  .ch{padding:0}
+  .ch i,.ch.on i{width:52px;height:52px;border-radius:15px;transition:box-shadow .25s}
+  .ch i{box-shadow:0 0 0 3px transparent}
+  .ch.on i{box-shadow:0 0 0 3px rgba(255,255,255,.92),0 6px 18px rgba(0,0,0,.4)}
+
+  /* judul game satu baris, tinggi tetap supaya tidak menggeser tampilan */
+  .mt h2{flex:1;min-width:0;height:34px;line-height:34px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 }
 </style>
 </head>
