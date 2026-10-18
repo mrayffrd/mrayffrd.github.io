@@ -6,7 +6,7 @@
 <link rel="icon" href="icon.png" type="image/png">
 <link rel="apple-touch-icon" href="icon.png">
 <meta name="theme-color" content="#191c2b">
-<title>EMU | Jasa Joki Genshin & HSR Cepat & Aman</title>
+<title>EMU | Jasa Joki Game Open World</title>
 <meta name="description" content="Jasa Joki Genshin Impact & Honkai Star Rail. Proses cepat 1-4 hari, 100% aman, garansi selesai.">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://script.google.com">
@@ -98,16 +98,18 @@ svg.i.sm{width:14px;height:14px}
 /* ---------- STAGE: banner + channel ---------- */
 .stage{position:relative;overflow:hidden;isolation:isolate}
 .art{position:absolute;inset:0;z-index:-2;background-color:#1a1c2c;background-size:cover;background-position:center 28%;background-repeat:no-repeat;transition:opacity .35s}
+.stage{--fade:66%}
+.art,.stage::before{-webkit-mask-image:linear-gradient(180deg,#000 0,#000 var(--fade),rgba(0,0,0,.55) calc(var(--fade) + 14%),rgba(0,0,0,.18) calc(var(--fade) + 26%),transparent 100%);mask-image:linear-gradient(180deg,#000 0,#000 var(--fade),rgba(0,0,0,.55) calc(var(--fade) + 14%),rgba(0,0,0,.18) calc(var(--fade) + 26%),transparent 100%)}
 .stage::before{content:"";position:absolute;inset:0;z-index:-1;background:
-  linear-gradient(90deg,rgba(9,11,22,.93) 0%,rgba(9,11,22,.62) 46%,rgba(9,11,22,.18) 100%),
-  linear-gradient(180deg,rgba(9,11,22,.15) 0%,rgba(9,11,22,.3) 55%,var(--bg) 100%)}
+  linear-gradient(90deg,rgba(9,11,22,.9) 0%,rgba(9,11,22,.55) 46%,rgba(9,11,22,.15) 100%),
+  linear-gradient(180deg,rgba(9,11,22,.2) 0%,rgba(9,11,22,.35) 100%)}
 .channels{display:flex;gap:4px;overflow-x:auto;padding:14px 0 6px;scrollbar-width:none}
 .channels::-webkit-scrollbar{display:none}
 .ch{appearance:none;border:0;background:none;color:#fff;opacity:.62;display:flex;align-items:center;gap:10px;padding:4px 20px 12px 0;position:relative;font:600 17px/1 var(--sans);white-space:nowrap;cursor:pointer;transition:opacity .2s}
 .ch:hover,.ch.on{opacity:1}
 .ch.on::after{content:"";position:absolute;left:10px;bottom:0;width:20px;height:3px;border-radius:3px;background:var(--ac)}
 .ch i{width:40px;height:40px;border-radius:12px;background-size:contain;background-repeat:no-repeat;background-position:center;flex:none}
-.hero{padding:30px 0 70px;max-width:640px}
+.hero{padding:30px 0 110px;max-width:640px}
 .kick{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#cdd3ff}
 .kick::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(61,220,151,.2)}
 .hero h1{margin:10px 0 12px;font-size:clamp(30px,4.2vw,46px);line-height:1.12;font-weight:800;letter-spacing:-1px;color:#fff;text-shadow:0 4px 30px rgba(0,0,0,.5)}
@@ -162,6 +164,32 @@ svg.i.sm{width:14px;height:14px}
 .sort{appearance:none;height:34px;padding:0 30px 0 14px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--tx);font:600 13px var(--sans);cursor:pointer;background-image:linear-gradient(45deg,transparent 50%,var(--tx3) 50%),linear-gradient(135deg,var(--tx3) 50%,transparent 50%);background-position:calc(100% - 16px) 50%,calc(100% - 11px) 50%;background-size:5px 5px;background-repeat:no-repeat}
 .sort option{background:var(--card);color:var(--tx)}
 .m-search{display:none}
+/* sponsor */
+.sp-b{position:relative;display:block;margin:18px 0 4px;border-radius:14px;overflow:hidden;background:var(--card2);aspect-ratio:16/5;text-decoration:none}
+.sp-b[hidden],.sp-s[hidden]{display:none}
+.sp-b .sl{position:absolute;inset:0;opacity:0;transition:opacity .5s;pointer-events:none}
+.sp-b .sl.on{opacity:1;pointer-events:auto}
+.sp-b .sl img{width:100%;height:100%;object-fit:cover;display:block}
+.sp-b .sl a,.sp-b .sl span.nl{position:absolute;inset:0}
+.sp-tag{position:absolute;right:8px;top:8px;z-index:2;padding:2px 9px;border-radius:99px;font-size:11px;font-weight:700;color:#fff;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);pointer-events:none}
+.sp-dots{position:absolute;left:0;right:0;bottom:8px;z-index:2;display:flex;justify-content:center;gap:6px}
+.sp-dots button{appearance:none;border:0;width:7px;height:7px;padding:0;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer}
+.sp-dots button.on{background:#fff;width:18px;border-radius:5px}
+.sp-s{padding:14px}
+.sp-s h4{margin:0 0 10px;font-size:13px;color:var(--tx3);font-weight:700;letter-spacing:.3px}
+.sp-s .g{display:grid;gap:10px}
+.sp-s a,.sp-s span.nl{display:block;border-radius:12px;overflow:hidden;background:var(--card2);aspect-ratio:3/1;text-decoration:none}
+.sp-s img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+.sp-s a:hover img{transform:scale(1.04)}
+@media (max-width:720px){.sp-b{aspect-ratio:16/7;margin-top:14px}}
+.news-h{display:flex;align-items:center;gap:10px;padding:20px 0 4px;font-weight:800;font-size:17px}
+.news-h a{margin-left:auto;font:700 13px var(--sans);color:var(--ac-tx);text-decoration:none}
+.news-h a:hover{text-decoration:underline}
+.nrow .thumb{background-image:linear-gradient(135deg,#4452dd,#1b1f33)}
+.nrow .ph{display:grid;place-items:center;width:100%;height:100%;color:rgba(255,255,255,.7);font-weight:800;font-size:22px}
+.nrow .tg{display:inline-flex;align-items:center;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:700;background:var(--ac-soft);color:var(--ac-tx)}
+.news-more{display:flex;justify-content:center;padding:6px 0 14px}
+.news-more .btn{height:40px;background:var(--card2);color:var(--tx)}
 .row{display:flex;gap:18px;padding:16px 0;text-decoration:none;color:inherit;border-top:1px solid var(--line)}
 .row:first-child{border-top:0}
 .row .tx{flex:1;min-width:0;display:flex;flex-direction:column}
@@ -207,8 +235,8 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
 .side h4{margin:0 0 16px;padding:0 4px;font-size:15px;font-weight:700;color:var(--tx2)}
 .tools{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 4px}
 .tool{appearance:none;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;color:var(--tx);font:500 12.5px/1.25 var(--sans);text-align:center;cursor:pointer;padding:0 2px}
-.tool svg{width:52px;height:52px;transition:transform .2s}
-.tool:hover svg{transform:translateY(-3px) rotate(-3deg)}
+.tool svg,.tool img{width:52px;height:52px;object-fit:contain;transition:transform .2s}
+.tool:hover svg,.tool:hover img{transform:translateY(-3px) rotate(-3deg)}
 .hot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 4px}
 .hot b{display:block;font-size:15px;font-weight:700}
 .hot small{color:var(--tx3);font-size:12.5px}
@@ -262,7 +290,8 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
   .ch i{width:48px;height:48px;border-radius:14px}
   .ch.on i{width:58px;height:58px;border-radius:17px;box-shadow:0 0 0 3px rgba(255,255,255,.92),0 6px 18px rgba(0,0,0,.4)}
   .hero{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);padding:0;margin:0;white-space:nowrap}
-  .mt{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 0 54px}
+  .stage{--fade:60%}
+  .mt{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:4px 0 84px}
   .mt h2{margin:0;font-size:28px;line-height:1.15;font-weight:800;color:#fff;letter-spacing:-.5px;text-shadow:0 2px 16px rgba(0,0,0,.6)}
   .mt a{flex:none;display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:99px;background:rgba(15,17,30,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;font-weight:600;font-size:14px;text-decoration:none}
   .mt a i{width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,#ffe28a,#d9a228)}
@@ -289,7 +318,7 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
   #toolsSlot .tools{display:flex;gap:4px;overflow-x:auto;padding:0 12px 12px;scroll-snap-type:x proximity;scrollbar-width:none;-webkit-overflow-scrolling:touch}
   #toolsSlot .tools::-webkit-scrollbar{display:none}
   #toolsSlot .tool{flex:0 0 78px;scroll-snap-align:start;gap:7px;font-size:11.5px;line-height:1.25;color:var(--tx2);word-break:break-word}
-  #toolsSlot .tool svg{width:56px;height:56px;color:var(--ac-tx)}
+  #toolsSlot .tool svg,#toolsSlot .tool img{width:56px;height:56px;color:var(--ac-tx)}
   .bnav{display:flex}
   .umenu{left:12px;right:12px;top:auto;bottom:calc(76px + var(--safe-b));width:auto}
 }
@@ -319,18 +348,6 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
 
   <!-- ikon "stiker" untuk All Tools -->
   <symbol id="t-track" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h10v14H5z"/><path d="M8 3V1.5h4V3"/><path d="M7.5 10.5l2 2 3.5-4"/></g></symbol>
-  <symbol id="t-news" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h11v12H5a2 2 0 0 1-2-2z"/><path d="M14 8h3v6a2 2 0 0 1-2 2"/><path d="M6 8h5M6 11h5"/></g></symbol>
-  <symbol id="t-doc" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 2h7l4 4v12H5z"/><path d="M12 2v4h4M8 10h5M8 13h5"/></g></symbol>
-  <symbol id="t-cs" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11V9.5a6.5 6.5 0 0 1 13 0V11"/><rect x="2.5" y="10.5" width="3" height="5" rx="1.2"/><rect x="14.5" y="10.5" width="3" height="5" rx="1.2"/><path d="M16 15.5c0 1.7-1.5 2.5-4 2.5"/></g></symbol>
-  <symbol id="t-user" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="7" r="3.3"/><path d="M3.5 17c.8-3.6 3.4-5 6.5-5s5.7 1.4 6.5 5"/></g></symbol>
-  <symbol id="t-staff" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="7" r="2.8"/><circle cx="14" cy="8" r="2.3"/><path d="M2 17c.5-3.2 2.6-4.5 5-4.5s4.5 1.3 5 4.5"/><path d="M13 12.5c2.6-.2 4.4 1 5 3.5"/></g></symbol>
-  <symbol id="t-key" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="10" r="3.5"/><path d="M10 10h8M15 10v3M18 10v2.5"/></g></symbol>
-  <symbol id="t-game" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="16" height="9" rx="4.5"/><path d="M6 8.5v4M4 10.5h4"/><circle cx="13" cy="9.8" r=".6"/><circle cx="15" cy="11.5" r=".6"/></g></symbol>
-  <symbol id="t-bag" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h12l1 10H3z"/><path d="M7 7V5.5a3 3 0 0 1 6 0V7"/></g></symbol>
-  <symbol id="t-gem" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5l7 7.5-7 8-7-8z"/><path d="M3 10h14M7 10l3-7.5M13 10l-3-7.5M7 10l3 8M13 10l-3 8"/></g></symbol>
-  <symbol id="t-find" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="5.5"/><path d="M13.2 13.2L18 18"/></g></symbol>
-  <symbol id="t-bulb" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 14.5c0-1.5-2.5-2.5-2.5-5.5a5.5 5.5 0 0 1 11 0c0 3-2.5 4-2.5 5.5z"/><path d="M7.5 17.5h5"/></g></symbol>
-  <symbol id="t-info" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7.5"/><path d="M10 9v5M10 6.3v.2"/></g></symbol>
   <symbol id="t-q" viewBox="0 0 48 48"><rect x="11" y="11" width="32" height="32" rx="9" fill="none" stroke="currentColor" stroke-width="2.4" opacity=".4"/><rect x="8" y="8" width="32" height="32" rx="9" fill="var(--card)" stroke="currentColor" stroke-width="2.4"/><g transform="translate(14 14)" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7.5a3 3 0 1 1 4.5 2.6c-1 .6-1.5 1.2-1.5 2.4"/><path d="M10 16v.2"/></g></symbol>
 </defs></svg>
 
@@ -383,7 +400,7 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
     <div class="hero">
       <span class="kick" id="kick">GENSHIN IMPACT</span>
       <h1>Joki Game Cepat, Aman &amp; Terpercaya</h1>
-      <p>Serahkan akunmu ke EMU. Privasi 100% terjaga. Selesai 1-4 Hari. Garansi!</p>
+      <p>Privasi 100% terjaga. Selesai 1-4 Hari. Garansi telat tersedia!</p>
       <div class="htags" id="htags"></div>
       <div class="cta">
         <a class="btn btn-ac" id="heroGo" href="genshin.html">Lihat Pricelist</a>
@@ -403,7 +420,8 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
   <div class="col-main">
     <div class="card" id="games">
       <div class="tabs" role="tablist" aria-label="Konten">
-        <button class="tab on" role="tab" data-tab="game" aria-selected="true" type="button">Game</button>
+        <button class="tab on" role="tab" data-tab="game" aria-selected="true" type="button">Beranda</button>
+        <button class="tab" role="tab" data-tab="berita" aria-selected="false" type="button">Berita</button>
         <button class="tab" role="tab" data-tab="plus" aria-selected="false" type="button">Keunggulan</button>
         <button class="tab" role="tab" data-tab="order" aria-selected="false" type="button">Cara Order</button>
         <button class="tab" role="tab" data-tab="faq" aria-selected="false" type="button">FAQ</button>
@@ -413,7 +431,9 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
       <!-- GAME -->
       <section class="pane" id="pane-game" role="tabpanel">
         <div id="toolsSlot"></div>
-        <div class="sec-h"><span class="sec-ico"><svg class="i"><use href="#i-lines"/></svg></span>Pilihan Editor</div>
+        <div class="sp-b" id="spBig" hidden aria-label="Sponsor"></div>
+        <div class="sec-h"><span class="sec-ico"><svg class="i"><use href="#i-lines"/></svg></span>Unggulan</div>
+        <div id="featList">
         <a href="berita.html" class="pick" aria-label="Berita dari EMU">
           <div class="thumb" style="background-image:linear-gradient(135deg,#4452dd,#1b1f33)"><img src="berita.jpeg" alt="Berita dari EMU" loading="lazy" decoding="async" onerror="this.remove()"></div>
           <div class="tx">
@@ -422,6 +442,7 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
             <div class="by"><img src="icon.png" alt="" onerror="this.replaceWith(Object.assign(document.createElement('b'),{textContent:'E'}))">EMU Joki</div>
           </div>
         </a>
+        </div>
 
         <div class="sec-h" style="padding-top:16px"><span class="sec-ico" style="border-radius:50%"><svg class="i"><use href="#i-bubble"/></svg></span>Pintasan<a class="lt" href="#toolsCard" data-scroll="toolsCard">Lihat tools</a></div>
         <div class="pills">
@@ -436,6 +457,13 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
           <div class="seg" id="flt" role="tablist" aria-label="Filter game"><button type="button" role="tab" class="on" data-v="all" aria-selected="true">Semua</button><button type="button" role="tab" data-v="ready" aria-selected="false">Tersedia</button><button type="button" role="tab" data-v="soon" aria-selected="false">Segera hadir</button></div>
         </div>
         <div id="rows"></div>
+      </section>
+
+      <!-- BERITA -->
+      <section class="pane" id="pane-berita" role="tabpanel" hidden>
+        <div class="news-h"><span class="sec-ico"><svg class="i"><use href="#i-lines"/></svg></span>Berita terbaru<a href="berita.html">Semua berita</a></div>
+        <div id="newsRows"><div class="empty"><b>Memuat berita…</b></div></div>
+        <div class="news-more"><a class="btn" href="berita.html">Buka halaman berita</a></div>
       </section>
 
       <!-- KEUNGGULAN -->
@@ -486,22 +514,22 @@ html[data-theme="light"] .st{background:rgba(18,165,107,.12)}
     <div class="card" id="toolsCard">
       <h4>All Tools</h4>
       <div class="tools">
-        <a class="tool" href="staff.html"><svg><use href="#t-staff"/></svg>List Staff</a>
-        <a class="tool" href="login.html"><svg><use href="#t-key"/></svg>Login</a>
-        <a class="tool" href="Game.html"><svg><use href="#t-game"/></svg>Mini Game</a>
-        <a class="tool" href="Inventori.html"><svg><use href="#t-bag"/></svg>Inventori</a>
-        <a class="tool" href="Gacha.html"><svg><use href="#t-gem"/></svg>Gacha</a>
-        <a class="tool" href="Profile.html"><svg><use href="#t-user"/></svg>Profile</a>
-        <a class="tool" href="cek.html"><svg><use href="#t-track"/></svg>Cek Pesanan</a>
-        <a class="tool" href="https://enka.network/"><svg><use href="#t-find"/></svg>Cek Akun</a>
-        <a class="tool" href="saran.html"><svg><use href="#t-bulb"/></svg>Kotak Saran Produk</a>
-        <a class="tool" href="berita.html"><svg><use href="#t-news"/></svg>Berita</a>
-        <a class="tool" href="snk.html"><svg><use href="#t-doc"/></svg>Syarat dan Ketentuan</a>
-        <button class="tool" type="button" data-modal="aboutModal"><svg><use href="#t-info"/></svg>Tentang</button>
-        <a class="tool" href="https://wa.me/6285150886538" target="_blank" rel="noopener"><svg><use href="#t-cs"/></svg>Hubungi CS</a>
+        <a class="tool" href="staff.html"><img src="liststaff.png" alt="">List Staff</a>
+        <a class="tool" href="login.html"><img src="login.png" alt="">Login</a>
+        <a class="tool" href="Game.html"><img src="minigame.png" alt="">Mini Game</a>
+        <a class="tool" href="Inventori.html"><img src="inventori.png" alt="">Inventori</a>
+        <a class="tool" href="Gacha.html"><img src="gacha.png" alt="">Gacha</a>
+        <a class="tool" href="Profile.html"><img src="profile.png" alt="">Profile</a>
+        <a class="tool" href="cek.html"><img src="cekorder.png"/></svg>Cek Pesanan</a>
+        <a class="tool" href="https://enka.network/"><img src="cekakun.png" alt="">Cek Akun</a>
+        <a class="tool" href="saran.html"><img src="kotaksaran.png" alt="">Kotak Saran Produk</a>
+        <a class="tool" href="berita.html"><img src="berita.png" alt="">Berita</a>
+        <a class="tool" href="snk.html"><img src="syaratdanketentuan.png" alt="">Syarat dan Ketentuan</a>
+        <button class="tool" type="button" data-modal="aboutModal"><img src="tentang.png" alt="">Tentang</button>
         <button class="tool" type="button" data-soon style="opacity:.55"><svg><use href="#t-q"/></svg>???</button>
       </div>
     </div>
+    <div class="card sp-s" id="spSmall" hidden><h4>SPONSOR</h4><div class="g" id="spSmallG"></div></div>
     <div class="card">
       <h4>Status Layanan</h4>
       <div class="hot"><div><b>#Layanan</b><small>Status saat ini</small></div><em class="ok">ONLINE ●</em></div>
@@ -558,14 +586,14 @@ const LS={
 let tT;
 function toast(m,ms){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>t.classList.remove('show'),ms||2400)}
 
-/* ===================== DATA GAME ===================== */
+/* ===================== DATA GAME BAGIAN ATAS ===================== */
 const GAMES=[
  {id:'genshin',logo:'genshin.png',name:'Genshin Impact',sub:'Teyvat',href:'genshin.html',ready:true,c1:'#c9a24a',c2:'#3b2a14',
   img:'https://images8.alphacoders.com/112/1129503.jpg',chips:['Quest Archon','Abyss 12','Eksplorasi 100%','Build Karakter']},
  {id:'hsr',logo:'hsr.png',name:'Honkai: Star Rail',sub:'Astral Express',href:'hsr.html',ready:true,c1:'#7d86c9',c2:'#1f2240',
   img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIQo91ANLulKswsuHrtO1Fx-o6XZLWVZKrxWYg61KjubipGDi2mqY4QrU&s=10',chips:['MoC','PF','AS','Event','Tugas Harian','Farming Relic']},
- {id:'zzz',logo:'zzz.png',name:'Zenless Zone Zero',sub:'New Eridu',href:'zzz.html',ready:false,c1:'#5a3bd1',c2:'#14103a',
-  img:'https://zenlesslab.com/wp-content/uploads/2023/09/Zenless-Zone-Zero-Combat-System.jpg',chips:[]},
+ {id:'zzz',logo:'zzz.png',name:'Zenless Zone Zero',sub:'New Eridu',href:'zzz.html',ready:true,c1:'#5a3bd1',c2:'#14103a',
+  img:'https://zenlesslab.com/wp-content/uploads/2023/09/Zenless-Zone-Zero-Combat-System.jpg',chips:['Shiyu Defense','Deadly Assault','Tugas Harian','Build Agent']},
  {id:'sp',logo:'sp.png',name:'Silver Palace',sub:'Silvernia',href:'sp.html',ready:false,c1:'#8d9bbd',c2:'#1d2234',
   img:'https://s.elementagames.com/uploads/file/20260624/3ae4043903b25b0ac443b70209ce4c06.jpg',chips:[]},
  {id:'wuwa',logo:'wuwa.png',name:'Wuthering Waves',sub:'Solaris-3',href:'wuwa.html',ready:false,c1:'#4c6a78',c2:'#12181d',
@@ -612,10 +640,11 @@ function setChannel(id){
 }
 
 /* ===================== TAB ===================== */
-const TABMAP={games:'game',game:'game',keunggulan:'plus',plus:'plus',order:'order',faq:'faq',cek:'cek'};
+const TABMAP={berita:'berita',games:'game',game:'game',keunggulan:'plus',plus:'plus',order:'order',faq:'faq',cek:'cek'};
 function showTab(n){
   $$('.tab').forEach(t=>{const on=t.dataset.tab===n;t.classList.toggle('on',on);t.setAttribute('aria-selected',on)});
   $$('.pane').forEach(p=>p.hidden=p.id!=='pane-'+n);
+  if(n==='berita')loadNews();
 }
 function goList(){showTab('game');const el=$('#listTop');if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
 $$('.tab').forEach(t=>t.addEventListener('click',()=>showTab(t.dataset.tab)));
@@ -750,6 +779,104 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')$$('.mdl.show').forE
 document.addEventListener('keydown',e=>{if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='i')))e.preventDefault()});
 document.addEventListener('contextmenu',e=>{if(e.target.closest&&e.target.closest('input,textarea'))return;e.preventDefault()});
 
+/* ===================== SPONSOR & UNGGULAN (dari Google Sheet) ===================== */
+// Tempel URL Web App (/exec) dari sponsor-sheet.gs di sini. Kosong = pakai isi bawaan.
+const SPONSOR_URL="https://script.google.com/macros/s/AKfycby5wFMYRhice1RzC_pvnxMU4U80X4v2RPejmyqxjPEHEOFa5sJ4osyUYmYEteObWj-e/exec";
+const sEsc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function sImg(u,w){u=String(u||'').trim();if(!u)return'';if(/drive\.google\.com|docs\.google\.com/.test(u)){const m=u.match(/[-\w]{25,}/);if(m)return'https://drive.google.com/thumbnail?id='+m[0]+'&sz=w'+(w||1200)}return u}
+function sLink(u){u=String(u||'').trim();if(!u)return'';if(/^(https?:)?\/\//i.test(u)||/^[\w\-./]+\.html?(#.*)?$/i.test(u)||u[0]==='#'||u[0]==='/')return u;return/^[\w-]+\.[\w.-]+/.test(u)?'https://'+u:''}
+function sWrap(href,inner,label){const h=sLink(href);if(!h)return`<span class="nl">${inner}</span>`;const ext=/^(https?:)?\/\//i.test(h);return`<a href="${sEsc(h)}"${ext?' target="_blank" rel="noopener sponsored"':''} aria-label="${sEsc(label)}">${inner}</a>`}
+let spTimer=null;
+function renderSponsor(d){
+  // sponsor besar (slide otomatis jika lebih dari satu)
+  const big=(d.sponsorBesar||[]).filter(x=>sImg(x.gambar)),bb=$('#spBig');
+  clearInterval(spTimer);
+  if(big.length){
+    bb.innerHTML='<span class="sp-tag">Sponsor</span>'+big.map((x,i)=>`<div class="sl${i?'':' on'}"><img src="${sEsc(sImg(x.gambar,1400))}" alt="${sEsc(x.nama||'Sponsor')}" ${i?'loading="lazy"':''} decoding="async" onerror="this.closest('.sl').remove()">${sWrap(x.link,'',x.nama||'Sponsor')}</div>`).join('')+(big.length>1?'<div class="sp-dots">'+big.map((_,i)=>`<button type="button" class="${i?'':'on'}" aria-label="Sponsor ${i+1}"></button>`).join('')+'</div>':'');
+    bb.hidden=false;
+    if(big.length>1){
+      let k=0;const go=n=>{const sl=$$('.sl',bb),dt=$$('.sp-dots button',bb);if(!sl.length)return;k=(n+sl.length)%sl.length;sl.forEach((e,i)=>e.classList.toggle('on',i===k));dt.forEach((e,i)=>e.classList.toggle('on',i===k))};
+      $$('.sp-dots button',bb).forEach((b,i)=>b.addEventListener('click',()=>{go(i);clearInterval(spTimer)}));
+      spTimer=setInterval(()=>go(k+1),5000);
+    }
+  }else{bb.hidden=true;bb.innerHTML=''}
+  // sponsor kecil
+  const sm=(d.sponsorKecil||[]).filter(x=>sImg(x.gambar)),sb=$('#spSmall');
+  if(sm.length){
+    $('#spSmallG').innerHTML=sm.map(x=>sWrap(x.link,`<img src="${sEsc(sImg(x.gambar,700))}" alt="${sEsc(x.nama||'Sponsor')}" loading="lazy" decoding="async" onerror="this.closest('a,.nl').remove()">`,x.nama||'Sponsor')).join('');
+    sb.hidden=false;
+  }else{sb.hidden=true;$('#spSmallG').innerHTML=''}
+  // unggulan
+  const ft=(d.unggulan||[]).filter(x=>x.judul);
+  if(ft.length){
+    $('#featList').innerHTML=ft.map(x=>{
+      const src=sImg(x.gambar,500),h=sLink(x.link),ext=/^(https?:)?\/\//i.test(h);
+      const inner=`<div class="thumb" style="background-image:linear-gradient(135deg,#4452dd,#1b1f33)">${src?`<img src="${sEsc(src)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:''}</div><div class="tx"><h3>${sEsc(x.judul)}</h3><p>${sEsc(x.deskripsi||'')}</p>${x.sumber?`<div class="by"><b>${sEsc(String(x.sumber).trim().charAt(0).toUpperCase())}</b>${sEsc(x.sumber)}</div>`:''}</div>`;
+      return h?`<a href="${sEsc(h)}" class="pick"${ext?' target="_blank" rel="noopener"':''}>${inner}</a>`:`<div class="pick">${inner}</div>`;
+    }).join('');
+  }
+}
+async function loadSponsor(){
+  if(!SPONSOR_URL)return;
+  try{const c=localStorage.getItem('emu.sponsor');if(c)renderSponsor(JSON.parse(c))}catch(e){}
+  try{
+    const r=await fetch(SPONSOR_URL);const d=await r.json();
+    if(!d||typeof d!=='object')throw 0;
+    renderSponsor(d);
+    try{localStorage.setItem('emu.sponsor',JSON.stringify(d))}catch(e){}
+  }catch(e){console.warn('Sponsor gagal dimuat',e)}
+}
+loadSponsor();
+
+/* ===================== BERITA (sumber sama dengan berita.html) ===================== */
+const NEWS_URL="https://script.google.com/macros/s/AKfycbyxuzwnY24Tl7FyuJFicDzo7BYvhMtRjtt8G146vKglqEkU2YJGd7KEuO5WhOGRVZF3/exec";
+const NEWS_MAX=8;
+let newsState=0; // 0 belum, 1 memuat, 2 selesai
+const nEsc=t=>String(t==null?'':t).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function nHash(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return(h>>>0).toString(36)}
+function nImg(u,w){if(!u)return'';if(/drive\.google\.com/.test(u)){const m=u.match(/[-\w]{25,}/);if(m)return'https://drive.google.com/thumbnail?id='+m[0]+'&sz=w'+(w||400)}return u}
+function nDate(n){
+  const t=Date.parse(n.tanggal);if(isNaN(t))return n.tanggal||'';
+  const only=/^\d{4}-\d{2}-\d{2}$/.test(String(n.tanggal));
+  return new Date(t).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric',timeZone:only?'UTC':undefined});
+}
+function nPrep(list){ // ID & urutan identik dengan berita.html agar tautan langsung cocok
+  const seen={};
+  const a=list.map((n,i)=>{
+    const t=Date.parse(n.tanggal);
+    let id=nHash(String(n.judul)+'|'+String(n.tanggal));
+    if(seen[id]){seen[id]++;id+='-'+seen[id]}else seen[id]=1;
+    return Object.assign({},n,{id,i,t:isNaN(t)?null:t});
+  });
+  a.sort((x,y)=>{
+    if(x.t===null&&y.t===null)return y.i-x.i;
+    if(x.t===null)return 1;if(y.t===null)return -1;
+    return y.t-x.t||y.i-x.i;
+  });
+  return a;
+}
+function nExcerpt(n,l){const s=String(n.artikel||'').replace(/\s+/g,' ').trim();return nEsc(s.length>l?s.slice(0,l).replace(/\s+\S*$/,'')+'…':s)}
+function renderNews(list){
+  const box=$('#newsRows');
+  if(!list.length){box.innerHTML='<div class="empty"><b>Belum ada berita</b>Cek lagi nanti ya.</div>';return}
+  box.innerHTML=list.slice(0,NEWS_MAX).map(n=>{
+    const src=n.foto?nImg(n.foto,500):(n.icon?nImg(n.icon,300):'');
+    return `<a class="row nrow" href="berita.html#/b/${encodeURIComponent(n.id)}"><div class="thumb">${src?`<img src="${nEsc(src)}" alt="" loading="lazy" decoding="async" onerror="this.remove()">`:'<span class="ph">N</span>'}</div><div class="tx"><h3>${nEsc(n.judul)}</h3><p>${nExcerpt(n,150)}</p><div class="meta"><span>${nEsc(nDate(n))}</span>${n.video?'<span class="tg">Video</span>':''}${n.link?'<span class="tg">Tautan</span>':''}</div></div></a>`;
+  }).join('');
+}
+async function loadNews(force){
+  if(newsState===1||(newsState===2&&!force))return;
+  newsState=1;
+  try{
+    const r=await fetch(NEWS_URL);const d=await r.json();const list=d.berita||d;
+    if(!Array.isArray(list))throw new Error('format');
+    renderNews(nPrep(list));newsState=2;
+  }catch(e){
+    newsState=0;
+    $('#newsRows').innerHTML='<div class="empty"><b>Gagal memuat berita</b><button class="btn btn-ac" type="button" id="newsRetry" style="margin-top:10px">Coba lagi</button></div>';
+    const b=$('#newsRetry');if(b)b.addEventListener('click',()=>{$('#newsRows').innerHTML='<div class="empty"><b>Memuat berita…</b></div>';loadNews()});
+  }
+}
 /* ===================== MULAI ===================== */
 applyTheme();
 setChannel(cur);
