@@ -7,68 +7,113 @@
        <lastmod>2026-10-19T03:53:30+00:00</lastmod>
        <priority>1.0000</priority>
   </url>
-  <url>
-       <loc>https://neve.my.id/berita</loc>
+    <url>
+       <loc>https://neve.my.id/about.html</loc>
+       <lastmod>2026-10-19T03:53:30+00:00</lastmod>
+       <priority>0.2621</priority>
+  </url>
+    <url>
+       <loc>https://neve.my.id/berita.html</loc>
        <lastmod>2026-10-19T03:53:30+00:00</lastmod>
        <priority>0.6400</priority>
   </url>
-  <url>
-       <loc>https://neve.my.id/Profile</loc>
+    <url>
+       <loc>https://neve.my.id/Chat.html</loc>
        <lastmod>2026-10-19T03:53:30+00:00</lastmod>
        <priority>0.6400</priority>
   </url>
-  <url>
-       <loc>https://neve.my.id/cek</loc>
+     <url>
+       <loc>https://neve.my.id/cek.html</loc>
        <lastmod>2026-10-19T03:53:30+00:00</lastmod>
        <priority>0.6400</priority>
   </url>
-  <url>
-       <loc>https://neve.my.id/Inventori</loc>
+     <url>
+       <loc>https://neve.my.id/Dino.html</loc>
        <lastmod>2026-10-19T03:53:30+00:00</lastmod>
        <priority>0.6400</priority>
   </url>
-  <url>
-       <loc>https://neve.my.id/login</loc>
+    <url>
+       <loc>https://neve.my.id/ExecuteBlock.html</loc>
        <lastmod>2026-10-19T03:53:30+00:00</lastmod>
        <priority>0.6400</priority>
   </url>
-  <url>
-       <loc>https://neve.my.id/genshin</loc>
+    <url>
+       <loc>https://neve.my.id/gacha.html</loc>
        <lastmod>2026-10-19T03:53:30+00:00</lastmod>
        <priority>0.6400</priority>
   </url>
-  <url>
-       <loc>https://neve.my.id/staff</loc>
+    <url>
+       <loc>https://neve.my.id/Game.html</loc>
        <lastmod>2026-10-19T03:53:30+00:00</lastmod>
        <priority>0.6400</priority>
   </url>
-  <url>
-       <loc>https://neve.my.id/Game</loc>
+    <url>
+       <loc>https://neve.my.id/genshin.html</loc>
        <lastmod>2026-10-19T03:53:30+00:00</lastmod>
        <priority>0.6400</priority>
   </url>
-  <url>
-       <loc>https://neve.my.id/Gacha</loc>
+    <url>
+       <loc>https://neve.my.id/hsr.html</loc>
        <lastmod>2026-10-19T03:53:30+00:00</lastmod>
        <priority>0.6400</priority>
   </url>
-  <url>
-       <loc>https://neve.my.id/saran</loc>
+    <url>
+       <loc>https://neve.my.id/inventori.html</loc>
        <lastmod>2026-10-19T03:53:30+00:00</lastmod>
        <priority>0.6400</priority>
   </url>
-  <url>
-       <loc>https://neve.my.id/snk</loc>
+    <url>
+       <loc>https://neve.my.id/login.html</loc>
        <lastmod>2026-10-19T03:53:30+00:00</lastmod>
        <priority>0.6400</priority>
   </url>
-  <url>
-       <loc>https://neve.my.id/portal</loc>
+    <url>
+       <loc>https://neve.my.id/nte.html</loc>
        <lastmod>2026-10-19T03:53:30+00:00</lastmod>
        <priority>0.4096</priority>
   </url>
-  <url>
-       <loc>https://neve.my.id/hsr</loc>
+    <url>
+    <loc>https://neve.my.id/Popit.html</loc>
+       <lastmod>2026-10-19T03:53:30+00:00</lastmod>
+       <priority>0.2621</priority>
+  </url>
+    <url>
+       <loc>https://neve.my.id/Profile.html</loc>
+       <lastmod>2026-10-19T03:53:30+00:00</lastmod>
+       <priority>0.2621</priority>
+  </url>
+    <url>
+       <loc>https://neve.my.id/saran.html</loc>
+       <lastmod>2026-10-19T03:53:30+00:00</lastmod>
+       <priority>0.2621</priority>
+  </url>
+    <url>
+       <loc>https://neve.my.id/segera.html</loc>
+       <lastmod>2026-10-19T03:53:30+00:00</lastmod>
+       <priority>0.2621</priority>
+  </url>
+    <url>
+       <loc>https://neve.my.id/snk.html</loc>
+       <lastmod>2026-10-19T03:53:30+00:00</lastmod>
+       <priority>0.2621</priority>
+  </url>
+     <url>
+       <loc>https://neve.my.id/sp.html</loc>
+       <lastmod>2026-10-19T03:53:30+00:00</lastmod>
+       <priority>0.2621</priority>
+  </url>
+      <url>
+       <loc>https://neve.my.id/staff.html</loc>
+       <lastmod>2026-10-19T03:53:30+00:00</lastmod>
+       <priority>0.2621</priority>
+  </url>
+      <url>
+       <loc>https://neve.my.id/wuwa.html</loc>
+       <lastmod>2026-10-19T03:53:30+00:00</lastmod>
+       <priority>0.2621</priority>
+  </url>
+      <url>
+       <loc>https://neve.my.id/zzz.html</loc>
        <lastmod>2026-10-19T03:53:30+00:00</lastmod>
        <priority>0.2621</priority>
   </url>
