@@ -305,6 +305,8 @@ button,[role=button],.go,.sb,.wr{touch-action:manipulation;-webkit-user-select:n
    ===================================================================== */
 const API_URL = "https://script.google.com/macros/s/AKfycbwHtatQVaip_YspROYu7Rmtm1xWG_f69yBHoahG7DoPElB08sMmKgSCXgdgF7X9_14/exec";
 const SECRET  = "popit_secret_2026";
+/* API ke-2: spreadsheet khusus Forex (grafik & riwayat). Tempel URL /exec dari deploy AppsScript-Forex.gs di sini. */
+const FOREX_API_URL = "https://script.google.com/macros/s/AKfycbxMGyS_lFC6cFr25l6mzUZQCYSzr7BH5pFHEQod7LxUJK2iceNuttIin7kbaQSdYe_HKQ/exec";
 let currentUser = null;
 
 async function apiCall(action, data = {}) {
@@ -477,7 +479,10 @@ const BY = Object.fromEntries(INST.map(i=>[i.s,i]));
 const GROUPS = [["all","Semua"],["fav","★ Favorit"],["major","Major"],["cross","Cross"],["asia","Asia"],["crypto","Kripto"],["metal","Emas"]];
 
 /* kurs cadangan (per 1 USD) bila ECB tidak terjangkau */
-let RATES = Object.assign({ EUR:.92,GBP:.78,JPY:150,CHF:.88,AUD:1.53,CAD:1.37,NZD:1.65,IDR:16200,SGD:1.34,CNY:7.2,INR:84,MYR:4.45,THB:34,KRW:1380 }, LS.get("forex.rates",{}).r || {});
+const BASE_RATES = { EUR:.92,GBP:.78,JPY:150,CHF:.88,AUD:1.53,CAD:1.37,NZD:1.65,IDR:16200,SGD:1.34,CNY:7.2,INR:84,MYR:4.45,THB:34,KRW:1380 };
+let RATES = Object.assign({}, BASE_RATES, LS.get("forex.rates",{}).r || {});
+/* harga simulasi selalu pakai kurs dasar tetap → grafik identik di semua perangkat */
+const simRef = I => { const r=c=>c==="USD"?1:(BASE_RATES[c]||RATES[c]); return r(I.b)/r(I.a); };
 const rateOf = c => c==="USD" ? 1 : RATES[c];
 const refOf = I => I.live ? (Q[I.s].ref || I.fb) : rateOf(I.b) / rateOf(I.a);
 const P = (s,v) => Number(v).toFixed(BY[s].dp);
@@ -546,7 +551,7 @@ function initQuote(I){
   I.seed = hash32("forex|"+I.s); I.blk = {}; I._d = null; I._b = null; I._lv = 0;
   I.mic = I.vol*Math.sqrt(NODE*SIM_SPEED/YR)*.3;
   const q = Q[I.s] = { mid:0, bid:0, ask:0, ref:0, x0:0, lv:0, open:0, openDay:-1, spark:[], liveAt:0, lb:0, la:0, lastSpark:0, dir:0, t:0, half:0 };
-  q.ref = I.live ? I.fb : rateOf(I.b)/rateOf(I.a);
+  q.ref = I.live ? I.fb : simRef(I);
   simStep(I,q,Date.now()/1000,true,true);
   q.open = simOpen(I,q);
 }
@@ -613,10 +618,6 @@ async function loadECB(){
       if (j && j.rates){
         RATES = Object.assign(RATES, j.rates); SRC.ecb = true;
         LS.set("forex.rates",{ r:j.rates, d:j.date, ts:Date.now() });
-        INST.filter(i=>!i.live).forEach(I=>{
-          const q = Q[I.s], nr = rateOf(I.b)/rateOf(I.a);
-          if (nr && isFinite(nr) && Math.abs(nr/q.ref-1) > 1e-9){ q.ref = nr; HB[I.s] = null; q.open = simOpen(I,q); }
-        });
         loadECBHistory();
         return true;
       }
@@ -759,12 +760,33 @@ function saveSet(){ LS.set("forex.set", { ...SET, sym:S.sym, lev:S.lev, stake:S.
 let _syncT=0;
 function saveState(sync){
   LS.set(userKey(), stateBlob(false)); saveSet();
-  if (sync){ clearTimeout(_syncT); _syncT=setTimeout(async()=>{ try{ await updateUser({ forexState: JSON.stringify(stateBlob(true)) }); }catch(e){} }, 900); }
+  if (sync){ clearTimeout(_syncT); _syncT=setTimeout(pushState, 300); }
+}
+/* Panggil API spreadsheet Forex (terpisah dari API mora/credit) */
+async function forexApi(action, data = {}) {
+  if (!FOREX_API_URL || FOREX_API_URL.indexOf("http") !== 0) return { success:false, message:"FOREX_API_URL belum diisi" };
+  try {
+    const res = await fetch(FOREX_API_URL, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: JSON.stringify({ action, secret: SECRET, ...data }) });
+    return await res.json();
+  } catch (err) { console.error("Forex API Error:", err); return { success:false, message:"Gagal terhubung ke server Forex" }; }
+}
+async function pushState(){
+  clearTimeout(_syncT);
+  if (!currentUser) return;
+  try{ const r = await forexApi("saveForexState", { username: currentUser.username, state: JSON.stringify(stateBlob(true)) }); if (!r || !r.success) console.warn("Sinkron riwayat gagal:", r && r.message); }catch(e){}
+}
+async function pullState(){
+  if (!currentUser) return;
+  try{
+    const res = await forexApi("getForexState", { username: currentUser.username });
+    if (!res.success || !res.forexState) return;
+    const f = res.forexState, sv = typeof f==="string" ? JSON.parse(f) : f;
+    const st = LS.get(userKey(), null);
+    if (sv && (sv.ts||0) > ((st&&st.ts)||0)){ POS = Array.isArray(sv.pos)?sv.pos:[]; HIST = Array.isArray(sv.hist)?sv.hist:[]; LS.set(userKey(), sv); renderPositions(); updateTicket(); updateCloseBtn(); updateQuick(); markDirty(); }
+  }catch(e){}
 }
 function loadState(){
-  let st = LS.get(userKey(), null), sv = null;
-  try{ const f=currentUser && currentUser.forexState; if (f) sv = typeof f==="string" ? JSON.parse(f) : f; }catch(e){}
-  if (sv && (!st || (sv.ts||0) > (st.ts||0))) st = sv;
+  const st = LS.get(userKey(), null);
   if (st){ POS = Array.isArray(st.pos)?st.pos:[]; HIST = Array.isArray(st.hist)?st.hist:[]; }
 }
 const pnlOf = (p,q) => { const px = p.side==="buy" ? q.bid : q.ask; return p.size*(p.side==="buy" ? (px-p.entry) : (p.entry-px))/p.entry; };
@@ -1220,7 +1242,8 @@ document.addEventListener("click",e=>{
 
 let _hiddenAt=0;
 document.addEventListener("visibilitychange",()=>{
-  if(document.hidden){ _hiddenAt=Date.now(); saveState(false); return; }
+  if(document.hidden){ _hiddenAt=Date.now(); saveState(false); pushState(); return; }
+  pullState();
   const away=_hiddenAt?(Date.now()-_hiddenAt)/1000:0;
   if(away>15){ for(const k in klDone) delete klDone[k]; ensureHistory(S.sym); }   // tarik ulang data nyata agar tak ada celah
   if(currentUser){ const d=walDiff(); if(d.mora||d.credit) scheduleFlush(200); }
@@ -1243,6 +1266,7 @@ function uiLoop(){
 async function init(){
   const ok = await requireLogin(); if (!ok) return;
   loadState();
+  await pullState();   // ambil posisi & riwayat terbaru dari spreadsheet Forex
   INST.forEach(initQuote);
   const av=$("wlAv"); if (av) av.src=avatar(currentUser.username,currentUser.profilePic);
   syncToolbar(); renderWatch(); renderSymHead(); renderTicket(true); renderPositions(); updateQuick(); resizeCanvas();
