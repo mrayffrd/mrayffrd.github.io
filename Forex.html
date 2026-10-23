@@ -306,7 +306,7 @@ button,[role=button],.go,.sb,.wr{touch-action:manipulation;-webkit-user-select:n
 const API_URL = "https://script.google.com/macros/s/AKfycbwHtatQVaip_YspROYu7Rmtm1xWG_f69yBHoahG7DoPElB08sMmKgSCXgdgF7X9_14/exec";
 const SECRET  = "popit_secret_2026";
 /* API ke-2: spreadsheet khusus Forex (grafik & riwayat). Tempel URL /exec dari deploy AppsScript-Forex.gs di sini. */
-const FOREX_API_URL = "https://script.google.com/macros/s/AKfycbxMGyS_lFC6cFr25l6mzUZQCYSzr7BH5pFHEQod7LxUJK2iceNuttIin7kbaQSdYe_HKQ/exec";
+const FOREX_API_URL = "https://script.google.com/macros/s/AKfycbzGX6fHxNGnv67D5Y6muQWxJe4AoAJl9CGqDR81ls81FsG5pGpZoZ3-6xFW3qoY0OzjYg/exec";
 let currentUser = null;
 
 async function apiCall(action, data = {}) {
@@ -551,7 +551,7 @@ function initQuote(I){
   I.seed = hash32("forex|"+I.s); I.blk = {}; I._d = null; I._b = null; I._lv = 0;
   I.mic = I.vol*Math.sqrt(NODE*SIM_SPEED/YR)*.3;
   const q = Q[I.s] = { mid:0, bid:0, ask:0, ref:0, x0:0, lv:0, open:0, openDay:-1, spark:[], liveAt:0, lb:0, la:0, lastSpark:0, dir:0, t:0, half:0 };
-  q.ref = I.live ? I.fb : simRef(I);
+  q.ref = (I.live ? I.fb : simRef(I)) * (I.mult || 1);
   simStep(I,q,Date.now()/1000,true,true);
   q.open = simOpen(I,q);
 }
@@ -769,6 +769,17 @@ async function forexApi(action, data = {}) {
     const res = await fetch(FOREX_API_URL, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: JSON.stringify({ action, secret: SECRET, ...data }) });
     return await res.json();
   } catch (err) { console.error("Forex API Error:", err); return { success:false, message:"Gagal terhubung ke server Forex" }; }
+}
+/* Pengali harga per instrumen dari sheet "Harga" di spreadsheet Forex (diatur pemilik, berlaku ke semua perangkat) */
+async function loadPriceConfig(){
+  try{
+    const res = await forexApi("getPriceConfig", {});
+    if (!res || !res.success || !Array.isArray(res.prices)) return;
+    for (const r of res.prices){
+      const I = BY[r.sym], m = Number(r.mult);
+      if (I && isFinite(m) && m > 0) I.mult = m;
+    }
+  }catch(e){}
 }
 async function pushState(){
   clearTimeout(_syncT);
@@ -1267,6 +1278,7 @@ async function init(){
   const ok = await requireLogin(); if (!ok) return;
   loadState();
   await pullState();   // ambil posisi & riwayat terbaru dari spreadsheet Forex
+  await loadPriceConfig();   // pengali harga dari sheet "Harga" (harus sebelum initQuote)
   INST.forEach(initQuote);
   const av=$("wlAv"); if (av) av.src=avatar(currentUser.username,currentUser.profilePic);
   syncToolbar(); renderWatch(); renderSymHead(); renderTicket(true); renderPositions(); updateQuick(); resizeCanvas();
