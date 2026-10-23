@@ -246,7 +246,7 @@ body::after{
     }
 
     #main-character.clicked {
-      transform: translate(-50%, -50%) scale(0.88);
+      transform: translate(-50%, -50%);
     }
 
     .game-hint {
@@ -338,8 +338,17 @@ body[data-tab="Profile.html"] .profile-header{padding:40px 0 22px;border:1px sol
 body[data-tab="Profile.html"] .profile-pic-wrap{width:112px;height:112px}
 </style><style>
 #game-container{touch-action:manipulation;user-select:none;-webkit-user-select:none;cursor:pointer}
-#main-character{width:min(88%,320px);height:auto;aspect-ratio:1;border-radius:18px;object-fit:contain;border:0;background:transparent}
-#main-character.clicked{transform:translate(-50%,-50%) scale(.95);image-rendering:pixelated}
+#main-character{width:min(88%,320px);height:auto;aspect-ratio:1;border-radius:18px;object-fit:cover;border:0;background:transparent}
+#main-character.clicked{transform:translate(-50%,-50%)}
+</style>
+<style>
+.rpop{position:fixed;z-index:3000;transform:translate(-50%,0);display:flex;align-items:center;gap:10px;padding:8px 20px 8px 10px;border-radius:99px;pointer-events:none;background:rgba(5,7,18,.92);border:1px solid rgba(var(--c),.85);box-shadow:0 0 26px rgba(var(--c),.45),0 10px 30px rgba(0,0,0,.5);animation:rpop 1.4s cubic-bezier(.2,.8,.3,1) forwards}
+.rpop.mora{--c:var(--gold-rgb)}.rpop.credit{--c:var(--credit-rgb)}
+.rpop .cur-ico{width:38px;height:38px;filter:drop-shadow(0 0 8px rgba(var(--c),.8))}
+.rpop span{display:flex;flex-direction:column;line-height:1.05;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgb(var(--c));font-weight:700}
+.rpop b{font-size:24px;letter-spacing:0;color:#fff}
+@keyframes rpop{0%{opacity:0;transform:translate(-50%,16px) scale(.5)}18%{opacity:1;transform:translate(-50%,-6px) scale(1.12)}30%{transform:translate(-50%,0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-70px) scale(1)}}
+@media (prefers-reduced-motion:reduce){.rpop{animation:none!important}}
 </style></head>
 <body data-tab="Game.html">
 <div id="emu-boot"><b>P O P &nbsp; C A T</b><i></i><span>memuat dunia klik...</span></div>
@@ -543,7 +552,6 @@ async function requireLogin() {
     return false;
   }
   updateCurrencyDisplay();
-  claimPetEarnings();
   return true;
 }
 
@@ -606,7 +614,7 @@ async function fAct(a,x){const r=await apiCall(a,{username:currentUser.username,
 
     // ★ Gambar diam & gambar saat diklik (ganti URL di sini)
     const IMG_IDLE = "https://popcat.click/twitter-card.jpg";
-    const IMG_CLICK = "https://popcat.click/icons/favicon-32x32.png";
+    const IMG_CLICK = "https://popcat.click/icons/apple-touch-icon.png";
     [IMG_IDLE, IMG_CLICK].forEach(u => { new Image().src = u; }); // preload supaya tidak kedip
 
     /* ===== REKOR TERTINGGI (dibaca Profile.html) =====
@@ -635,13 +643,24 @@ async function fAct(a,x){const r=await apiCall(a,{username:currentUser.username,
     
     let totalClicks = 0, rewardToggle = true, owed = 0, paying = false;
 
+    /* Pop-out hadiah: logo Mora / Credit (MORA_LOGO & CREDIT_LOGO di atas) + "+1" */
+    function rewardPop(type) {
+      const isM = type === "mora", r = container.getBoundingClientRect();
+      const el = document.createElement("div");
+      el.className = "rpop " + (isM ? "mora" : "credit");
+      el.style.left = (r.left + r.width / 2 + (Math.random() * 80 - 40)) + "px";
+      el.style.top = (r.top + r.height * 0.3) + "px";
+      el.innerHTML = ci(type) + '<span><b>+1</b>' + (isM ? "Mora" : "Credit") + '</span>';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1500);
+    }
     async function pay() {
       if (paying) return; paying = true;
       while (owed > 0) {
         owed--;
         const type = rewardToggle ? "mora" : "credit";
         rewardToggle = !rewardToggle;
-        try { await addCurrency(type, 1); showToast(type === "mora" ? "+1 Mora 🪙" : "+1 Credit 💎"); } catch (e) {}
+        try { await addCurrency(type, 1); rewardPop(type); } catch (e) {}
       }
       paying = false;
     }
