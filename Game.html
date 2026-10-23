@@ -566,8 +566,9 @@ async function fAct(a,x){const r=await apiCall(a,{username:currentUser.username,
 // ★ DAFTAR GAME — tambah game baru cukup tambah satu baris di sini
 const GAMES=[
   {name:"Pop Cat",file:"Popit.html",desc:"Klik kucing untuk dapat 1 Mora / 1 Credit.",img:"https://popcat.click/twitter-card.jpg"},
-  {name:"Execute Block",file:"ExecuteBlock.html",desc:"Susun blok untuk dapat 1 Mora / Credit.",img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSO3JUu9RWeCFuL1E74O_RyazwRj1lHl9ORtLmzeSc1rg&s"},
-  {name:"Kobo Saurus",file:"Dino.html",desc:"Loncat untuk 1 Mora / Credit",img:"https://i.pinimg.com/736x/98/44/15/9844158ff92e35296f4be30484c2772c.jpg"},
+  {name:"Execute Block",file:"ExecuteBlock.html",desc:"Susun blok untuk dapat 1 Mora / Credit.",img:"https://play-lh.googleusercontent.com/Y0Ire_S4abkbJw21YcPeBos3RKqganxcUUSxKWmNI8sbY7_ICxrIsrciFvO7xIrkpTWTpXw6l3u6Brybi1w9ZbI"},
+  {name:"Saurus",file:"Dino.html",desc:"Loncat untuk 1 Mora / Credit",img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDMylgrPCBA8DaB1ifgAFN_n3OD-oxbQvtO4V5u_dn2GuJtzbZARlxr73X&s=10"},
+  {name:"Forex",file:"Forex.html",desc:"Loncat untuk 1 Mora / Credit",img:"https://awsimages.detik.net.id/community/media/visual/2022/04/26/ilustrasi-pasar-saham_169.jpeg?w=600&q=90"},
 // {name:"Game Baru",file:"GameBaru.html",desc:"Deskripsi singkat",img:"https://link-gambar-preview"},
 ];
 $("games").innerHTML=GAMES.map(g=>`<div class="gc"><div class="pv"><img src="${esc(g.img)}" alt=""></div><div class="bd"><h3>${esc(g.name)}</h3><p>${esc(g.desc)}</p><a class="btn" style="width:100%" href="${esc(g.file)}">Main</a></div></div>`).join("");
