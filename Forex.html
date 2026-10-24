@@ -248,10 +248,78 @@ body::before{background:radial-gradient(40% 30% at 10% 0%,rgba(var(--ac-rgb),.08
 .app.wl-off .wl{display:none}
 .app.wl-off.wl-pop .wl{display:flex;position:fixed;left:12px;top:64px;width:300px;max-height:calc(100dvh - 80px);z-index:80;border-color:var(--line-hi);box-shadow:0 24px 60px rgba(0,0,0,.65)}
 /* zoom grafik */
+.seg button.spin span{display:inline-block;animation:rot .8s linear infinite}
 .zc{position:absolute;right:78px;top:8px;z-index:3;display:flex;gap:4px}
 .zc button{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:rgba(9,12,30,.82);color:var(--tx-2);font-size:18px;font-weight:600;line-height:1;display:grid;place-items:center}
 .zc button:hover{color:#fff;border-color:var(--line-hi)}
 @media(pointer:coarse){.zc button{width:36px;height:36px}}
+/* ---------- poles tahap 2 ---------- */
+:root{--tx:#e6e9ff;--tx-2:#9aa3d0;--tx-3:#6d77ad}
+.chartc{display:flex;flex-direction:column}
+.cwrap{background:linear-gradient(180deg,rgba(15,19,40,.55),rgba(8,10,24,.15))}
+.ctb{background:rgba(10,13,28,.7)}
+.seg{background:rgba(7,9,22,.9)}
+.seg button{font-size:11.5px}
+.seg button.on{box-shadow:inset 0 0 0 1px rgba(var(--ac-rgb),.45)}
+.wr{border-bottom-color:rgba(110,125,215,.08)}
+.wn b{font-size:13px}
+.tk h3{font-size:10.5px}
+.ac b{font-size:16px}
+.gobtns .go.sell{background:linear-gradient(180deg,#f2586e,#c62a41)}
+.gobtns .go.buy{background:linear-gradient(180deg,#31c48d,#1a8f62)}
+.pc{background:linear-gradient(180deg,rgba(20,25,50,.92),rgba(14,18,38,.92))}
+.htab tbody tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+.ptabs button.on{box-shadow:inset 0 -2px 0 var(--ac);border-radius:9px 9px 0 0}
+.mdl{border-radius:16px}
+.toast{border-radius:10px}
+/* grafik layar penuh */
+body.fs-lock{overflow:hidden}
+.chartc.full{position:fixed;inset:0;z-index:150;border-radius:0;border:0;background:var(--bg);padding-top:var(--safe-t)}
+.chartc.full .cwrap{height:auto;flex:1;min-height:0}
+.fsbar{display:none;align-items:center;gap:10px;padding:8px 10px calc(8px + var(--safe-b));border-top:1px solid var(--line);background:rgba(8,10,24,.97)}
+.chartc.full .fsbar{display:flex}
+.fsbar .fi{min-width:0}.fsbar .fi b{display:block;font-size:14px;font-weight:800}.fsbar .fi small{display:block;font-size:12px;font-weight:700}
+.fsbar .qi{flex:1;min-width:0;justify-content:center;gap:14px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:rgba(9,12,30,.7)}
+.fsbar .qi:hover{border-color:var(--line-hi)}
+.fsbar button{height:46px;min-width:116px;border-radius:10px;color:#fff;font-weight:800;line-height:1.15;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.12)}
+.fsbar button span{font-size:10.5px;letter-spacing:.1em}.fsbar button b{font-size:15px}
+.fsbar .s{background:linear-gradient(180deg,#f2586e,#c62a41)}.fsbar .b{background:linear-gradient(180deg,#31c48d,#1a8f62)}
+/* ---------- tahap 3: app bar, ikon, alert, statistik ---------- */
+body{-webkit-font-smoothing:antialiased}
+.topbar{max-width:1680px;margin:10px auto 0;padding:0 12px}
+.tb{display:flex;align-items:center;gap:14px;height:46px;padding:0 14px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(180deg,rgba(19,23,46,.97),rgba(11,14,28,.97))}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;letter-spacing:.16em;font-size:13px}
+.brand i{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:linear-gradient(135deg,#6f86ff,#a05aff)}
+.brand svg{width:15px;height:15px}
+.ses{display:flex;gap:6px}
+.ss{display:flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;letter-spacing:.06em;color:var(--tx-3);padding:3px 9px;border-radius:99px;border:1px solid var(--line)}
+.ss i{width:6px;height:6px;border-radius:50%;background:var(--tx-3)}
+.ss.on{color:var(--up);border-color:rgba(var(--up-rgb),.45);background:rgba(var(--up-rgb),.08)}.ss.on i{background:var(--up);box-shadow:0 0 8px rgba(var(--up-rgb),.8)}
+.clk{font-size:12px;font-weight:600;color:var(--tx-2)}
+.sp1{flex:1}
+.tbp{display:flex;align-items:center;gap:8px;font-size:12.5px}
+.tbp b{font-weight:800}
+.wal{display:flex;gap:8px}
+.wc{display:flex;align-items:center;gap:6px;padding:5px 11px;border-radius:99px;border:1px solid var(--line);background:rgba(9,12,30,.6);font-weight:800;font-size:13px}
+.wc.m b{color:var(--gold)}.wc.c b{color:var(--credit)}
+.tb-av .av{width:30px;height:30px}
+.tb-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:rgba(9,12,30,.7);color:var(--tx-2);font-weight:800}
+#helpBtn{display:none!important}
+.tb-btn:hover{color:#fff;border-color:var(--line-hi)}
+.app{margin-top:10px}
+.seg button{display:inline-flex;align-items:center;justify-content:center}
+.seg button svg,.ib svg{width:15px;height:15px;display:block}
+.ib.act{color:#ffd166;border-color:rgba(255,209,102,.5)}
+.ib .bd{min-width:15px;height:15px;border-radius:8px;background:#ffd166;color:#05060d;font-size:10px;font-weight:800;line-height:15px;padding:0 4px;text-align:center}
+.alst{margin-top:12px;display:flex;flex-direction:column;gap:6px;max-height:210px;overflow:auto}
+.alr{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:12.5px;background:rgba(9,12,30,.55)}
+.alr span{color:var(--tx-2)}.alr .x{margin-left:auto;width:26px;height:26px;border-radius:6px;color:var(--tx-3)}.alr .x:hover{color:var(--dn)}
+.be{margin-top:10px;width:100%;height:36px;border-radius:8px;border:1px solid var(--line);background:rgba(9,12,30,.7);font-size:12px;font-weight:600;color:var(--tx-2)}
+.be:hover{color:#fff;border-color:var(--line-hi)}
+.hbar{display:flex;justify-content:flex-end;margin-bottom:8px}
+.stc.wide{grid-column:span 2}.eqc{width:100%;height:60px;display:block;margin-top:6px}
+.kbd{display:inline-block;min-width:22px;padding:2px 7px;border-radius:6px;border:1px solid var(--line);background:rgba(9,12,30,.8);font-size:11.5px;font-weight:700;text-align:center}
+.kl{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;align-items:center;font-size:13px;color:var(--tx-2)}
 </style>
 <style id="mobCss" media="(max-width:1020px)">
   body{padding-bottom:calc(64px + var(--safe-b))}
@@ -285,6 +353,11 @@ body::before{background:radial-gradient(40% 30% at 10% 0%,rgba(var(--ac-rgb),.08
   .sh-l h1{font-size:15px}
 }
   .wl-tg,#wlPin{display:none}
+  .ses,.clk,.tbp{display:none}
+  .tb{gap:10px;padding:0 10px}
+  .topbar{padding:0 10px}
+  .wl-av{display:none!important}
+  .symh{padding:8px 12px}
 </style>
 <style>
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
@@ -295,7 +368,6 @@ body::before{background:radial-gradient(40% 30% at 10% 0%,rgba(var(--ac-rgb),.08
 .rotate-gate button,.screen-tools button{border:1px solid var(--line);background:var(--panel-2);border-radius:8px;padding:10px 14px}
 .screen-tools{display:flex;align-items:center;gap:8px;padding:5px 12px;max-width:1680px;margin:auto}
 #syncStatus{font-size:12px;color:var(--tx-2);flex:1}#syncStatus.bad{color:var(--dn)}
-@media (pointer:coarse) and (orientation:portrait) and (max-width:1020px){.rotate-gate{display:flex}body{overflow:hidden}}
 .rotate-gate{cursor:pointer}
 /* mode desktop di HP mendatar: tata letak 3 kolom dipaksa, aturan layar sempit dimatikan lewat #mobCss */
 html.desk .app{display:grid;grid-template-columns:var(--cl,292px) minmax(0,1fr) var(--cr,332px);gap:12px;margin:12px auto 24px;padding:0 12px}
@@ -309,8 +381,9 @@ html.desk .app.wl-off{grid-template-columns:minmax(0,1fr) var(--cr,332px)}
 
 <div class="rotate-gate" id="rotateGate" role="dialog" aria-modal="true" aria-labelledby="rotateTitle">
 <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><rect x="25" y="14" width="30" height="52" rx="5" transform="rotate(-35 40 40)"/><path d="M12 36A29 29 0 0 1 60 17M60 8v10H50M68 44A29 29 0 0 1 20 63M20 72V62h10"/></svg>
-<h2 id="rotateTitle">Izinkan layar penuh &amp; mode mendatar</h2><p>Di HP, trading memakai tampilan seperti di komputer. Ketuk untuk mengizinkan layar penuh, lalu HP akan dimiringkan ke mode mendatar.</p><button id="rotateFull" type="button">⛶ Izinkan</button><p id="screenHint" role="status"></p></div>
+<h2 id="rotateTitle">Izinkan layar penuh &amp; mode mendatar</h2><p>Di HP, trading memakai tampilan seperti di komputer. Ini opsional: ketuk Izinkan untuk layar penuh & mendatar, atau lewati dan tetap pakai tampilan HP.</p><button id="rotateFull" type="button">⛶ Izinkan</button><button id="rotateSkip" type="button">Lewati, pakai tampilan HP</button><p id="screenHint" role="status"></p></div>
 <span id="syncStatus" hidden></span>
+<header class="topbar"><div class="tb" id="tb"></div></header>
 <div class="app" id="app" data-view="chart">
   <!-- DAFTAR PASAR -->
   <aside class="pnl wl" id="wl" aria-label="Daftar pasar">
@@ -324,15 +397,16 @@ html.desk .app.wl-off{grid-template-columns:minmax(0,1fr) var(--cr,332px)}
   <!-- TENGAH -->
   <section class="mid" id="mid">
     <div class="pnl symh" id="symh"></div>
-    <div class="pnl chartc">
+    <div class="pnl chartc" id="chartc">
       <div class="ctb" id="ctb">
         <div class="seg" id="tfs"></div>
         <div class="seg" id="ctype"><button data-t="candle" class="on">Candle</button><button data-t="line">Garis</button></div>
-        <div class="seg" id="inds"><button data-i="ma">MA20</button><button data-i="ema">EMA50</button></div>
+        <div class="seg" id="inds"><button data-i="ma">MA20</button><button data-i="ema">EMA50</button><button data-i="bb">BB20</button><button data-i="rsi">RSI</button></div><button class="ib" id="alBtn" type="button" title="Alert harga (A)" aria-label="Alert harga"></button>
         <span class="sp"></span>
-        <div class="seg" id="zgrp"><button type="button" id="zout" aria-label="Perkecil grafik" title="Perkecil">−</button><button type="button" id="zin" aria-label="Perbesar grafik" title="Perbesar">+</button><button type="button" id="zend" aria-label="Ke harga terkini" title="Ke harga terkini">⇥</button></div>
+        <div class="seg" id="zgrp"><button type="button" id="zout" aria-label="Perkecil grafik" title="Perkecil">−</button><button type="button" id="zin" aria-label="Perbesar grafik" title="Perbesar">+</button><button type="button" id="zend" aria-label="Ke harga terkini" title="Ke harga terkini">⇥</button><button type="button" id="fsBtn" aria-label="Grafik layar penuh" title="Grafik layar penuh (F)"><span>⛶</span></button><button type="button" id="syncBtn" aria-label="Sinkronkan posisi" title="Sinkronkan posisi & saldo"><span>↻</span></button></div>
       </div>
       <div class="cwrap" id="cwrap"><canvas id="cv"></canvas><div class="lg" id="lg"></div><div class="cmsg" id="cmsg" hidden></div><button class="cbtn" id="cclose" type="button" hidden></button></div>
+      <div class="fsbar" id="fsbar"><div class="fi"><b id="fsN">–</b><small id="fsP">–</small></div><div class="qi" id="qi2" title="Atur modal & leverage"></div><button class="s" data-go="sell" type="button"><span>JUAL</span><b id="fsS">–</b></button><button class="b" data-go="buy" type="button"><span>BELI</span><b id="fsB">–</b></button></div>
     </div>
     <div class="qa" id="qa"><button class="s" data-go="sell"><span>Jual</span><b id="qaS">–</b></button><button class="b" data-go="buy"><span>Beli</span><b id="qaB">–</b></button><div class="qi" id="qi"></div></div>
     <div class="pnl posp" id="posp">
@@ -807,17 +881,21 @@ function scanSim(fromSec,toSec){
    BAGIAN 4 — POSISI, RIWAYAT, PENYIMPANAN
    ===================================================================== */
 let POS = [], HIST = [];
-const SET = Object.assign({ ma:true, ema:false, ctype:"candle", tf:"1m", cur:"mora", lev:10, group:"all", fav:["EURUSD","BTCUSD","XAUUSD"], confirm:false, zoom:90, stake:"" }, LS.get("forex.set",{}));
+const SET = Object.assign({ ma:true, ema:false, bb:false, rsi:false, ctype:"candle", tf:"1m", cur:"mora", lev:10, group:"all", fav:["EURUSD","BTCUSD","XAUUSD"], confirm:false, zoom:90, stake:"" }, LS.get("forex.set",{}));
 if (SET.v!==2){ SET.v=2; SET.confirm=false; delete SET.speed; }   // order 1-ketuk sebagai bawaan (bisa diaktifkan lagi di panel Order)
 const S = { sym: BY[SET.sym] ? SET.sym : "EURUSD", side:"buy", view:"chart", ptab:"open", q:"", stake:SET.stake||"", tp:"", sl:"", lev:SET.lev };
 const userKey = () => "forex.state." + (currentUser ? currentUser.username : "tamu");
 function stateBlob(trim){ return { pos:POS.map(p=>({...p})), hist:HIST.slice(0,trim?60:200), ts:Date.now() }; }
 function saveSet(){ LS.set("forex.set", { ...SET, sym:S.sym, lev:S.lev, stake:S.stake, zoom:view.n }); }
 const SYNC={ready:false,loaded:false,revision:0,dirty:false,busy:false,timer:0};
+/* Penutupan posisi menunggu "stempel" server dulu. Uang (Mora/Credit) baru dicairkan setelah spreadsheet
+   menerima keadaan baru dengan revisi yang cocok. Perangkat lain yang masih memegang posisi lama
+   akan ditolak server (konflik) sehingga pembayarannya dibatalkan: tidak ada untung ganda. */
+let OPS=[];
 function syncStatus(text,bad){const el=$("syncStatus");el.textContent=text;el.classList.toggle("bad",!!bad);}
 function saveState(sync){
   if(sync) SYNC.dirty=true;
-  LS.set(userKey(),{...stateBlob(false),revision:SYNC.revision,pending:SYNC.dirty});saveSet();
+  LS.set(userKey(),{...stateBlob(false),revision:SYNC.revision,pending:SYNC.dirty,ops:OPS});saveSet();
   if(sync){clearTimeout(SYNC.timer);SYNC.timer=setTimeout(pushState,300);}
 }
 async function forexApi(action,data={}){
@@ -837,6 +915,26 @@ function mergeState(remote,local){
   const pos=new Map();for(const p of [...remote.pos,...local.pos])if(!history.has(p.id)){const prev=pos.get(p.id);if(!prev||(p.updatedAt||p.t0)>=(prev.updatedAt||prev.t0))pos.set(p.id,p);}
   return {pos:[...pos.values()].sort((a,b)=>b.t0-a.t0),hist:[...history.values()].sort((a,b)=>b.t1-a.t1).slice(0,200)};
 }
+function reconcile(remote){
+ const rp=new Map(remote.pos.map(p=>[p.id,p])),rh=new Set(remote.hist.map(h=>h.id));
+ const keep=[],dropped=[],seen=new Set(),bad=new Set();
+ for(const o of OPS){
+  if(!seen.has(o.pid)){
+   seen.add(o.pid);const r=rp.get(o.pid);
+   if(!(r&&!rh.has(o.pid)&&(r.updatedAt||r.t0)===o.stamp&&r.stake===o.stakeBefore))bad.add(o.pid);
+  }
+  (bad.has(o.pid)?dropped:keep).push(o);
+ }
+ if(dropped.length){
+  const hids=new Set(dropped.map(o=>o.hid)),pids=new Set(dropped.map(o=>o.pid));
+  HIST=HIST.filter(h=>!hids.has(h.id));
+  POS=POS.filter(p=>!pids.has(p.id));
+  for(const id of pids){const r=rp.get(id);if(r&&!rh.has(id))POS.push(r);}
+  OPS=keep;
+  toast("Posisi sudah berubah/ditutup di perangkat lain · penutupan dibatalkan, tidak ada pembayaran ganda","dn");
+ }
+ applyState(mergeState(remote,stateBlob(false)));
+}
 function applyState(st){POS=st.pos.filter(p=>BY[p.sym]);HIST=st.hist;}
 function syncRender(){if(!Q[S.sym]||!$("tkForm"))return;renderPositions();updateTicket();updateCloseBtn();updateQuick();markDirty();}
 async function pullState(){
@@ -845,7 +943,7 @@ async function pullState(){
  try{
   const r=await forexApi("getForexState",{username:currentUser.username});if(!r.success)throw Error(r.message);if(r.protocol!==3)throw Error("Perbarui Apps Script ke v3");
   const remote=parseState(r.forexState);SYNC.revision=Number(r.revision)||0;
-  applyState(SYNC.dirty?mergeState(remote,stateBlob(false)):remote);
+  if(SYNC.dirty)reconcile(remote);else{OPS=[];applyState(remote);}
   SYNC.ready=true;SYNC.loaded=true;saveState(false);syncRender();syncStatus(SYNC.dirty?"Mengirim perubahan posisi…":"Posisi tersinkron · "+new Date().toLocaleTimeString("id-ID"));return true;
  }catch(e){SYNC.ready=false;syncStatus("Sinkron gagal · tekan ↻ untuk mencoba lagi",true);return false;}
  finally{SYNC.busy=false;if(SYNC.dirty){clearTimeout(SYNC.timer);SYNC.timer=setTimeout(pushState,SYNC.ready?300:5000);}}
@@ -856,12 +954,14 @@ async function pushState(){
  SYNC.busy=true;
  try{
   for(let attempt=0;attempt<4;attempt++){
-   const snapshot=stateBlob(false),fingerprint=JSON.stringify({pos:snapshot.pos,hist:snapshot.hist});
+   const sent=OPS.slice(),snapshot=stateBlob(false),fingerprint=JSON.stringify({pos:snapshot.pos,hist:snapshot.hist});
    const r=await forexApi("saveForexState",{username:currentUser.username,state:JSON.stringify(snapshot),baseRevision:SYNC.revision});
    if(!r.success)throw Error(r.message);
-   if(r.conflict){applyState(mergeState(parseState(r.forexState),stateBlob(false)));SYNC.revision=r.revision;continue;}
+   if(r.conflict){reconcile(parseState(r.forexState));SYNC.revision=r.revision;continue;}
    if(!Number.isFinite(r.revision))throw Error("Perbarui Apps Script ke v3");
    SYNC.revision=r.revision;
+   for(const o of sent)if(o.payout>0)walletTry({[o.cur]:o.payout});   // server sudah menerima penutupan → baru cairkan
+   OPS=OPS.filter(o=>!sent.includes(o));
    SYNC.dirty=fingerprint!==JSON.stringify({pos:POS,hist:HIST});saveState(false);syncRender();
    syncStatus(SYNC.dirty?"Mengirim perubahan posisi…":"Posisi tersinkron · "+new Date().toLocaleTimeString("id-ID"));return;
   }
@@ -869,7 +969,7 @@ async function pushState(){
  }catch(e){syncStatus("Posisi belum terkirim · "+e.message,true);}
  finally{SYNC.busy=false;if(SYNC.dirty)SYNC.timer=setTimeout(pushState,5000);}
 }
-function loadState(){const st=LS.get(userKey(),null);if(st){applyState(parseState(st));SYNC.loaded=true;SYNC.dirty=!!st.pending;SYNC.revision=Number(st.revision)||0;}}
+function loadState(){const st=LS.get(userKey(),null);if(st){applyState(parseState(st));SYNC.loaded=true;SYNC.dirty=!!st.pending;SYNC.revision=Number(st.revision)||0;OPS=Array.isArray(st.ops)?st.ops:[];}}
 async function syncCycle(){if(SYNC.dirty)await pushState();else await pullState();}
 const FS_OK = !!document.documentElement.requestFullscreen;
 async function enterFullScreen(){
@@ -887,13 +987,14 @@ const VP_PHONE="width=device-width, initial-scale=1, viewport-fit=cover", VP_DES
 function setViewport(c){ const m=$("vp"); if(m && m.getAttribute("content")!==c) m.setAttribute("content",c); }
 function updateGate(){
  const gate=$("rotateGate"), phone=isPhone();
- const needFull = phone && FS_OK && !document.fullscreenElement;
- const needLand = phone && innerHeight > innerWidth;
+ const skip = !!LS.get("forex.skipGate",false), land = innerWidth > innerHeight;
+ const needFull = phone && FS_OK && !document.fullscreenElement && !skip;
+ const needLand = phone && !land && !skip;
  const block = needFull || needLand;
  gate.style.display = block ? "flex" : "";
  document.body.style.overflow = block ? "hidden" : "";
  /* HP mendatar & layar penuh → tata letak persis seperti desktop (lebar 1280, diperkecil otomatis) */
- const desk = phone && !block;
+ const desk = phone && land && !block;
  setViewport(desk ? VP_DESK : VP_PHONE);
  /* pengaman: walau browser tidak menerapkan lebar 1280, tetap paksa tata letak desktop 3 kolom */
  const root=document.documentElement, w=innerWidth;
@@ -905,6 +1006,7 @@ function updateGate(){
  if(!block) resizeCanvas();
 }
 $("rotateGate").onclick=enterFullScreen;
+$("rotateSkip").onclick=e=>{ e.stopPropagation(); LS.set("forex.skipGate",true); updateGate(); };
 addEventListener("online",syncCycle);addEventListener("orientationchange",()=>setTimeout(()=>{updateGate();},250));document.addEventListener("fullscreenchange",()=>{updateGate();resizeCanvas();});addEventListener("resize",updateGate);setTimeout(updateGate,0);
 const pnlOf = (p,q) => { const px = p.side==="buy" ? q.bid : q.ask; return p.size*(p.side==="buy" ? (px-p.entry) : (p.entry-px))/p.entry; };
 const liqPrice = (side,entry,lev) => side==="buy" ? entry*(1-.9/lev) : entry*(1+.9/lev);
@@ -919,7 +1021,7 @@ function checkAll(){
   if (!POS.length || !SYNC.loaded) return;
   for (const p of POS.slice()){ const r = trigger(p,Q[p.sym]); if (r) closePosition(p,r); }
 }
-const REASON = { manual:"Ditutup manual", tp:"Take Profit", sl:"Stop Loss", liq:"Likuidasi (stop-out)", all:"Ditutup manual" };
+const REASON = { partial:"Ditutup sebagian", manual:"Ditutup manual", tp:"Take Profit", sl:"Stop Loss", liq:"Likuidasi (stop-out)", all:"Ditutup manual" };
 /* harga yang dipakai = harga saat jari/kursor menyentuh tombol (bukan saat proses selesai) */
 function pxOf(sym,snap){ if (snap && snap.q[sym] && performance.now()-snap.t<1500) return snap.q[sym]; const q=Q[sym]; return { bid:q.bid, ask:q.ask }; }
 function finishClose(){ saveState(true); renderPositions(); updateTicket(); updateCloseBtn(); updateQuick(); markDirty(); }
@@ -929,7 +1031,7 @@ function closePosition(p, reason, o){
   const pq = o.px!=null ? { bid:o.px, ask:o.px } : pxOf(p.sym,o.snap);
   const px = p.side==="buy" ? pq.bid : pq.ask;
   const pnl = pnlOf(p,pq), payout = Math.max(0, Math.round(p.stake + pnl));
-  if (payout > 0) walletTry({ [p.cur]: payout });            // instan, sinkron server di latar belakang
+  OPS.push({ pid:p.id, hid:p.id, cur:p.cur, payout, stamp:p.updatedAt||p.t0, stakeBefore:p.stake });   // dicairkan setelah server konfirmasi
   POS = POS.filter(x=>x.id!==p.id);
   const net = payout - p.stake;
   HIST.unshift({ id:p.id, sym:p.sym, side:p.side, cur:p.cur, stake:p.stake, lev:p.lev, entry:p.entry, exit:px, pnl:net, reason, t0:p.t0, t1:o.t||Date.now() });
@@ -939,6 +1041,21 @@ function closePosition(p, reason, o){
     toast((reason==="manual"||reason==="all" ? "" : (REASON[reason]+" · ")) + BY[p.sym].l + " " + (net>=0?"profit ":"rugi ") + fmtS(net,0) + " " + CUR_NAME[p.cur], net>=0?"up":"dn");
   }
   return net;
+}
+function closePartial(p, frac, o){
+  o = o || {};
+  if (!SYNC.loaded || !POS.includes(p)) return;
+  if (p.stake*(1-frac) < 1 || p.stake < 2) return closePosition(p,"manual",{ snap:o.snap });
+  const pq = pxOf(p.sym,o.snap), px = p.side==="buy" ? pq.bid : pq.ask;
+  const sc = Math.max(1, Math.round(p.stake*frac)), zc = p.size*(sc/p.stake);
+  const pnl = pnlOf({ ...p, stake:sc, size:zc }, pq), payout = Math.max(0, Math.round(sc + pnl)), net = payout - sc;
+  const hid = p.id+"~"+Date.now().toString(36);
+  OPS.push({ pid:p.id, hid, cur:p.cur, payout, stamp:p.updatedAt||p.t0, stakeBefore:p.stake });
+  p.stake -= sc; p.size -= zc; p.updatedAt = Date.now();
+  HIST.unshift({ id:hid, sym:p.sym, side:p.side, cur:p.cur, stake:sc, lev:p.lev, entry:p.entry, exit:px, pnl:net, reason:"partial", t0:p.t0, t1:Date.now() });
+  if (HIST.length>200) HIST.length=200;
+  finishClose();
+  toast("Ditutup sebagian · "+BY[p.sym].l+" "+(net>=0?"profit ":"rugi ")+fmtS(net,0)+" "+CUR_NAME[p.cur], net>=0?"up":"dn");
 }
 function closeMany(list, snap, reason){
   if (!list.length) return;
@@ -1013,13 +1130,20 @@ function timeLbl(t,tf){
 }
 function sma(arr,n){ const o=new Array(arr.length).fill(null); let s=0; for(let i=0;i<arr.length;i++){ s+=arr[i][4]; if(i>=n) s-=arr[i-n][4]; if(i>=n-1) o[i]=s/n; } return o; }
 function ema(arr,n){ const o=new Array(arr.length).fill(null), k=2/(n+1); let e=null; for(let i=0;i<arr.length;i++){ e = e===null ? arr[i][4] : arr[i][4]*k+e*(1-k); if(i>=n-1) o[i]=e; } return o; }
+function rsiCalc(arr,n){
+  const o=new Array(arr.length).fill(null); if(arr.length<=n) return o;
+  let g=0,l=0; for(let i=1;i<=n;i++){ const d=arr[i][4]-arr[i-1][4]; if(d>=0) g+=d; else l-=d; }
+  let ag=g/n, al=l/n; o[n]=al===0?100:100-100/(1+ag/al);
+  for(let i=n+1;i<arr.length;i++){ const d=arr[i][4]-arr[i-1][4]; ag=(ag*(n-1)+(d>0?d:0))/n; al=(al*(n-1)+(d<0?-d:0))/n; o[i]=al===0?100:100-100/(1+ag/al); }
+  return o;
+}
 function draw(){
   dirty=false;
   const c=ctx, W=CW, H=CH; c.setTransform(DPR,0,0,DPR,0,0); c.clearRect(0,0,W,H);
   const arr=candles(), I=BY[S.sym], q=Q[S.sym], msg=$("cmsg");
   if (arr.length<2){ msg.hidden=false; msg.textContent="Memuat data grafik…"; return; }
   msg.hidden = true;
-  const RW=70, BH=24, TP=10, pw=W-RW, ph=H-BH-TP, pad=6;
+  const RW=70, BH=24, TP=10, pw=W-RW, pad=6, rsiOn=!!SET.rsi, RH=rsiOn?Math.round((H-BH-TP)*.2):0, GP=rsiOn?8:0, ph=H-BH-TP-RH-GP;
   const n=view.n, end=clamp(arr.length-view.off,Math.min(arr.length,5),arr.length), s0=Math.max(0,end-n), sw=pw/(n+pad);
   const X=i=>(i-(end-n))*sw+sw/2;
   let lo=Infinity, hi=-Infinity;
@@ -1042,12 +1166,12 @@ function draw(){
     c.strokeStyle="rgba(110,125,215,.07)"; c.beginPath(); c.moveTo(x,TP); c.lineTo(x,H-BH); c.stroke();
     c.fillStyle="#6a74ab"; c.fillText(timeLbl(arr[i][0],SET.tf),x,H-BH+7); }
   // candle / garis
-  c.save(); c.beginPath(); c.rect(0,0,pw,H-BH); c.clip();
+  c.save(); c.beginPath(); c.rect(0,0,pw,TP+ph); c.clip();
   if (lineMode){
     c.beginPath(); for(let i=s0;i<end;i++){ const x=X(i), y=Y(arr[i][4]); i===s0?c.moveTo(x,y):c.lineTo(x,y); }
-    const g=c.createLinearGradient(0,TP,0,H-BH); g.addColorStop(0,"rgba(148,168,255,.28)"); g.addColorStop(1,"rgba(148,168,255,0)");
+    const g=c.createLinearGradient(0,TP,0,TP+ph); g.addColorStop(0,"rgba(148,168,255,.28)"); g.addColorStop(1,"rgba(148,168,255,0)");
     c.strokeStyle="#9fb0ff"; c.lineWidth=1.8; c.lineJoin="round"; c.stroke();
-    c.lineTo(X(end-1),H-BH); c.lineTo(X(s0),H-BH); c.closePath(); c.fillStyle=g; c.fill();
+    c.lineTo(X(end-1),TP+ph); c.lineTo(X(s0),TP+ph); c.closePath(); c.fillStyle=g; c.fill();
   } else {
     const bw=Math.max(1,Math.min(sw*.68,22));
     for(let i=s0;i<end;i++){ const k=arr[i], up=k[4]>=k[1], col=up?"#2ebd85":"#f6465d", x=Math.round(X(i))+.5;
@@ -1060,6 +1184,11 @@ function draw(){
   const drawLine=(vals,col)=>{ c.beginPath(); let st=false; for(let i=s0;i<end;i++){ if(vals[i]==null) continue; const x=X(i),y=Y(vals[i]); st?c.lineTo(x,y):(c.moveTo(x,y),st=true); } c.strokeStyle=col; c.lineWidth=1.4; c.stroke(); };
   if (SET.ma) drawLine(sma(arr,20),"#ffcf5c");
   if (SET.ema) drawLine(ema(arr,50),"#c78bff");
+  if (SET.bb){
+    const m=sma(arr,20), up=new Array(arr.length).fill(null), lw=new Array(arr.length).fill(null);
+    for(let i=Math.max(19,s0-1);i<end;i++){ if(m[i]==null) continue; let v=0; for(let k=i-19;k<=i;k++){ const dd=arr[k][4]-m[i]; v+=dd*dd; } const sd=Math.sqrt(v/20); up[i]=m[i]+2*sd; lw[i]=m[i]-2*sd; }
+    drawLine(up,"rgba(127,208,255,.75)"); drawLine(lw,"rgba(127,208,255,.75)");
+  }
   // garis posisi, TP, SL
   const lab=(y,txt,col,fill)=>{ c.setLineDash([5,4]); c.strokeStyle=col; c.lineWidth=1; c.beginPath(); c.moveTo(0,Math.round(y)+.5); c.lineTo(pw,Math.round(y)+.5); c.stroke(); c.setLineDash([]); };
   const tags=[];
@@ -1069,28 +1198,48 @@ function draw(){
     if(p.tp){ lab(Y(p.tp),"","#2ebd85"); tags.push([Y(p.tp),"TP",  "#2ebd85"]); }
     if(p.sl){ lab(Y(p.sl),"","#f6465d"); tags.push([Y(p.sl),"SL",  "#f6465d"]); }
   });
+  ALERTS.filter(a=>a.sym===S.sym).forEach(a=>{ lab(Y(a.price),"","#ffb84d"); tags.push([Y(a.price),"ALERT","#ffb84d"]); });
   c.restore();
   c.font="600 11px Inter,system-ui,sans-serif"; c.textBaseline="middle"; c.textAlign="left";
-  tags.forEach(([y,t,col])=>{ if(y<TP||y>H-BH) return; const w=c.measureText(t).width+14; const x=pw-w-8;
+  tags.forEach(([y,t,col])=>{ if(y<TP||y>TP+ph) return; const w=c.measureText(t).width+14; const x=pw-w-8;
     c.fillStyle="rgba(8,10,24,.92)"; c.strokeStyle=col; c.lineWidth=1; rr(c,x,y-10,w,20,6); c.fill(); c.stroke(); c.fillStyle=col; c.fillText(t,x+7,y+.5); });
   // harga terakhir
   if (end===arr.length || view.off<3){
-    const last=arr[arr.length-1][4], y=clamp(Y(last),TP+9,H-BH-9), up=last>=arr[arr.length-1][1], col=up?"#2ebd85":"#f6465d";
+    const last=arr[arr.length-1][4], y=clamp(Y(last),TP+9,TP+ph-9), up=last>=arr[arr.length-1][1], col=up?"#2ebd85":"#f6465d";
     c.save(); c.beginPath(); c.rect(0,0,pw,H); c.clip(); c.setLineDash([2,3]); c.strokeStyle=col; c.globalAlpha=.7; c.beginPath(); c.moveTo(0,Math.round(y)+.5); c.lineTo(pw,Math.round(y)+.5); c.stroke(); c.restore();
     c.fillStyle=col; rr(c,pw+1,y-10,RW-2,20,4); c.fill(); c.fillStyle="#fff"; c.font="700 11px Inter,system-ui,sans-serif"; c.textAlign="left"; c.textBaseline="middle"; c.fillText(last.toFixed(I.dp),pw+7,y+.5);
+  }
+  // panel RSI
+  let rsiArr=null;
+  if (rsiOn){
+    rsiArr=rsiCalc(arr,14); const t0=TP+ph+GP, yR=v=>t0+(100-v)/100*RH;
+    c.fillStyle="rgba(127,208,255,.045)"; c.fillRect(0,yR(70),pw,yR(30)-yR(70));
+    c.strokeStyle="rgba(110,125,215,.2)"; c.lineWidth=1; c.setLineDash([3,4]);
+    [30,70].forEach(v=>{ const y=Math.round(yR(v))+.5; c.beginPath(); c.moveTo(0,y); c.lineTo(pw,y); c.stroke(); }); c.setLineDash([]);
+    c.strokeStyle="rgba(110,125,215,.25)"; c.beginPath(); c.moveTo(0,Math.round(t0-4)+.5); c.lineTo(W,Math.round(t0-4)+.5); c.stroke();
+    c.beginPath(); let go2=false; for(let i=s0;i<end;i++){ const v=rsiArr[i]; if(v==null) continue; const x=X(i), y=yR(v); go2?c.lineTo(x,y):(c.moveTo(x,y),go2=true); }
+    c.strokeStyle="#c78bff"; c.lineWidth=1.4; c.stroke();
+    c.font="11px Inter,system-ui,sans-serif"; c.fillStyle="#7d86b8"; c.textAlign="left"; c.textBaseline="middle";
+    [30,70].forEach(v=>c.fillText(String(v),pw+8,yR(v)));
   }
   // crosshair
   let hov=null;
   if (cross && cross.x<pw && cross.y>TP && cross.y<H-BH){
     const idx=clamp(Math.round((cross.x-sw/2)/sw+(end-n)),s0,end-1); hov=arr[idx];
     const x=Math.round(X(idx))+.5; c.strokeStyle="rgba(180,195,255,.45)"; c.setLineDash([3,3]); c.lineWidth=1;
-    c.beginPath(); c.moveTo(x,TP); c.lineTo(x,H-BH); c.moveTo(0,Math.round(cross.y)+.5); c.lineTo(pw,Math.round(cross.y)+.5); c.stroke(); c.setLineDash([]);
-    const pv=lo+(TP+ph-cross.y)/ph*(hi-lo);
-    c.fillStyle="#26305f"; rr(c,pw+1,cross.y-10,RW-2,20,4); c.fill(); c.fillStyle="#fff"; c.font="600 11px Inter,system-ui,sans-serif"; c.textAlign="left"; c.textBaseline="middle"; c.fillText(pv.toFixed(I.dp),pw+7,cross.y+.5);
+    c.beginPath(); c.moveTo(x,TP); c.lineTo(x,H-BH);
+    const inP=cross.y<=TP+ph, inR=rsiOn&&cross.y>=TP+ph+GP;
+    if(inP||inR){ c.moveTo(0,Math.round(cross.y)+.5); c.lineTo(pw,Math.round(cross.y)+.5); }
+    c.stroke(); c.setLineDash([]);
+    let pv=null; if(inP) pv=(lo+(TP+ph-cross.y)/ph*(hi-lo)).toFixed(I.dp); else if(inR) pv=(100-(cross.y-(TP+ph+GP))/RH*100).toFixed(1);
+    if(pv!==null){ c.fillStyle="#26305f"; rr(c,pw+1,cross.y-10,RW-2,20,4); c.fill(); c.fillStyle="#fff"; c.font="600 11px Inter,system-ui,sans-serif"; c.textAlign="left"; c.textBaseline="middle"; c.fillText(pv,pw+7,cross.y+.5); }
+    c.font="600 11px Inter,system-ui,sans-serif";
     const tl=timeLbl(hov[0],SET.tf), tw=c.measureText(tl).width+14; c.fillStyle="#26305f"; rr(c,clamp(x-tw/2,0,pw-tw),H-BH+2,tw,19,4); c.fill(); c.fillStyle="#fff"; c.textAlign="center"; c.fillText(tl,clamp(x,tw/2,pw-tw/2),H-BH+12);
   }
   const k=hov||arr[arr.length-1], d=I.dp, chg=k[4]-k[1], cc=chg>=0?"up":"dn";
-  $("lg").innerHTML=`<span><b>${I.l}</b> · ${SET.tf}</span><span>O <b class="${cc}">${k[1].toFixed(d)}</b></span><span>H <b class="${cc}">${k[2].toFixed(d)}</b></span><span>L <b class="${cc}">${k[3].toFixed(d)}</b></span><span>C <b class="${cc}">${k[4].toFixed(d)}</b></span>`+(SET.ma?`<span style="color:#ffcf5c">MA20</span>`:"")+(SET.ema?`<span style="color:#c78bff">EMA50</span>`:"");
+  const ri=hov?arr.indexOf(hov):arr.length-1, rsiTxt=(rsiArr&&rsiArr[ri]!=null)?`<span style="color:#c78bff">RSI ${rsiArr[ri].toFixed(1)}</span>`:"";
+  let tmr=""; if(SET.tf!=="1D" && end===arr.length && TFS[SET.tf]){ const w=TFS[SET.tf], left=w-Math.floor(Date.now()/1000)%w; tmr=`<span style="color:var(--tx-3)">⏱ ${String(Math.floor(left/60)).padStart(2,"0")}:${String(left%60).padStart(2,"0")}</span>`; }
+  $("lg").innerHTML=`<span><b>${I.l}</b> · ${SET.tf}</span><span>O <b class="${cc}">${k[1].toFixed(d)}</b></span><span>H <b class="${cc}">${k[2].toFixed(d)}</b></span><span>L <b class="${cc}">${k[3].toFixed(d)}</b></span><span>C <b class="${cc}">${k[4].toFixed(d)}</b></span>`+(SET.ma?`<span style="color:#ffcf5c">MA20</span>`:"")+(SET.ema?`<span style="color:#c78bff">EMA50</span>`:"")+(SET.bb?`<span style="color:#7fd0ff">BB20</span>`:"")+rsiTxt+tmr;
 }
 function rr(c,x,y,w,h,r){ c.beginPath(); c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r); c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); }
 function frame(){ if(dirty) draw(); requestAnimationFrame(frame); }
@@ -1113,6 +1262,101 @@ cw.addEventListener("wheel",e=>{ e.preventDefault(); view.n=clamp(Math.round(vie
 $("zin").onclick=()=>{ view.n=clamp(Math.round(view.n*.8),20,400); markDirty(); zs(); };
 $("zout").onclick=()=>{ view.n=clamp(Math.round(view.n*1.25),20,400); markDirty(); zs(); };
 $("zend").onclick=()=>{ view.off=0; markDirty(); };
+const _ic=p=>'<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>';
+const ICO={ fs:_ic('<path d="M3 7V3h4M17 7V3h-4M3 13v4h4M17 13v4h-4"/>'), fsx:_ic('<path d="M7 3v4H3M13 3v4h4M7 17v-4H3M13 17v-4h4"/>'), last:_ic('<path d="M5 5l5 5-5 5M11 5l5 5-5 5"/>'),
+  sync:_ic('<path d="M16.5 8A6.5 6.5 0 0 0 5 5.5L3.5 7M3.5 3.5V7H7M3.5 12A6.5 6.5 0 0 0 15 14.5L16.5 13M16.5 16.5V13H13"/>'), bell:_ic('<path d="M5 14V9a5 5 0 0 1 10 0v5l1.5 1.5h-13zM8.5 17.5a1.5 1.5 0 0 0 3 0"/>') };
+$("fsBtn").firstElementChild.innerHTML=ICO.fs; $("zend").innerHTML=ICO.last; $("syncBtn").firstElementChild.innerHTML=ICO.sync;
+/* ---------- alert harga (aktif selama halaman terbuka) ---------- */
+let ALERTS=[]; const ORIG_TITLE=document.title;
+const alKey=()=>"forex.alerts."+(currentUser?currentUser.username:"tamu");
+function loadAlerts(){ ALERTS=LS.get(alKey(),[]).filter(a=>BY[a.sym]&&a.price>0); updateAlertBtn(); }
+function saveAlerts(){ LS.set(alKey(),ALERTS); updateAlertBtn(); }
+function updateAlertBtn(){ const b=$("alBtn"); if(!b) return; const n=ALERTS.filter(a=>a.sym===S.sym).length; b.innerHTML=ICO.bell+(n?`<span class="bd">${n}</span>`:""); b.classList.toggle("act",n>0); }
+function checkAlerts(){
+  if(!ALERTS.length) return;
+  const hit=ALERTS.filter(a=>{ const q=Q[a.sym]; return q && (a.dir==="up" ? q.mid>=a.price : q.mid<=a.price); });
+  if(!hit.length) return;
+  ALERTS=ALERTS.filter(a=>!hit.includes(a)); saveAlerts();
+  hit.forEach(a=>{ const I=BY[a.sym], txt="Alert · "+I.l+" mencapai "+a.price.toFixed(I.dp); toast(txt,"up"); try{ navigator.vibrate&&navigator.vibrate([120,60,120]); }catch(e){} if(document.hidden) document.title=txt; });
+  markDirty(); if($("veil").classList.contains("on")&&$("alPx")) alertModal();
+}
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden) document.title=ORIG_TITLE; });
+function alertModal(){
+  const I=BY[S.sym], q=Q[S.sym], d=I.dp;
+  modal(`<h2>Alert harga</h2><div class="fld" style="margin-top:0"><label for="alPx">${I.l} <small>Sekarang ${q.mid.toFixed(d)}</small></label><div class="inp"><input id="alPx" inputmode="decimal" placeholder="Harga target" autocomplete="off"><button class="st" data-aladd type="button" style="width:auto;padding:0 14px;font-size:12px;font-weight:700">Tambah</button></div></div><div class="err" id="alErr"></div>
+   <div class="alst">${ALERTS.length?ALERTS.slice().reverse().map(a=>`<div class="alr"><b>${BY[a.sym].l}</b><span>${a.dir==="up"?"naik ke":"turun ke"} ${a.price.toFixed(BY[a.sym].dp)}</span><button class="x" data-aldel="${a.id}" type="button" aria-label="Hapus">✕</button></div>`).join(""):`<div class="note" style="padding:6px 2px">Belum ada alert. Alert berbunyi saat harga menyentuh target, selama halaman ini terbuka.</div>`}</div>
+   <div class="row"><button class="pri" data-x>Selesai</button></div>`);
+  const i=$("alPx"); if(i) setTimeout(()=>i.focus(),30);
+}
+$("alBtn").onclick=alertModal;
+$("mdl").addEventListener("click",e=>{
+  const ad=e.target.closest("[data-aladd]"), dl=e.target.closest("[data-aldel]");
+  if(ad){ const pr=parseFloat(String($("alPx").value).replace(",",".")), q=Q[S.sym];
+    if(!(pr>0)) return $("alErr").textContent="Masukkan harga target yang valid";
+    if(Math.abs(pr-q.mid)<1e-12) return $("alErr").textContent="Target sama dengan harga saat ini";
+    if(ALERTS.length>=30) return $("alErr").textContent="Maksimal 30 alert";
+    ALERTS.push({ id:Date.now().toString(36)+Math.floor(rnd()*1296).toString(36), sym:S.sym, price:pr, dir:pr>q.mid?"up":"dn" }); saveAlerts(); markDirty(); alertModal(); }
+  else if(dl){ ALERTS=ALERTS.filter(a=>a.id!==dl.dataset.aldel); saveAlerts(); markDirty(); alertModal(); }
+});
+$("mdl").addEventListener("keydown",e=>{ if(e.key==="Enter"&&e.target.id==="alPx"){ e.preventDefault(); const b=document.querySelector("[data-aladd]"); if(b) b.click(); } });
+/* ---------- app bar ---------- */
+const SESS=[["SYD",21,6],["TYO",0,9],["LON",7,16],["NYC",12,21]]; let _tbT=0;
+function renderTopbar(){
+  $("tb").innerHTML=`<div class="brand"><i><svg viewBox="0 0 20 20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14l4-4 3 3 7-8"/></svg></i>FOREX</div><div class="ses" id="ses"></div><span class="clk" id="clk"></span><span class="sp1"></span><span class="tbp" id="tbPnl"></span>
+   <div class="wal"><span class="wc m">${ci("mora")}<b class="mora-count">0</b></span><span class="wc c">${ci("credit")}<b class="credit-count">0</b></span></div><button class="tb-btn" id="helpBtn" type="button" title="Pintasan keyboard (?)" aria-label="Bantuan">?</button><a class="tb-av" href="Profile.html" title="Profil"><img class="av" alt="" src="${esc(avatar(currentUser.username,currentUser.profilePic))}"></a>`;
+  $("helpBtn").onclick=helpModal; updateCurrencyDisplay(); updateTopbar(true);
+}
+function updateTopbar(force){
+  const now=Date.now(); if(!force&&now-_tbT<1000||!$("ses")) return; _tbT=now;
+  const D=new Date(), h=D.getUTCHours()+D.getUTCMinutes()/60;
+  setHtml($("ses"),SESS.map(([n,a,b])=>{ const on=a<b?(h>=a&&h<b):(h>=a||h<b); return `<span class="ss${on?" on":""}" title="Sesi ${n}${on?" buka":" tutup"}"><i></i>${n}</span>`; }).join(""));
+  $("clk").textContent=D.toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+  let pm=0,pc=0,hm=false,hc=false; POS.forEach(p=>{ const v=pnlOf(p,Q[p.sym]); if(p.cur==="mora"){ pm+=v; hm=true; } else { pc+=v; hc=true; } });
+  setHtml($("tbPnl"),POS.length?`<span class="mut">${POS.length} posisi</span>`+(hm?`${ci("mora")}<b class="${pm>=0?"up":"dn"}">${fmtS(pm,0)}</b>`:"")+(hc?`${ci("credit")}<b class="${pc>=0?"up":"dn"}">${fmtS(pc,0)}</b>`:""):"");
+}
+function helpModal(){
+  modal(`<h2>Pintasan keyboard</h2><div class="kl"><span><span class="kbd">+</span> <span class="kbd">−</span></span><span>Zoom grafik</span><span class="kbd">0</span><span>Kembali ke harga terkini</span><span class="kbd">F</span><span>Grafik layar penuh</span><span class="kbd">A</span><span>Alert harga</span><span class="kbd">/</span><span>Cari pasar</span><span class="kbd">Esc</span><span>Tutup dialog / layar penuh</span></div><div class="row"><button class="pri" data-x>Mengerti</button></div>`);
+}
+function setFull(on){
+  $("chartc").classList.toggle("full",on); document.body.classList.toggle("fs-lock",on);
+  $("fsBtn").firstElementChild.innerHTML=on?ICO.fsx:ICO.fs; $("fsBtn").title=on?"Keluar layar penuh (Esc)":"Grafik layar penuh (F)";
+  $("app").classList.remove("wl-pop"); setTimeout(resizeCanvas,30); setTimeout(resizeCanvas,250); markDirty();
+}
+$("fsBtn").onclick=()=>setFull(!$("chartc").classList.contains("full"));
+function quickSetup(){
+  const I=BY[S.sym], lv=[1,2,5,10,20,50,100].filter(x=>x<=I.maxLev), bal=currentUser?(currentUser[SET.cur]||0):0;
+  modal(`<h2>Order cepat · ${I.l}</h2>
+   <div class="fld" style="margin-top:0"><div class="lb">Mata uang modal</div><div class="curseg"><button class="m${SET.cur==="mora"?" on":""}" data-qc="mora">${ci("mora")} Mora</button><button class="c${SET.cur==="credit"?" on":""}" data-qc="credit">${ci("credit")} Credit</button></div></div>
+   <div class="fld"><label for="qStake">Modal <small>Tersedia: ${fmtN(bal)}</small></label><div class="inp"><input id="qStake" inputmode="numeric" placeholder="0" autocomplete="off" value="${esc(S.stake)}"></div>
+    <div class="pcs"><button data-qp="10">10%</button><button data-qp="25">25%</button><button data-qp="50">50%</button><button data-qp="100">Maks</button></div></div>
+   <div class="fld"><div class="lb">Leverage <small>maks ${I.maxLev}×</small></div><div class="lvs">${lv.map(x=>`<button data-ql="${x}" class="${x===S.lev?"on":""}">${x}×</button>`).join("")}</div></div>
+   <div class="row"><button class="pri" data-x>Selesai</button></div>`);
+}
+$("qi2").addEventListener("click",quickSetup);
+$("mdl").addEventListener("click",e=>{
+  const t=e.target.closest("[data-qc],[data-qp],[data-ql]"); if(!t) return;
+  if(t.dataset.qc) SET.cur=t.dataset.qc;
+  else if(t.dataset.qp){ const bal=currentUser?(currentUser[SET.cur]||0):0; S.stake=String(Math.floor(bal*(+t.dataset.qp)/100)||""); }
+  else if(t.dataset.ql) S.lev=+t.dataset.ql;
+  saveSet(); renderTicket(true); updateQuick(); quickSetup();
+});
+$("mdl").addEventListener("input",e=>{
+  if(e.target.id!=="qStake") return;
+  S.stake=e.target.value.replace(/[^\d]/g,""); if(e.target.value!==S.stake) e.target.value=S.stake;
+  saveSet(); updateQuick(); updateTicket(); const f=$("fStake"); if(f) f.value=S.stake;
+});
+$("syncBtn").onclick=async()=>{
+  const b=$("syncBtn"); if(b.classList.contains("spin")) return; b.classList.add("spin");
+  try{
+    for(let i=0;i<60&&SYNC.busy;i++) await new Promise(r=>setTimeout(r,250));
+    await flushWallet();
+    if(SYNC.dirty) await pushState();
+    await pullState();
+    const ok=SYNC.ready&&!SYNC.dirty;
+    toast(ok?"Posisi & saldo tersinkron":"Sinkron belum berhasil, coba lagi",ok?"up":"dn");
+  }catch(e){ toast("Sinkron gagal, coba lagi","dn"); }
+  b.classList.remove("spin");
+};
 new ResizeObserver(resizeCanvas).observe(cw);
 
 /* =====================================================================
@@ -1140,8 +1384,10 @@ function updateWatch(){
 function srcBadge(I){ const q=Q[I.s]; return I.live ? (isLive(I,q)?'<span class="badge live" title="Harga langsung dari Binance">LIVE</span>':'<span class="badge sim" title="Simulasi">SIM</span>') : (SRC.ecb?'<span class="badge ecb" title="Kurs ECB + tick simulasi">ECB</span>':'<span class="badge sim" title="Simulasi">SIM</span>'); }
 function renderSymHead(){
   const I=BY[S.sym];
-  $("symh").innerHTML=`<a class="sh-av" href="Profile.html" title="Profil"><img class="av" alt="" src="${esc(avatar(currentUser.username,currentUser.profilePic))}"></a><button class="wl-tg" id="wlTg" type="button" aria-label="Daftar pasar" title="Daftar pasar"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 5h14v2H3zm0 4h14v2H3zm0 4h14v2H3z"/></svg></button><div class="sh-l"><h1 title="${esc(I.n)}">${I.l} ${srcBadge(I)}</h1></div>
+  $("symh").innerHTML=`<button class="wl-tg" id="wlTg" type="button" aria-label="Daftar pasar" title="Daftar pasar"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 5h14v2H3zm0 4h14v2H3zm0 4h14v2H3z"/></svg></button><div class="sh-l"><h1 title="${esc(I.n)}">${I.l} ${srcBadge(I)}</h1></div>
    <div class="sh-px"><span class="big" id="shP">–</span><span class="chg" id="shC">–</span></div>`;
+  const fn=$("fsN"); if(fn) fn.textContent=I.l;
+  updateAlertBtn();
   updateSymHead(true);
 }
 let _lastBadge="";
@@ -1151,7 +1397,9 @@ function updateSymHead(force){
   const set=(id,t,c)=>{ const e=$(id); if(e){ e.textContent=t; if(c!==undefined) e.className=c; } };
   set("shP",P(S.sym,q.bid+q.half),"big "+(q.dir>0?"up":q.dir<0?"dn":""));
   const ch=dayChg(I); set("shC",fmtS(ch,2)+"%","chg "+(ch>=0?"up":"dn"));
-  set("qaS",q.bid.toFixed(d)); set("qaB",q.ask.toFixed(d)); updateQuick();
+  set("qaS",q.bid.toFixed(d)); set("qaB",q.ask.toFixed(d));
+  set("fsP",P(S.sym,q.bid+q.half)+"  "+fmtS(ch,2)+"%",ch>=0?"up":"dn"); set("fsS",q.bid.toFixed(d)); set("fsB",q.ask.toFixed(d));
+  updateQuick();
 }
 /* ---------- tiket order ---------- */
 function renderTicket(full){
@@ -1161,7 +1409,7 @@ function renderTicket(full){
     $("tk").innerHTML=`
      <div class="tk-sec"><h3>Akun</h3>
        <div class="acc"><div class="ac m"><small>${ci("mora")} Mora</small><b class="mora-count">0</b></div><div class="ac c"><small>${ci("credit")} Credit</small><b class="credit-count">0</b></div></div>
-       <div class="eqrow"><span>P&amp;L mengambang</span><b id="fPnl">0</b></div><div class="eqrow" style="margin-top:4px"><span>Modal tertanam</span><b id="fMrg">0</b></div></div>
+       <div class="eqrow"><span>P&amp;L mengambang</span><b id="fPnl">0</b></div><div class="eqrow" style="margin-top:4px"><span>Modal tertanam</span><b id="fMrg">0</b></div><div class="eqrow" style="margin-top:4px"><span>Ekuitas</span><b id="fEq">0</b></div></div>
      <div class="tk-sec" id="tkForm"><h3><span>Order · ${I.l}</span><span class="mut" style="text-transform:none;letter-spacing:0;font-weight:500">Pasar</span></h3>
        <div class="fld"><div class="lb">Mata uang modal</div><div class="curseg"><button class="m${SET.cur==="mora"?" on":""}" data-cur="mora">${ci("mora")} Mora</button><button class="c${SET.cur==="credit"?" on":""}" data-cur="credit">${ci("credit")} Credit</button></div></div>
        <div class="fld"><label for="fStake">Modal (margin) <small id="fAvail">Tersedia: 0</small></label><div class="inp"><input id="fStake" inputmode="numeric" placeholder="0" autocomplete="off" value="${esc(S.stake)}"><button class="st" data-st="-1" aria-label="Kurangi">−</button><button class="st" data-st="1" aria-label="Tambah">+</button></div>
@@ -1188,6 +1436,7 @@ function updateTicket(){
    +`<div><span>Harga likuidasi <small>(beli / jual)</small></span><b>${stake?liqPrice("buy",q.ask,S.lev).toFixed(d)+" / "+liqPrice("sell",q.bid,S.lev).toFixed(d):"–"}</b></div>`);
   let pnl=0, mrg=0; POS.forEach(p=>{ if(p.cur===SET.cur){ pnl+=pnlOf(p,Q[p.sym]); mrg+=p.stake; } });
   const fp=$("fPnl"); fp.textContent=fmtS(pnl,2)+" "+CUR_NAME[SET.cur]; fp.className=pnl>=0?"up":"dn"; $("fMrg").textContent=fmtN(mrg)+" "+CUR_NAME[SET.cur];
+  $("fEq").textContent=fmtN(bal+mrg+pnl)+" "+CUR_NAME[SET.cur];
 }
 /* ---------- posisi / riwayat / statistik ---------- */
 function posCard(p){
@@ -1195,7 +1444,21 @@ function posCard(p){
   return `<div class="pc ${p.side}" data-id="${p.id}"><div class="pc-h"><b>${I.l}</b><span class="tag ${p.side}">${p.side==="buy"?"BELI":"JUAL"} ×${p.lev}</span><div class="pl" data-pl="${p.id}">–<small>–</small></div></div>
    <div class="pc-g"><div><span>Modal</span><b>${ci(p.cur)} ${fmtN(p.stake)}</b></div><div><span>Masuk</span><b>${p.entry.toFixed(d)}</b></div><div><span>Harga kini</span><b data-cur-px="${p.id}">–</b></div>
    <div><span>TP</span><b>${p.tp?p.tp.toFixed(d):"–"}</b></div><div><span>SL</span><b>${p.sl?p.sl.toFixed(d):"–"}</b></div><div><span>Likuidasi</span><b>${liqPrice(p.side,p.entry,p.lev).toFixed(d)}</b></div></div>
-   <div class="pc-a"><button data-edit="${p.id}">Atur TP/SL</button><button data-view-sym="${p.sym}">Grafik</button><button class="cl" data-close="${p.id}">Tutup</button></div></div>`;
+   <div class="pc-a"><button data-edit="${p.id}">TP/SL</button><button data-view-sym="${p.sym}">Grafik</button><button data-half="${p.id}" title="Tutup separuh posisi">Tutup 50%</button><button class="cl" data-close="${p.id}">Tutup</button></div></div>`;
+}
+function curveSvg(L,color){
+  const a=L.slice().reverse(); let v=0; const pts=[0]; a.forEach(h=>{ v+=h.pnl; pts.push(v); });
+  if(pts.length<3) return `<div class="note" style="margin-top:6px">Butuh minimal 2 transaksi</div>`;
+  const mn=Math.min(...pts), mx=Math.max(...pts), r=(mx-mn)||1, Yy=p=>(56-(p-mn)/r*52).toFixed(1);
+  const d=pts.map((p,i)=>(i?"L":"M")+(i/(pts.length-1)*300).toFixed(1)+" "+Yy(p)).join("");
+  return `<svg viewBox="0 0 300 60" preserveAspectRatio="none" class="eqc"><line x1="0" x2="300" y1="${Yy(0)}" y2="${Yy(0)}" stroke="rgba(110,125,215,.35)" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"/><path d="${d}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
+}
+function exportCsv(){
+  const rows=[["Waktu","Pasar","Sisi","Mata uang","Modal","Leverage","Masuk","Keluar","Alasan","Hasil","Durasi (menit)"]];
+  HIST.forEach(h=>{ const I=BY[h.sym], dp=I?I.dp:5; rows.push([new Date(h.t1).toISOString(),I?I.l:h.sym,h.side==="buy"?"BELI":"JUAL",CUR_NAME[h.cur]||h.cur,h.stake,h.lev,Number(h.entry).toFixed(dp),Number(h.exit).toFixed(dp),REASON[h.reason]||h.reason,Math.round(h.pnl),((h.t1-h.t0)/60000).toFixed(1)]); });
+  const csv="\ufeff"+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(",")).join("\r\n");
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"})); a.download="riwayat-forex-"+dayKey()+".csv";
+  document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },500);
 }
 function renderPositions(){
   $("closeAll").hidden = !(S.ptab==="open" && POS.length>1); updateCloseBtn();
@@ -1206,15 +1469,18 @@ function renderPositions(){
     el.innerHTML = POS.length ? `<div class="plist">${POS.map(posCard).join("")}</div>` : `<div class="empty">Belum ada posisi terbuka.<br>Pilih pasar, atur modal & leverage, lalu tekan Beli atau Jual.</div>`;
     updatePositions();
   } else if (S.ptab==="hist"){
-    el.innerHTML = HIST.length ? `<div class="hwrap"><table class="htab"><thead><tr><th>Waktu</th><th>Pasar</th><th>Sisi</th><th class="r">Modal</th><th class="r">Masuk</th><th class="r">Keluar</th><th>Alasan</th><th class="r">Hasil</th></tr></thead><tbody>${HIST.slice(0,100).map(h=>{ const I=BY[h.sym]; return `<tr><td class="mut">${new Date(h.t1).toLocaleString("id-ID",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"})}</td><td><b>${I?I.l:h.sym}</b></td><td><span class="tag ${h.side}">${h.side==="buy"?"BELI":"JUAL"} ×${h.lev}</span></td><td class="r">${ci(h.cur)} ${fmtN(h.stake)}</td><td class="r">${I?h.entry.toFixed(I.dp):h.entry}</td><td class="r">${I?h.exit.toFixed(I.dp):h.exit}</td><td class="mut">${REASON[h.reason]||h.reason}</td><td class="r ${h.pnl>=0?"up":"dn"}"><b>${fmtS(h.pnl,0)}</b></td></tr>`; }).join("")}</tbody></table></div>` : `<div class="empty">Belum ada riwayat transaksi.</div>`;
+    el.innerHTML = HIST.length ? `<div class="hbar"><button class="ib" id="csvBtn" type="button">Ekspor CSV</button></div><div class="hwrap"><table class="htab"><thead><tr><th>Waktu</th><th>Pasar</th><th>Sisi</th><th class="r">Modal</th><th class="r">Masuk</th><th class="r">Keluar</th><th>Alasan</th><th class="r">Hasil</th></tr></thead><tbody>${HIST.slice(0,100).map(h=>{ const I=BY[h.sym]; return `<tr><td class="mut">${new Date(h.t1).toLocaleString("id-ID",{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"})}</td><td><b>${I?I.l:h.sym}</b></td><td><span class="tag ${h.side}">${h.side==="buy"?"BELI":"JUAL"} ×${h.lev}</span></td><td class="r">${ci(h.cur)} ${fmtN(h.stake)}</td><td class="r">${I?h.entry.toFixed(I.dp):h.entry}</td><td class="r">${I?h.exit.toFixed(I.dp):h.exit}</td><td class="mut">${REASON[h.reason]||h.reason}</td><td class="r ${h.pnl>=0?"up":"dn"}"><b>${fmtS(h.pnl,0)}</b></td></tr>`; }).join("")}</tbody></table></div>` : `<div class="empty">Belum ada riwayat transaksi.</div>`;
   } else {
     const calc=cur=>{ const L=HIST.filter(h=>h.cur===cur); const w=L.filter(h=>h.pnl>0).length; const net=L.reduce((a,h)=>a+h.pnl,0); return {n:L.length,w,net}; };
     const m=calc("mora"), c=calc("credit"), all=HIST.length, wins=HIST.filter(h=>h.pnl>0).length;
     const best=HIST.reduce((a,h)=>h.pnl>a?h.pnl:a,0), worst=HIST.reduce((a,h)=>h.pnl<a?h.pnl:a,0);
     const avg=all?HIST.reduce((a,h)=>a+(h.t1-h.t0),0)/all/60000:0;
+    const pf=cur=>{ const L=HIST.filter(h=>h.cur===cur); const gw=L.filter(h=>h.pnl>0).reduce((a,h)=>a+h.pnl,0), gl=-L.filter(h=>h.pnl<0).reduce((a,h)=>a+h.pnl,0); return !L.length?"–":gl?(gw/gl).toFixed(2):(gw?"∞":"–"); };
     el.innerHTML=`<div class="stg"><div class="stc"><small>Total transaksi</small><b>${all}</b></div><div class="stc"><small>Win rate</small><b>${all?Math.round(wins/all*100):0}%</b></div>
      <div class="stc"><small>Hasil bersih ${ci("mora")} Mora</small><b class="${m.net>=0?"up":"dn"}">${fmtS(m.net,0)}</b></div><div class="stc"><small>Hasil bersih ${ci("credit")} Credit</small><b class="${c.net>=0?"up":"dn"}">${fmtS(c.net,0)}</b></div>
-     <div class="stc"><small>Terbaik</small><b class="up">${fmtS(best,0)}</b></div><div class="stc"><small>Terburuk</small><b class="dn">${fmtS(worst,0)}</b></div><div class="stc"><small>Rata-rata durasi</small><b>${avg<1?"<1":avg.toFixed(avg<10?1:0)} mnt</b></div></div>`;
+     <div class="stc"><small>Terbaik</small><b class="up">${fmtS(best,0)}</b></div><div class="stc"><small>Terburuk</small><b class="dn">${fmtS(worst,0)}</b></div><div class="stc"><small>Rata-rata durasi</small><b>${avg<1?"<1":avg.toFixed(avg<10?1:0)} mnt</b></div>
+     <div class="stc"><small>Profit factor ${ci("mora")} Mora</small><b>${pf("mora")}</b></div><div class="stc"><small>Profit factor ${ci("credit")} Credit</small><b>${pf("credit")}</b></div>
+     <div class="stc wide"><small>Kurva hasil ${ci("mora")} Mora</small>${curveSvg(HIST.filter(h=>h.cur==="mora"),"#ffdc96")}</div><div class="stc wide"><small>Kurva hasil ${ci("credit")} Credit</small>${curveSvg(HIST.filter(h=>h.cur==="credit"),"#5afff0")}</div></div>`;
   }
 }
 function updatePositions(){
@@ -1238,7 +1504,8 @@ function updateCloseBtn(){
 function updateQuick(){
   const e=$("qi"); if(!e||!currentUser) return;
   const st=Math.floor(Number(S.stake)||0);
-  setHtml(e,`<span>${ci(SET.cur)} Modal <b>${st?fmtN(st):"belum diisi"}</b> · ${S.lev}×</span><span>Saldo <b>${fmtN(currentUser[SET.cur]||0)}</b></span>`);
+  const qh=`<span>${ci(SET.cur)} Modal <b>${st?fmtN(st):"belum diisi"}</b> · ${S.lev}×</span><span>Saldo <b>${fmtN(currentUser[SET.cur]||0)}</b></span>`;
+  setHtml(e,qh); setHtml($("qi2"),qh);
 }
 let pendingSide="buy";
 function confirmOrder(side,snap){
@@ -1253,8 +1520,9 @@ function confirmOrder(side,snap){
 function editPos(id){
   const p=POS.find(x=>x.id===id); if(!p) return; const d=BY[p.sym].dp;
   modal(`<h2>Atur TP / SL · ${BY[p.sym].l}</h2><div class="fld" style="margin-top:0"><div class="lb">Take Profit <small>kosongkan untuk menghapus</small></div><div class="inp"><input id="eTp" inputmode="decimal" value="${p.tp?p.tp.toFixed(d):""}" placeholder="Harga"></div></div>
-   <div class="fld"><div class="lb">Stop Loss <small>kosongkan untuk menghapus</small></div><div class="inp"><input id="eSl" inputmode="decimal" value="${p.sl?p.sl.toFixed(d):""}" placeholder="Harga"></div></div><div class="err" id="eErr"></div>
+   <div class="fld"><div class="lb">Stop Loss <small>kosongkan untuk menghapus</small></div><div class="inp"><input id="eSl" inputmode="decimal" value="${p.sl?p.sl.toFixed(d):""}" placeholder="Harga"></div></div><button type="button" class="be" id="eBe">Stop Loss ke harga masuk (break-even)</button><div class="err" id="eErr"></div>
    <div class="row"><button data-x>Batal</button><button class="pri" id="eOk">Simpan</button></div>`);
+  $("eBe").onclick=()=>{ $("eSl").value=p.entry.toFixed(d); };
   $("eOk").onclick=()=>{
     const tp=parseFloat($("eTp").value.replace(",","."))||0, sl=parseFloat($("eSl").value.replace(",","."))||0, q=Q[p.sym], ref=p.side==="buy"?q.bid:q.ask;
     if(tp&&(p.side==="buy"?tp<=ref:tp>=ref)) return $("eErr").textContent="Take Profit harus "+(p.side==="buy"?"di atas":"di bawah")+" harga saat ini";
@@ -1329,14 +1597,22 @@ $("tk").addEventListener("input",e=>{
 });
 $("ptabs").addEventListener("click",e=>{ const b=e.target.closest("[data-p]"); if(b){ S.ptab=b.dataset.p; renderPositions(); } });
 $("pbody").addEventListener("click",e=>{
+  if(e.target.closest("#csvBtn")){ exportCsv(); return; }
   const ed=e.target.closest("[data-edit]"); if(ed){ editPos(ed.dataset.edit); return; }
   const v=e.target.closest("[data-view-sym]"); if(v){ selectSym(v.dataset.viewSym); if(matchMedia("(max-width:1020px)").matches) setView("chart"); else scrollTo({top:0,behavior:"smooth"}); }
 });
-document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeModal(); });
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"){ if($("veil").classList.contains("on")) closeModal(); else if($("chartc").classList.contains("full")) setFull(false); return; }
+  if(e.ctrlKey||e.metaKey||e.altKey||$("veil").classList.contains("on")) return;
+  const t=e.target; if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.isContentEditable)) return;
+  if(e.key==="+"||e.key==="=") $("zin").click(); else if(e.key==="-"||e.key==="_") $("zout").click();
+  else if(e.key==="0") $("zend").click(); else if(e.key==="f"||e.key==="F") $("fsBtn").click();
+  else if(e.key==="a"||e.key==="A") $("alBtn").click(); else if(e.key==="/"){ e.preventDefault(); setSearch(true); } else if(e.key==="?") $("helpBtn").click();
+});
 let _zt=0; function zs(){ clearTimeout(_zt); _zt=setTimeout(saveSet,600); }
 
 /* ---------- sentuhan cepat: aksi jalan saat jari menyentuh-lalu-lepas, tanpa menunggu 'click' ---------- */
-const FAST='#go,[data-go],[data-side],[data-close],#cclose,#okOrder,#closeAll,.wr[data-s]';
+const FAST='#go,[data-go],[data-side],[data-close],[data-half],#cclose,#okOrder,#closeAll,.wr[data-s]';
 let tapS=null, lastFast=0;
 function takeSnap(){ const o={ t:performance.now(), q:{} }; new Set([S.sym,...POS.map(p=>p.sym)]).forEach(k=>{ const q=Q[k]; o.q[k]={ bid:q.bid, ask:q.ask }; }); return o; }
 function fastAct(el,snap){
@@ -1344,6 +1620,7 @@ function fastAct(el,snap){
   if(el.id==="okOrder"){ const na=$("noAsk"); if(na&&na.checked){ SET.confirm=false; const c=$("cfm"); if(c) c.checked=false; saveSet(); } closeModal(); return executeOrder(pendingSide,snap); }
   if(el.id==="cclose") return closeMany(POS.filter(p=>p.sym===S.sym),snap);
   if(el.id==="closeAll"){ if(confirm("Tutup semua posisi pada harga pasar saat ini?")) closeMany(POS.slice(),snap,"all"); return; }
+  if(el.dataset.half){ const p=POS.find(x=>x.id===el.dataset.half); if(p) closePartial(p,.5,{ snap }); return; }
   if(el.dataset.close){ const p=POS.find(x=>x.id===el.dataset.close); if(p) closePosition(p,"manual",{ snap }); return; }
   if(el.dataset.go) return quickTrade(el.dataset.go,snap);
   if(el.dataset.side){ S.side=el.dataset.side; syncSide(); updateTicket(); return; }
@@ -1383,10 +1660,10 @@ addEventListener("pagehide",()=>{ saveState(false); walPersist(); });
 
 /* UI tick: 4× per detik */
 function uiLoop(){
-  liveLoop(); marketTick(Date.now()/1000); checkAll();
+  liveLoop(); marketTick(Date.now()/1000); checkAll(); checkAlerts();
   if(document.hidden) return;
   simSync(BY[S.sym]);
-  updateWatch(); updateSymHead(); updatePositions(); updateTicket(); markDirty();
+  updateTopbar(); updateWatch(); updateSymHead(); updatePositions(); updateTicket(); markDirty();
 }
 
 /* =====================================================================
@@ -1400,6 +1677,7 @@ async function init(){
   await loadPriceConfig();   // pengali harga dari sheet "Harga" (harus sebelum initQuote)
   INST.forEach(initQuote);
   const av=$("wlAv"); if (av) av.src=avatar(currentUser.username,currentUser.profilePic);
+  loadAlerts(); renderTopbar();
   syncToolbar(); applyWl(); renderWatch(); renderSymHead(); renderTicket(true); renderPositions(); updateQuick(); resizeCanvas();
   ensureHistory(S.sym);
   if(SYNC.loaded)scanSim(0, Date.now()/1000); lastMk = Date.now()/1000;       // posisi yang kena TP/SL/likuidasi selama kamu pergi
@@ -1419,5 +1697,184 @@ init().catch(e=>{
   if(b) b.textContent="Gagal memuat: "+(e&&e.message||e)+" — muat ulang halaman";
 });
 </script>
+<!-- =====================================================================
+     PRO UPGRADE — tampilan profesional + fitur tambahan
+     ===================================================================== -->
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ac-rgb:94,160,255; --bg:#070a12; --panel:#0c111c; --panel-2:#111827; --panel-3:#162032;
+  --line:rgba(148,163,184,.13); --line-hi:rgba(94,160,255,.55);
+  --tx:#e6ebf5; --tx-2:#9aa6bd; --tx-3:#647089;
+  --sans:"IBM Plex Sans",system-ui,sans-serif; --mono:"JetBrains Mono",ui-monospace,monospace;
+  --r:10px; --r-sm:7px;
+}
+body::before{background:radial-gradient(60% 40% at 50% -10%,rgba(var(--ac-rgb),.08),transparent 70%)}
+.pnl{background:var(--panel);border-color:var(--line);box-shadow:0 1px 0 rgba(255,255,255,.02) inset,0 8px 24px -16px rgba(0,0,0,.8)}
+.tb{background:var(--panel);border-color:var(--line);border-radius:10px;height:50px}
+.brand{letter-spacing:.22em}
+.brand i{background:linear-gradient(135deg,#3b82f6,#06b6d4)!important}
+.wn b,.qa b,.fsbar b,#tbPnl b,.wal b,.clk,.px-tape b{font-family:var(--mono);letter-spacing:-.01em}
+.mdl{background:#0b1019;border-color:var(--line-hi);border-radius:14px;box-shadow:0 30px 80px -20px rgba(0,0,0,.85)}
+.gt.on,.wr.on{background:rgba(var(--ac-rgb),.12)}
+/* ticker tape */
+.px-tape{max-width:1680px;margin:8px auto 0;padding:0 12px;overflow:hidden}
+.px-tape .in{display:flex;gap:28px;white-space:nowrap;height:30px;align-items:center;padding:0 14px;border:1px solid var(--line);border-radius:8px;background:var(--panel);overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 4%,#000 96%,transparent)}
+.px-tape .run{display:flex;gap:28px;animation:tape 60s linear infinite}
+.px-tape:hover .run{animation-play-state:paused}
+.px-tape button{display:flex;gap:7px;align-items:baseline;font-size:12px;color:var(--tx-2)}
+.px-tape button span{font-weight:600;color:var(--tx)}
+.px-tape button i{font-style:normal;font-size:11px;font-family:var(--mono)}
+@keyframes tape{to{transform:translateX(-50%)}}
+/* tools */
+.tb-btn.pro{width:auto!important;padding:0 11px;font-size:12px;font-weight:600;gap:6px;display:inline-flex;align-items:center}
+.pro-tabs{display:flex;gap:4px;padding:3px;border-radius:9px;background:var(--panel-2);margin-bottom:14px;overflow-x:auto}
+.pro-tabs button{flex:1;white-space:nowrap;padding:7px 10px;border-radius:7px;font-size:12px;font-weight:600;color:var(--tx-2)}
+.pro-tabs button.on{background:rgba(var(--ac-rgb),.18);color:#fff}
+.mdl.wide{max-width:640px}
+.pf{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pf label{display:flex;flex-direction:column;gap:5px;font-size:11px;color:var(--tx-3);text-transform:uppercase;letter-spacing:.06em}
+.pf input,.pf select,.pf textarea{height:38px;padding:0 10px;border-radius:8px;border:1px solid var(--line);background:var(--panel-2);color:var(--tx);font-family:var(--mono);font-size:14px;text-transform:none;letter-spacing:0}
+.pf textarea{height:80px;padding:8px 10px;font-family:var(--sans);resize:vertical}
+.pf .full{grid-column:1/-1}
+.pres{margin-top:14px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pres div{padding:10px;border-radius:8px;background:var(--panel-2);border:1px solid var(--line)}
+.pres small{display:block;font-size:10.5px;color:var(--tx-3);text-transform:uppercase;letter-spacing:.06em}
+.pres b{font-family:var(--mono);font-size:15px}
+.hm{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px;max-height:60vh;overflow:auto}
+.hm button{padding:10px 8px;border-radius:8px;text-align:left;border:1px solid var(--line)}
+.hm button b{display:block;font-size:12.5px}.hm button i{font-style:normal;font-family:var(--mono);font-size:12px}
+.jl{display:flex;flex-direction:column;gap:6px;margin-top:12px;max-height:40vh;overflow:auto}
+.jl div{padding:9px 11px;border-radius:8px;background:var(--panel-2);border:1px solid var(--line);font-size:13px}
+.jl small{display:flex;justify-content:space-between;color:var(--tx-3);font-size:11px;margin-bottom:3px}
+.jl small button{color:var(--dn)}
+.mv{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mv h3{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--tx-3);margin-bottom:6px}
+.mv button{display:flex;justify-content:space-between;width:100%;padding:8px 10px;border-radius:7px;font-size:13px}
+.mv button:hover,.cp-l button:hover,.cp-l button.on{background:rgba(var(--ac-rgb),.1)}
+.mv button i{font-style:normal;font-family:var(--mono)}
+.cp-in{width:100%;height:44px;padding:0 14px;border-radius:9px;border:1px solid var(--line-hi);background:var(--panel-2);color:var(--tx);font-size:15px;outline:0}
+.cp-l{margin-top:10px;max-height:50vh;overflow:auto}
+.cp-l button{display:flex;justify-content:space-between;width:100%;padding:9px 12px;border-radius:7px;font-size:13px;text-align:left}
+.cp-l small{color:var(--tx-3)}
+.pro-note{font-size:11.5px;color:var(--tx-3);margin-top:10px}
+@media (max-width:760px){.pres{grid-template-columns:1fr 1fr}.mv{grid-template-columns:1fr}.tb-btn.pro span{display:none}}
+</style>
+<script>
+(function(){
+  const pct=v=>(v>=0?"+":"")+v.toFixed(2)+"%";
+  const ready=()=>INST.every(I=>Q[I.s]&&Q[I.s].mid>0);
+  const chg=I=>{ try{ return dayChg(I); }catch(e){ return 0; } };
+
+  /* ---------- ticker tape ---------- */
+  function tape(){
+    let el=document.getElementById("pxTape");
+    if(!el){ el=document.createElement("div"); el.className="px-tape"; el.id="pxTape"; document.querySelector(".topbar").after(el);
+      el.addEventListener("click",e=>{ const b=e.target.closest("[data-ts]"); if(b) selectSym(b.dataset.ts); }); }
+    if(!ready()) return;
+    if(el.querySelector(".run")){ el.querySelectorAll("[data-ts]").forEach(b=>{ const I=BY[b.dataset.ts], c=chg(I); b.querySelector("b").textContent=P(I.s,Q[I.s].mid); const i=b.querySelector("i"); i.textContent=pct(c); i.className=c>=0?"up":"dn"; }); return; }
+    const items=INST.map(I=>{ const c=chg(I); return `<button data-ts="${I.s}"><span>${I.l}</span><b>${P(I.s,Q[I.s].mid)}</b><i class="${c>=0?"up":"dn"}">${pct(c)}</i></button>`; }).join("");
+    el.innerHTML=`<div class="in"><div class="run">${items}${items}</div></div>`;
+  }
+
+  /* ---------- tombol Alat di topbar ---------- */
+  const _rt=renderTopbar;
+  renderTopbar=function(){
+    _rt.apply(this,arguments);
+    tape();
+  };
+  setInterval(()=>{ if(document.getElementById("helpBtn")) tape(); },3000);
+
+  
+  function risk(){
+    const q=Q[S.sym]||{};
+    $("proBody").innerHTML=`<div class="pf">
+      <label>Pasar<select id="rkS">${opts(S.sym)}</select></label>
+      <label>Arah<select id="rkD"><option value="buy">Beli</option><option value="sell">Jual</option></select></label>
+      <label>Modal akun<input id="rkB" type="number" inputmode="decimal" value="${Math.round(currentUser&&currentUser.mora||10000)}"></label>
+      <label>Risiko per trade (%)<input id="rkR" type="number" step="0.1" value="1"></label>
+      <label>Harga masuk<input id="rkE" type="number" step="any" value="${q.mid?P(S.sym,q.mid):""}"></label>
+      <label>Stop loss<input id="rkL" type="number" step="any"></label>
+      <label class="full">Take profit<input id="rkT" type="number" step="any"></label></div>
+      <div class="pres"><div><small>Risiko</small><b id="o1">–</b></div><div><small>Ukuran posisi</small><b id="o2">–</b></div><div><small>Rasio R:R</small><b id="o3">–</b></div><div><small>Jarak SL</small><b id="o4">–</b></div><div><small>Potensi profit</small><b id="o5" class="up">–</b></div><div><small>Leverage efektif</small><b id="o6">–</b></div></div>
+      <p class="pro-note">Ukuran posisi = nilai yang bisa kamu buka agar kerugian di stop loss sama dengan risiko yang kamu pilih.</p>`;
+    const f=id=>parseFloat($(id).value), calc=()=>{
+      const s=$("rkS").value,b=f("rkB"),r=f("rkR"),e=f("rkE"),l=f("rkL"),t=f("rkT"),d=$("rkD").value;
+      const rk=b*r/100; $("o1").textContent=isFinite(rk)?fmtN(rk):"–";
+      if(!(e>0&&l>0)){ ["o2","o3","o4","o5","o6"].forEach(i=>$(i).textContent="–"); return; }
+      const dist=Math.abs(e-l)/e, size=rk/dist, wrong=d==="buy"?l>=e:l<=e;
+      $("o4").textContent=(dist*100).toFixed(3)+"%"+(wrong?" ⚠":"");
+      $("o2").textContent=fmtN(size); $("o6").textContent=b>0?(size/b).toFixed(1)+"×":"–";
+      if(t>0){ const g=Math.abs(t-e)/e; $("o3").textContent="1 : "+(g/dist).toFixed(2); $("o5").textContent=fmtN(size*g); } else { $("o3").textContent="–"; $("o5").textContent="–"; }
+    };
+    $("rkS").onchange=()=>{ const v=$("rkS").value; $("rkE").value=Q[v]&&Q[v].mid?P(v,Q[v].mid):""; calc(); };
+    $("proBody").addEventListener("input",calc); calc();
+  }
+
+  function conv(){
+    const cur=[...new Set(["USD",...INST.filter(I=>!I.live).flatMap(I=>[I.a,I.b])])];
+    const o=(v)=>cur.map(c=>`<option${c===v?" selected":""}>${c}</option>`).join("");
+    $("proBody").innerHTML=`<div class="pf"><label class="full">Jumlah<input id="cvA" type="number" value="1000"></label>
+      <label>Dari<select id="cvF">${o("USD")}</select></label><label>Ke<select id="cvT">${o("IDR")}</select></label></div>
+      <div class="pres"><div style="grid-column:1/-1"><small>Hasil</small><b id="cvR" style="font-size:22px">–</b></div></div>
+      <p class="pro-note">Memakai kurs referensi terbaru yang sedang dipakai aplikasi.</p>`;
+    const run=()=>{ const a=parseFloat($("cvA").value), f=rateOf($("cvF").value), t=rateOf($("cvT").value);
+      $("cvR").textContent=(a>0&&f&&t)?(a*t/f).toLocaleString("id-ID",{maximumFractionDigits:4})+" "+$("cvT").value:"–"; };
+    $("proBody").addEventListener("input",run); $("proBody").addEventListener("change",run); run();
+  }
+
+  function heat(){
+    const L=INST.map(I=>[I,chg(I)]), mx=Math.max(.2,...L.map(x=>Math.abs(x[1])));
+    $("proBody").innerHTML=`<div class="hm">${L.map(([I,c])=>{ const a=(.12+.55*Math.min(1,Math.abs(c)/mx)).toFixed(2), rgb=c>=0?"var(--up-rgb)":"var(--dn-rgb)";
+      return `<button data-hs="${I.s}" style="background:rgba(${rgb},${a})"><b>${I.l}</b><i>${pct(c)}</i></button>`; }).join("")}</div>`;
+    $("proBody").querySelectorAll("[data-hs]").forEach(b=>b.onclick=()=>{ closeModal(); selectSym(b.dataset.hs); });
+  }
+
+  function move(){
+    const L=INST.map(I=>[I,chg(I)]).sort((a,b)=>b[1]-a[1]);
+    const row=([I,c])=>`<button data-hs="${I.s}"><span>${I.l}</span><i class="${c>=0?"up":"dn"}">${pct(c)}</i></button>`;
+    $("proBody").innerHTML=`<div class="mv"><div><h3>Penguat teratas</h3>${L.slice(0,6).map(row).join("")}</div><div><h3>Pelemah teratas</h3>${L.slice(-6).reverse().map(row).join("")}</div></div>`;
+    $("proBody").querySelectorAll("[data-hs]").forEach(b=>b.onclick=()=>{ closeModal(); selectSym(b.dataset.hs); });
+  }
+
+  const JK="forex.journal";
+  function jour(){
+    const J=LS.get(JK,[]);
+    $("proBody").innerHTML=`<div class="pf"><label>Pasar<select id="jS">${opts(S.sym)}</select></label>
+      <label>Suasana<select id="jM"><option>Netral</option><option>Yakin</option><option>Ragu</option><option>Emosional</option></select></label>
+      <label class="full">Catatan / alasan trade<textarea id="jT" placeholder="Setup, alasan masuk, pelajaran…"></textarea></label></div>
+      <div class="row"><button class="pri" id="jAdd">Simpan catatan</button></div>
+      <div class="jl">${J.length?J.map((n,i)=>`<div><small><span>${new Date(n.t).toLocaleString("id-ID")} · ${esc(BY[n.s]?BY[n.s].l:n.s)} · ${esc(n.m)}</span><button data-jd="${i}">Hapus</button></small>${esc(n.x)}</div>`).join(""):`<p class="pro-note">Belum ada catatan.</p>`}</div>`;
+    $("jAdd").onclick=()=>{ const x=$("jT").value.trim(); if(!x) return toast("Tulis catatan dulu");
+      J.unshift({t:Date.now(),s:$("jS").value,m:$("jM").value,x}); LS.set(JK,J.slice(0,200)); toast("Catatan disimpan","up"); jour(); };
+    $("proBody").querySelectorAll("[data-jd]").forEach(b=>b.onclick=()=>{ J.splice(+b.dataset.jd,1); LS.set(JK,J); jour(); });
+  }
+
+  /* ---------- command palette ---------- */
+  function palette(){
+    modal(`<input class="cp-in" id="cpQ" placeholder="Cari pasar atau perintah…" autocomplete="off"><div class="cp-l" id="cpL"></div>`);
+    const cmds=[["Kalkulator risiko",()=>tools("risk")],["Konverter mata uang",()=>tools("conv")],["Heatmap pasar",()=>tools("heat")],["Penggerak pasar",()=>tools("move")],["Jurnal trading",()=>tools("jour")],["Grafik layar penuh",()=>$("fsBtn").click()],["Ekspor riwayat (CSV)",()=>exportCsv()]];
+    let sel=0, list=[];
+    const draw=()=>{ const q=$("cpQ").value.toLowerCase().trim();
+      list=[...INST.filter(I=>!q||(I.s+I.l+I.n).toLowerCase().includes(q)).slice(0,12).map(I=>({l:I.l,d:I.n,f:()=>selectSym(I.s)})),
+            ...cmds.filter(c=>!q||c[0].toLowerCase().includes(q)).map(c=>({l:c[0],d:"Perintah",f:c[1],k:1}))];
+      sel=Math.min(sel,Math.max(0,list.length-1));
+      $("cpL").innerHTML=list.map((x,i)=>`<button data-ci="${i}" class="${i===sel?"on":""}"><span>${esc(x.l)}</span><small>${esc(x.d)}</small></button>`).join("")||`<p class="pro-note">Tidak ditemukan.</p>`; };
+    const go=i=>{ const x=list[i]; if(!x) return; closeModal(); setTimeout(x.f,30); };
+    $("cpQ").oninput=()=>{ sel=0; draw(); };
+    $("cpQ").onkeydown=e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); sel=Math.min(sel+1,list.length-1); draw(); } else if(e.key==="ArrowUp"){ e.preventDefault(); sel=Math.max(sel-1,0); draw(); } else if(e.key==="Enter"){ e.preventDefault(); go(sel); } };
+    $("cpL").onclick=e=>{ const b=e.target.closest("[data-ci]"); if(b) go(+b.dataset.ci); };
+    draw(); setTimeout(()=>$("cpQ").focus(),20);
+  }
+
+  document.addEventListener("keydown",e=>{
+    if((e.ctrlKey||e.metaKey)&&(e.key==="k"||e.key==="K")){ e.preventDefault(); palette(); return; }
+    if(e.ctrlKey||e.metaKey||e.altKey||$("veil").classList.contains("on")) return;
+    const t=e.target; if(t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.tagName==="SELECT")) return;
+    if(e.key==="t"||e.key==="T") tools("risk"); else if(e.key==="h"||e.key==="H") tools("heat");
+  });
+})();
+</script>
+
 </body>
 </html>
