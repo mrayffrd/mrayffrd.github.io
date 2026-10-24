@@ -779,7 +779,7 @@ function ensureHistory(sym){
 /* ---------- detak pasar: harga = f(waktu sekarang) ---------- */
 let lastMk = 0;
 function marketTick(t){
-  if (SYNC.ready && !SYNC.busy && lastMk && t-lastMk>3 && POS.length) scanSim(lastMk,t);    // kejar TP/SL/likuidasi saat tab tidak aktif
+  if (SYNC.loaded && lastMk && t-lastMk>3 && POS.length) scanSim(lastMk,t);    // kejar TP/SL/likuidasi saat tab tidak aktif
   lastMk = t;
   for (const I of INST){
     const q=Q[I.s]; if (I.live && isLive(I,q)) continue;
@@ -813,7 +813,7 @@ const S = { sym: BY[SET.sym] ? SET.sym : "EURUSD", side:"buy", view:"chart", pta
 const userKey = () => "forex.state." + (currentUser ? currentUser.username : "tamu");
 function stateBlob(trim){ return { pos:POS.map(p=>({...p})), hist:HIST.slice(0,trim?60:200), ts:Date.now() }; }
 function saveSet(){ LS.set("forex.set", { ...SET, sym:S.sym, lev:S.lev, stake:S.stake, zoom:view.n }); }
-const SYNC={ready:false,revision:0,dirty:false,busy:false,timer:0};
+const SYNC={ready:false,loaded:false,revision:0,dirty:false,busy:false,timer:0};
 function syncStatus(text,bad){const el=$("syncStatus");el.textContent=text;el.classList.toggle("bad",!!bad);}
 function saveState(sync){
   if(sync) SYNC.dirty=true;
@@ -846,9 +846,9 @@ async function pullState(){
   const r=await forexApi("getForexState",{username:currentUser.username});if(!r.success)throw Error(r.message);if(r.protocol!==3)throw Error("Perbarui Apps Script ke v3");
   const remote=parseState(r.forexState);SYNC.revision=Number(r.revision)||0;
   applyState(SYNC.dirty?mergeState(remote,stateBlob(false)):remote);
-  SYNC.ready=true;saveState(false);syncRender();syncStatus(SYNC.dirty?"Mengirim perubahan posisi…":"Posisi tersinkron · "+new Date().toLocaleTimeString("id-ID"));return true;
+  SYNC.ready=true;SYNC.loaded=true;saveState(false);syncRender();syncStatus(SYNC.dirty?"Mengirim perubahan posisi…":"Posisi tersinkron · "+new Date().toLocaleTimeString("id-ID"));return true;
  }catch(e){SYNC.ready=false;syncStatus("Sinkron gagal · tekan ↻ untuk mencoba lagi",true);return false;}
- finally{SYNC.busy=false;}
+ finally{SYNC.busy=false;if(SYNC.dirty){clearTimeout(SYNC.timer);SYNC.timer=setTimeout(pushState,SYNC.ready?300:5000);}}
 }
 async function pushState(){
  clearTimeout(SYNC.timer);if(!currentUser||SYNC.busy||!SYNC.dirty)return;
@@ -869,7 +869,7 @@ async function pushState(){
  }catch(e){syncStatus("Posisi belum terkirim · "+e.message,true);}
  finally{SYNC.busy=false;if(SYNC.dirty)SYNC.timer=setTimeout(pushState,5000);}
 }
-function loadState(){const st=LS.get(userKey(),null);if(st){applyState(parseState(st));SYNC.dirty=!!st.pending;SYNC.revision=Number(st.revision)||0;}}
+function loadState(){const st=LS.get(userKey(),null);if(st){applyState(parseState(st));SYNC.loaded=true;SYNC.dirty=!!st.pending;SYNC.revision=Number(st.revision)||0;}}
 async function syncCycle(){if(SYNC.dirty)await pushState();else await pullState();}
 const FS_OK = !!document.documentElement.requestFullscreen;
 async function enterFullScreen(){
@@ -916,7 +916,7 @@ function trigger(p,q){
   return null;
 }
 function checkAll(){
-  if (!POS.length || !SYNC.ready || SYNC.busy) return;
+  if (!POS.length || !SYNC.loaded) return;
   for (const p of POS.slice()){ const r = trigger(p,Q[p.sym]); if (r) closePosition(p,r); }
 }
 const REASON = { manual:"Ditutup manual", tp:"Take Profit", sl:"Stop Loss", liq:"Likuidasi (stop-out)", all:"Ditutup manual" };
@@ -925,7 +925,7 @@ function pxOf(sym,snap){ if (snap && snap.q[sym] && performance.now()-snap.t<150
 function finishClose(){ saveState(true); renderPositions(); updateTicket(); updateCloseBtn(); updateQuick(); markDirty(); }
 function closePosition(p, reason, o){
   o = o || {};
-  if (!SYNC.ready || SYNC.busy || !POS.includes(p)) return 0;
+  if (!SYNC.loaded || !POS.includes(p)) return 0;
   const pq = o.px!=null ? { bid:o.px, ask:o.px } : pxOf(p.sym,o.snap);
   const px = p.side==="buy" ? pq.bid : pq.ask;
   const pnl = pnlOf(p,pq), payout = Math.max(0, Math.round(p.stake + pnl));
@@ -950,7 +950,7 @@ function closeMany(list, snap, reason){
 }
 function showErr(m){ const e=$("terr"); if(e) e.textContent=m; toast(m,"dn"); }
 function validateOrder(side,snap){
-  if(!SYNC.ready||SYNC.busy)return {err:"Tunggu sinkronisasi posisi sebelum trading"};
+  if(!SYNC.loaded)return {err:"Posisi masih dimuat, coba lagi sebentar"};
   const I=BY[S.sym], pq=pxOf(S.sym,snap), bal=currentUser?(currentUser[SET.cur]||0):0;
   const stake=Math.floor(Number(String(S.stake).replace(/[^\d.]/g,"")));
   if (!stake || stake<1) return { err:"Masukkan modal minimal 1 "+CUR_NAME[SET.cur] };
@@ -1259,7 +1259,7 @@ function editPos(id){
     const tp=parseFloat($("eTp").value.replace(",","."))||0, sl=parseFloat($("eSl").value.replace(",","."))||0, q=Q[p.sym], ref=p.side==="buy"?q.bid:q.ask;
     if(tp&&(p.side==="buy"?tp<=ref:tp>=ref)) return $("eErr").textContent="Take Profit harus "+(p.side==="buy"?"di atas":"di bawah")+" harga saat ini";
     if(sl&&(p.side==="buy"?sl>=ref:sl<=ref)) return $("eErr").textContent="Stop Loss harus "+(p.side==="buy"?"di bawah":"di atas")+" harga saat ini";
-    if(!SYNC.ready||SYNC.busy)return $("eErr").textContent="Tunggu sinkronisasi posisi";
+    if(!SYNC.loaded)return $("eErr").textContent="Posisi masih dimuat, coba lagi sebentar";
     p.tp=tp||null; p.sl=sl||null; p.updatedAt=Date.now(); saveState(true); closeModal(); renderPositions(); markDirty(); toast("TP/SL diperbarui");
   };
 }
@@ -1402,7 +1402,7 @@ async function init(){
   const av=$("wlAv"); if (av) av.src=avatar(currentUser.username,currentUser.profilePic);
   syncToolbar(); applyWl(); renderWatch(); renderSymHead(); renderTicket(true); renderPositions(); updateQuick(); resizeCanvas();
   ensureHistory(S.sym);
-  if(SYNC.ready)scanSim(0, Date.now()/1000); lastMk = Date.now()/1000;       // posisi yang kena TP/SL/likuidasi selama kamu pergi
+  if(SYNC.loaded)scanSim(0, Date.now()/1000); lastMk = Date.now()/1000;       // posisi yang kena TP/SL/likuidasi selama kamu pergi
   requestAnimationFrame(frame);
   setInterval(uiLoop,250);
   if(SYNC.dirty)pushState();
