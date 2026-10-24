@@ -48,9 +48,10 @@ input,select{font:inherit;color:inherit}
 
 /* ---------- profil (menyatu di kartu simbol & daftar pasar) ---------- */
 .av{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--line-hi);background:#0c0f24;display:block;flex:none}
-.sh-av{position:absolute;top:12px;right:14px;display:block;border-radius:50%}
+.sh-av{position:absolute;top:50%;right:12px;transform:translateY(-50%);display:block;border-radius:50%}.sh-av .av{width:30px;height:30px}
 .sh-av:hover .av{border-color:#fff}
-.wl-row{display:flex;align-items:center;gap:10px}.wl-row .srch{flex:1;min-width:0}
+.wl-top{display:flex;align-items:center;gap:8px}.wl-top .ib{flex:none;width:30px;padding:0}.wl-top .ib svg{width:14px;height:14px}.wl-top .ib.act{color:#fff;border-color:var(--line-hi);background:rgba(var(--ac-rgb),.2)}
+.srch .x{flex:none;width:22px;height:22px;display:grid;place-items:center;color:var(--tx-3);font-size:13px;border-radius:50%}.srch .x:hover{color:#fff}
 .wl-av{display:none}
 
 /* ---------- layout ---------- */
@@ -61,13 +62,13 @@ input,select{font:inherit;color:inherit}
 .mid{display:flex;flex-direction:column;gap:12px;min-width:0}
 
 /* ---------- watchlist ---------- */
-.wl-h{padding:12px 12px 8px;border-bottom:1px solid var(--line);flex:none}
-.srch{display:flex;align-items:center;gap:8px;height:38px;padding:0 12px;border-radius:99px;background:rgba(9,12,30,.9);border:1px solid rgba(96,110,190,.3);color:var(--tx-3)}
+.wl-h{padding:8px 10px;border-bottom:1px solid var(--line);flex:none}
+.srch{display:flex;align-items:center;gap:8px;height:32px;margin-top:8px;padding:0 10px;border-radius:99px;background:rgba(9,12,30,.9);border:1px solid rgba(96,110,190,.3);color:var(--tx-3)}
 .srch:focus-within{border-color:var(--line-hi)}
 .srch input{flex:1;min-width:0;background:none;border:0;outline:0;font-size:16px;color:var(--tx)}
 .srch svg{width:16px;height:16px;flex:none}
-.gtabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin-top:10px;padding-bottom:2px}.gtabs::-webkit-scrollbar{display:none}
-.gt{flex:none;height:30px;padding:0 12px;border-radius:99px;font-size:12px;font-weight:600;color:var(--tx-2);border:1px solid var(--line);background:rgba(9,12,30,.6);transition:.15s}
+.gtabs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}.gtabs::-webkit-scrollbar{display:none}
+.gt{flex:none;height:28px;padding:0 10px;border-radius:99px;font-size:11.5px;font-weight:600;color:var(--tx-2);border:1px solid var(--line);background:rgba(9,12,30,.6);transition:.15s}
 .gt.on{color:#fff;background:rgba(var(--ac-rgb),.22);border-color:var(--line-hi)}
 .wl-list{flex:1;overflow-y:auto;min-height:120px}
 .wr{display:grid;grid-template-columns:22px minmax(0,1fr) 54px auto;align-items:center;gap:8px;width:100%;padding:9px 12px;text-align:left;border-bottom:1px solid rgba(110,125,215,.1);transition:background .15s;position:relative}
@@ -86,17 +87,17 @@ input,select{font:inherit;color:inherit}
 .dotc.ok{background:var(--up);box-shadow:0 0 8px rgba(var(--up-rgb),.7)}.dotc.mid{background:#ffb84d}
 
 /* ---------- header simbol ---------- */
-.symh{position:relative;padding:14px 62px 14px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px}
+.symh{position:relative;padding:8px 52px 8px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px}
 .sh-l{min-width:0}
-.sh-l h1{font-size:20px;font-weight:800;letter-spacing:.01em;display:flex;align-items:center;gap:10px}
+.sh-l h1{font-size:16px;font-weight:800;letter-spacing:.01em;display:flex;align-items:center;gap:10px}
 .badge{font-size:10px;font-weight:700;letter-spacing:.08em;padding:3px 8px;border-radius:99px;border:1px solid}
 .badge.live{color:var(--up);border-color:rgba(var(--up-rgb),.5);background:rgba(var(--up-rgb),.1)}
 .badge.ecb{color:#8fb4ff;border-color:rgba(120,160,255,.5);background:rgba(120,160,255,.1)}
 .badge.sim{color:var(--tx-2);border-color:var(--line);background:rgba(255,255,255,.04)}
 .sh-l p{font-size:12px;color:var(--tx-3)}
-.sh-px{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
-.sh-px .big{font-size:30px;font-weight:800;letter-spacing:-.01em;line-height:1.1;transition:color .3s}
-.sh-px .chg{font-size:13.5px;font-weight:700}
+.sh-px{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sh-px .big{font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.1;transition:color .3s}
+.sh-px .chg{font-size:12.5px;font-weight:700}
 .sh-m{display:flex;gap:16px;margin-left:auto;flex-wrap:wrap}
 .kv{display:flex;flex-direction:column;gap:1px}.kv small{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--tx-3)}.kv b{font-size:13.5px;font-weight:700}
 
@@ -157,6 +158,7 @@ input,select{font:inherit;color:inherit}
 .sum div:last-child{border:0}.sum span{color:var(--tx-3)}.sum b{font-weight:700;text-align:right}
 .go{width:100%;height:50px;margin-top:14px;border-radius:12px;font-weight:800;font-size:14.5px;letter-spacing:.03em;color:#fff;transition:filter .15s,transform .1s;box-shadow:0 8px 24px -10px currentColor}
 .go.buy{background:linear-gradient(180deg,#34cf96,#1f9d6c)}.go.sell{background:linear-gradient(180deg,#ff5c73,#d12f47)}
+.gobtns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.gobtns .go{margin-top:0;height:56px;line-height:1.2;padding:0 6px}.go small{display:block;font-size:11px;letter-spacing:.1em;opacity:.92}.go b{display:block;font-size:15.5px;font-weight:800;letter-spacing:0}
 .go:hover{filter:brightness(1.1)}.go:active{transform:scale(.985)}.go:disabled{opacity:.45;cursor:not-allowed;filter:none}
 .err{margin-top:10px;font-size:12px;color:var(--dn);min-height:16px}
 .note{font-size:11px;color:var(--tx-3);line-height:1.55}
@@ -222,6 +224,34 @@ button,[role=button],.go,.sb,.wr{touch-action:manipulation;-webkit-user-select:n
 
 /* ---------- responsif ---------- */
 @media(max-width:1280px){.app{grid-template-columns:260px minmax(0,1fr) 312px}}
+/* ---------- poles tampilan ---------- */
+:root{--r:12px;--line:rgba(120,135,210,.16);--panel:rgba(11,14,28,.96)}
+body::before{background:radial-gradient(40% 30% at 10% 0%,rgba(var(--ac-rgb),.08),transparent 70%),radial-gradient(36% 30% at 92% 6%,rgba(160,90,255,.05),transparent 70%)}
+.pnl{box-shadow:0 1px 0 rgba(255,255,255,.03) inset,0 10px 28px -18px rgba(0,0,0,.7)}
+.symh{background:linear-gradient(180deg,rgba(19,23,46,.97),rgba(11,14,28,.97))}
+.badge{font-size:9.5px;padding:2px 7px;letter-spacing:.06em}
+.tk h3,.kv small,.ac small{letter-spacing:.08em}
+.ac,.sum{border-radius:10px}
+.seg,.ib,.inp,.pcs button,.lvs button,.curseg button{border-radius:8px}
+.pc{border-radius:10px}
+.wr{padding:8px 12px}
+.wr.on{background:rgba(var(--ac-rgb),.12)}
+.go{box-shadow:none;border:1px solid rgba(255,255,255,.12)}
+.gobtns .go{border-radius:10px}
+.tk-sec{padding:12px 14px}
+.ctb{padding:6px 10px}
+.pbody{padding:12px}
+/* daftar pasar: tersembunyi, muncul sebagai panel melayang */
+.wl-tg{width:30px;height:30px;flex:none;border-radius:8px;border:1px solid var(--line);background:rgba(9,12,30,.7);color:var(--tx-2);display:grid;place-items:center}
+.wl-tg:hover{color:#fff;border-color:var(--line-hi)}.wl-tg svg{width:15px;height:15px}
+.app.wl-off{grid-template-columns:minmax(0,1fr) 332px}
+.app.wl-off .wl{display:none}
+.app.wl-off.wl-pop .wl{display:flex;position:fixed;left:12px;top:64px;width:300px;max-height:calc(100dvh - 80px);z-index:80;border-color:var(--line-hi);box-shadow:0 24px 60px rgba(0,0,0,.65)}
+/* zoom grafik */
+.zc{position:absolute;right:78px;top:8px;z-index:3;display:flex;gap:4px}
+.zc button{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:rgba(9,12,30,.82);color:var(--tx-2);font-size:18px;font-weight:600;line-height:1;display:grid;place-items:center}
+.zc button:hover{color:#fff;border-color:var(--line-hi)}
+@media(pointer:coarse){.zc button{width:36px;height:36px}}
 </style>
 <style id="mobCss" media="(max-width:1020px)">
   body{padding-bottom:calc(64px + var(--safe-b))}
@@ -235,8 +265,8 @@ button,[role=button],.go,.sb,.wr{touch-action:manipulation;-webkit-user-select:n
   .wl-list{max-height:none;overflow:visible}
   .wl-av{display:block}
   .wr{padding:12px 14px}
-  .symh{padding:12px 62px 12px 14px;gap:8px 16px}
-  .sh-px .big{font-size:26px}
+  .symh{padding:8px 52px 8px 12px;gap:4px 12px}
+  .sh-px .big{font-size:20px}
   .sh-m{margin-left:0;width:100%;justify-content:space-between;gap:8px}
   .cwrap{height:clamp(300px,46vh,440px)}
   .spd{display:none}
@@ -252,8 +282,9 @@ button,[role=button],.go,.sb,.wr{touch-action:manipulation;-webkit-user-select:n
   .toast{bottom:calc(80px + var(--safe-b))}
 @media(max-width:520px){
     .plist{grid-template-columns:1fr}
-  .sh-l h1{font-size:18px}
+  .sh-l h1{font-size:15px}
 }
+  .wl-tg,#wlPin{display:none}
 </style>
 <style>
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
@@ -270,6 +301,7 @@ button,[role=button],.go,.sb,.wr{touch-action:manipulation;-webkit-user-select:n
 html.desk .app{display:grid;grid-template-columns:var(--cl,292px) minmax(0,1fr) var(--cr,332px);gap:12px;margin:12px auto 24px;padding:0 12px}
 html.desk body{padding-bottom:0}
 html.desk .mnav,html.desk .qa{display:none}
+html.desk .app.wl-off{grid-template-columns:minmax(0,1fr) var(--cr,332px)}
 </style>
 </head>
 <body>
@@ -277,17 +309,16 @@ html.desk .mnav,html.desk .qa{display:none}
 
 <div class="rotate-gate" id="rotateGate" role="dialog" aria-modal="true" aria-labelledby="rotateTitle">
 <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><rect x="25" y="14" width="30" height="52" rx="5" transform="rotate(-35 40 40)"/><path d="M12 36A29 29 0 0 1 60 17M60 8v10H50M68 44A29 29 0 0 1 20 63M20 72V62h10"/></svg>
-<h2 id="rotateTitle">Izinkan layar penuh &amp; mode mendatar</h2><p>Di HP, Forex memakai tampilan seperti di komputer. Ketuk untuk mengizinkan layar penuh, lalu HP akan dimiringkan ke mode mendatar.</p><button id="rotateFull" type="button">Izinkan</button><p id="screenHint" role="status"></p></div>
+<h2 id="rotateTitle">Izinkan layar penuh &amp; mode mendatar</h2><p>Di HP, trading memakai tampilan seperti di komputer. Ketuk untuk mengizinkan layar penuh, lalu HP akan dimiringkan ke mode mendatar.</p><button id="rotateFull" type="button">⛶ Izinkan</button><p id="screenHint" role="status"></p></div>
 <span id="syncStatus" hidden></span>
 <div class="app" id="app" data-view="chart">
   <!-- DAFTAR PASAR -->
   <aside class="pnl wl" id="wl" aria-label="Daftar pasar">
     <div class="wl-h">
-      <div class="wl-row"><label class="srch"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M12.2 13.6a7 7 0 1 1 1.4-1.4l5.4 5.4-1.4 1.4zM3 8a5 5 0 1 0 10 0A5 5 0 0 0 3 8z"/></svg><input id="q" type="search" placeholder="Cari pasangan mata uang" autocomplete="off" aria-label="Cari pasar"></label><a class="wl-av" href="Profile.html" title="Profil"><img class="av" id="wlAv" alt=""></a></div>
-      <div class="gtabs" id="gtabs"></div>
+      <div class="wl-top"><div class="gtabs" id="gtabs"></div><button class="ib" id="srchBtn" type="button" aria-label="Cari pasar" aria-expanded="false"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M12.2 13.6a7 7 0 1 1 1.4-1.4l5.4 5.4-1.4 1.4zM3 8a5 5 0 1 0 10 0A5 5 0 0 0 3 8z"/></svg></button><button class="ib" id="wlPin" type="button" aria-label="Sematkan di samping" title="Sematkan di samping"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M11.5 2l6.5 6.5-1.6.9-2.3-.6-3 3 .5 3.6-1.2 1.2-3.2-3.2L3.5 17l-.9-.9 4.3-4.3L3.700 8.600l1.200-1.200 3.600.5 3-3-.6-2.300z"/></svg></button><a class="wl-av" href="Profile.html" title="Profil"><img class="av" id="wlAv" alt=""></a></div>
+      <label class="srch" id="srchBox" hidden><svg viewBox="0 0 20 20" fill="currentColor"><path d="M12.2 13.6a7 7 0 1 1 1.4-1.4l5.4 5.4-1.4 1.4zM3 8a5 5 0 1 0 10 0A5 5 0 0 0 3 8z"/></svg><input id="q" type="search" placeholder="Cari pair" autocomplete="off" aria-label="Cari pasar"><button class="x" id="srchX" type="button" aria-label="Sembunyikan pencarian">✕</button></label>
     </div>
     <div class="wl-list" id="wlist"></div>
-    <div class="wl-f" id="srcnote"></div>
   </aside>
 
   <!-- TENGAH -->
@@ -301,7 +332,7 @@ html.desk .mnav,html.desk .qa{display:none}
         <span class="sp"></span>
         <button class="ib" id="zend" aria-label="Ke harga terkini">⇥</button>
       </div>
-      <div class="cwrap" id="cwrap"><canvas id="cv"></canvas><div class="lg" id="lg"></div><div class="cmsg" id="cmsg" hidden></div><button class="cbtn" id="cclose" type="button" hidden></button></div>
+      <div class="cwrap" id="cwrap"><canvas id="cv"></canvas><div class="lg" id="lg"></div><div class="cmsg" id="cmsg" hidden></div><div class="zc" id="zc"><button type="button" id="zin" aria-label="Perbesar grafik" title="Perbesar">+</button><button type="button" id="zout" aria-label="Perkecil grafik" title="Perkecil">−</button></div><button class="cbtn" id="cclose" type="button" hidden></button></div>
     </div>
     <div class="qa" id="qa"><button class="s" data-go="sell"><span>Jual</span><b id="qaS">–</b></button><button class="b" data-go="buy"><span>Beli</span><b id="qaB">–</b></button><div class="qi" id="qi"></div></div>
     <div class="pnl posp" id="posp">
@@ -952,7 +983,7 @@ function executeOrder(side,snap){
 function syncSide(){ document.querySelectorAll("#tk .sb").forEach(b=>b.classList.toggle("on",b.dataset.side===S.side)); }
 function quickTrade(side,snap){
   S.side=side; syncSide();
-  if (!Math.floor(Number(S.stake)||0)){ toast("Isi modal dulu di tab Order","dn"); setView("order"); return; }
+  if (!Math.floor(Number(S.stake)||0) && !$("tk").offsetParent){ toast("Isi modal dulu di tab Order","dn"); setView("order"); return; }
   confirmOrder(side,snap);
 }
 
@@ -1064,15 +1095,23 @@ function draw(){
 function rr(c,x,y,w,h,r){ c.beginPath(); c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r); c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); }
 function frame(){ if(dirty) draw(); requestAnimationFrame(frame); }
 const cw=$("cwrap");
+const ptrs=new Map(); let pinch=null;
 cw.addEventListener("pointermove",e=>{ const r=cw.getBoundingClientRect(); cross={x:e.clientX-r.left,y:e.clientY-r.top};
+  if(ptrs.has(e.pointerId)) ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(pinch&&ptrs.size===2){ const [a,b]=[...ptrs.values()], d=Math.hypot(a.x-b.x,a.y-b.y)||1; view.n=clamp(Math.round(pinch.n*pinch.d/d),20,400); markDirty(); zs(); return; }
   if(dragging){ const pw=CW-70, sw=pw/(view.n+6), dx=e.clientX-dragging.x; const moved=Math.round(dx/sw); if(moved){ view.off=clamp(dragging.off+moved,0,Math.max(0,candles().length-10)); } if(Math.abs(dx)>4) dragging.moved=true; }
   markDirty(); });
-cw.addEventListener("pointerdown",e=>{ if(e.target.closest(".cbtn")) return; dragging={x:e.clientX,off:view.off,moved:false}; try{ cw.setPointerCapture(e.pointerId); }catch(_){} const r=cw.getBoundingClientRect(); cross={x:e.clientX-r.left,y:e.clientY-r.top}; markDirty(); });
+cw.addEventListener("pointerdown",e=>{ if(e.target.closest(".cbtn,.zc")) return;
+  ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptrs.size===2){ const [a,b]=[...ptrs.values()]; pinch={ d:Math.hypot(a.x-b.x,a.y-b.y)||1, n:view.n }; dragging=null; markDirty(); return; }
+  dragging={x:e.clientX,off:view.off,moved:false}; try{ cw.setPointerCapture(e.pointerId); }catch(_){} const r=cw.getBoundingClientRect(); cross={x:e.clientX-r.left,y:e.clientY-r.top}; markDirty(); });
 const endDrag=()=>{ dragging=null; };
-cw.addEventListener("pointerup",e=>{ endDrag(); if(e.pointerType==="touch") setTimeout(()=>{ cross=null; markDirty(); },1800); });
-cw.addEventListener("pointercancel",endDrag);
+cw.addEventListener("pointerup",e=>{ ptrs.delete(e.pointerId); if(ptrs.size<2) pinch=null; endDrag(); if(e.pointerType==="touch") setTimeout(()=>{ cross=null; markDirty(); },1800); });
+cw.addEventListener("pointercancel",e=>{ ptrs.delete(e.pointerId); if(ptrs.size<2) pinch=null; endDrag(); });
 cw.addEventListener("pointerleave",e=>{ if(e.pointerType!=="touch"){ cross=null; markDirty(); } });
 cw.addEventListener("wheel",e=>{ e.preventDefault(); view.n=clamp(Math.round(view.n*Math.exp(e.deltaY*.0015)),20,400); markDirty(); zs(); },{passive:false});
+$("zin").onclick=()=>{ view.n=clamp(Math.round(view.n*.8),20,400); markDirty(); zs(); };
+$("zout").onclick=()=>{ view.n=clamp(Math.round(view.n*1.25),20,400); markDirty(); zs(); };
 $("zend").onclick=()=>{ view.off=0; markDirty(); };
 new ResizeObserver(resizeCanvas).observe(cw);
 
@@ -1097,15 +1136,12 @@ function updateWatch(){
     const ch=dayChg(I); ce.textContent=fmtS(ch,2)+"%"; ce.className=ch>=0?"up":"dn";
     const sp=sparkOf(I,q); if(sp.length>2){ let mn=Math.min(...sp), mx=Math.max(...sp); if(mx===mn){mx+=1e-9;} pt.setAttribute("d",sp.map((v,i)=>(i?"L":"M")+(i/(sp.length-1)*54).toFixed(1)+" "+(22-(v-mn)/(mx-mn)*20).toFixed(1)).join("")); pt.setAttribute("stroke",sp[sp.length-1]>=sp[0]?"#2ebd85":"#f6465d"); }
   });
-  const ok=(a)=>a?"ok":""; const live=INST.some(i=>i.live&&isLive(i,Q[i.s]));
-  setHtml($("srcnote"),`<div><span class="dotc ${ok(live)}"></span>Kripto &amp; Emas: Binance ${live?"(langsung)":"(menghubungkan / simulasi)"}</div><div><span class="dotc ${SRC.ecb?"mid":""}"></span>Forex: kurs ECB ${SRC.ecb?"(termuat)":"(cadangan)"} + tick simulasi</div><div style="margin-top:4px">Mora &amp; Credit adalah mata uang dalam game, bukan uang sungguhan.</div>`);
 }
-function srcBadge(I){ const q=Q[I.s]; return I.live ? (isLive(I,q)?'<span class="badge live">LIVE · BINANCE</span>':'<span class="badge sim">SIMULASI</span>') : (SRC.ecb?'<span class="badge ecb">ECB + SIMULASI</span>':'<span class="badge sim">SIMULASI</span>'); }
+function srcBadge(I){ const q=Q[I.s]; return I.live ? (isLive(I,q)?'<span class="badge live" title="Harga langsung dari Binance">LIVE</span>':'<span class="badge sim" title="Simulasi">SIM</span>') : (SRC.ecb?'<span class="badge ecb" title="Kurs ECB + tick simulasi">ECB</span>':'<span class="badge sim" title="Simulasi">SIM</span>'); }
 function renderSymHead(){
   const I=BY[S.sym];
-  $("symh").innerHTML=`<a class="sh-av" href="Profile.html" title="Profil"><img class="av" alt="" src="${esc(avatar(currentUser.username,currentUser.profilePic))}"></a><div class="sh-l"><h1>${I.l} ${srcBadge(I)}</h1><p>${esc(I.n)}</p></div>
-   <div class="sh-px"><span class="big" id="shP">–</span><span class="chg" id="shC">–</span></div>
-   <div class="sh-m"><div class="kv"><small>Bid (jual)</small><b id="shB">–</b></div><div class="kv"><small>Ask (beli)</small><b id="shA">–</b></div><div class="kv"><small>Spread</small><b id="shS">–</b></div><div class="kv"><small>Tinggi / Rendah</small><b id="shHL">–</b></div></div>`;
+  $("symh").innerHTML=`<a class="sh-av" href="Profile.html" title="Profil"><img class="av" alt="" src="${esc(avatar(currentUser.username,currentUser.profilePic))}"></a><button class="wl-tg" id="wlTg" type="button" aria-label="Daftar pasar" title="Daftar pasar"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M3 5h14v2H3zm0 4h14v2H3zm0 4h14v2H3z"/></svg></button><div class="sh-l"><h1 title="${esc(I.n)}">${I.l} ${srcBadge(I)}</h1></div>
+   <div class="sh-px"><span class="big" id="shP">–</span><span class="chg" id="shC">–</span></div>`;
   updateSymHead(true);
 }
 let _lastBadge="";
@@ -1114,10 +1150,7 @@ function updateSymHead(force){
   const b=srcBadge(I); if(b!==_lastBadge||force){ _lastBadge=b; const h=document.querySelector(".sh-l h1"); if(h) h.innerHTML=I.l+" "+b; }
   const set=(id,t,c)=>{ const e=$(id); if(e){ e.textContent=t; if(c!==undefined) e.className=c; } };
   set("shP",P(S.sym,q.bid+q.half),"big "+(q.dir>0?"up":q.dir<0?"dn":""));
-  const ch=dayChg(I); set("shC",fmtS(ch,2)+"%  ("+fmtS(q.mid-q.open,d)+")","chg "+(ch>=0?"up":"dn"));
-  set("shB",q.bid.toFixed(d)); set("shA",q.ask.toFixed(d));
-  set("shS",(q.ask-q.bid).toFixed(d)+" · "+(((q.ask-q.bid)/q.mid)*1e4).toFixed(1)+" bps");
-  const a=C[S.sym]["1m"]; let hi=q.mid, lo=q.mid; for(let i=Math.max(0,a.length-720);i<a.length;i++){ if(a[i][2]>hi)hi=a[i][2]; if(a[i][3]<lo)lo=a[i][3]; } set("shHL",hi.toFixed(d)+" / "+lo.toFixed(d));
+  const ch=dayChg(I); set("shC",fmtS(ch,2)+"%","chg "+(ch>=0?"up":"dn"));
   set("qaS",q.bid.toFixed(d)); set("qaB",q.ask.toFixed(d)); updateQuick();
 }
 /* ---------- tiket order ---------- */
@@ -1130,8 +1163,6 @@ function renderTicket(full){
        <div class="acc"><div class="ac m"><small>${ci("mora")} Mora</small><b class="mora-count">0</b></div><div class="ac c"><small>${ci("credit")} Credit</small><b class="credit-count">0</b></div></div>
        <div class="eqrow"><span>P&amp;L mengambang</span><b id="fPnl">0</b></div><div class="eqrow" style="margin-top:4px"><span>Modal tertanam</span><b id="fMrg">0</b></div></div>
      <div class="tk-sec" id="tkForm"><h3><span>Order · ${I.l}</span><span class="mut" style="text-transform:none;letter-spacing:0;font-weight:500">Pasar</span></h3>
-       <div class="sidebtn"><button class="sb sell${S.side==="sell"?" on":""}" data-side="sell"><small>Jual</small><b id="tkB">–</b></button><button class="sb buy${S.side==="buy"?" on":""}" data-side="buy"><small>Beli</small><b id="tkA">–</b></button></div>
-       <div class="sprd" id="tkSp">–</div>
        <div class="fld"><div class="lb">Mata uang modal</div><div class="curseg"><button class="m${SET.cur==="mora"?" on":""}" data-cur="mora">${ci("mora")} Mora</button><button class="c${SET.cur==="credit"?" on":""}" data-cur="credit">${ci("credit")} Credit</button></div></div>
        <div class="fld"><label for="fStake">Modal (margin) <small id="fAvail">Tersedia: 0</small></label><div class="inp"><input id="fStake" inputmode="numeric" placeholder="0" autocomplete="off" value="${esc(S.stake)}"><button class="st" data-st="-1" aria-label="Kurangi">−</button><button class="st" data-st="1" aria-label="Tambah">+</button></div>
          <div class="pcs"><button data-pc="10">10%</button><button data-pc="25">25%</button><button data-pc="50">50%</button><button data-pc="100">Maks</button></div></div>
@@ -1139,23 +1170,22 @@ function renderTicket(full){
        <div class="fld two"><div><label for="fTp" style="display:block;font-size:12px;font-weight:600;color:var(--tx-2);margin-bottom:6px">Take Profit <span class="mut">(opsional)</span></label><div class="inp"><input id="fTp" inputmode="decimal" placeholder="Harga" autocomplete="off" value="${esc(S.tp)}"></div></div>
          <div><label for="fSl" style="display:block;font-size:12px;font-weight:600;color:var(--tx-2);margin-bottom:6px">Stop Loss <span class="mut">(opsional)</span></label><div class="inp"><input id="fSl" inputmode="decimal" placeholder="Harga" autocomplete="off" value="${esc(S.sl)}"></div></div></div>
        <div class="sum" id="fSum"></div>
-       <button class="go ${S.side}" id="go" type="button">–</button><div class="err" id="terr" role="alert"></div></div>
+       <div class="gobtns"><button class="go sell" data-go="sell" type="button"><small>JUAL</small><b id="goB">–</b></button><button class="go buy" data-go="buy" type="button"><small>BELI</small><b id="goA">–</b></button></div><div class="err" id="terr" role="alert"></div></div>
      <div class="tk-sec"><label class="note" style="display:flex;gap:8px;align-items:center;margin-bottom:10px"><input type="checkbox" id="cfm" ${SET.confirm?"checked":""}> Minta konfirmasi sebelum order</label><p class="note">Order dieksekusi pada harga pasar (beli di Ask, jual di Bid) — harga dikunci saat tombol kamu sentuh. Rugi maksimal sebesar modal. Posisi otomatis ditutup (stop-out) bila sisa modal tinggal 10%. Pergerakan harga tidak dapat diprediksi — trading mengandung risiko kehilangan seluruh modal.</p></div>`;
     updateCurrencyDisplay();
   }
   updateTicket();
 }
 function updateTicket(){
-  const I=BY[S.sym], q=Q[S.sym], d=I.dp; if(!$("tkB")) return;
-  $("tkB").textContent=q.bid.toFixed(d); $("tkA").textContent=q.ask.toFixed(d);
-  $("tkSp").textContent="Spread "+(((q.ask-q.bid)/q.mid)*1e4).toFixed(1)+" bps";
+  const I=BY[S.sym], q=Q[S.sym], d=I.dp; if(!$("tkForm")) return;
+  $("goB").textContent=q.bid.toFixed(d); $("goA").textContent=q.ask.toFixed(d);
   const bal=currentUser?(currentUser[SET.cur]||0):0; $("fAvail").textContent="Tersedia: "+fmtN(bal);
-  const stake=Math.floor(Number(String(S.stake).replace(/[^\d.]/g,""))||0), entry=S.side==="buy"?q.ask:q.bid, size=stake*S.lev;
+  const stake=Math.floor(Number(String(S.stake).replace(/[^\d.]/g,""))||0), size=stake*S.lev;
   const tp=parseFloat(String(S.tp).replace(",","."))||0, sl=parseFloat(String(S.sl).replace(",","."))||0;
-  const gain=p=>size*(S.side==="buy"?(p-entry):(entry-p))/entry;
-  setHtml($("fSum"),`<div><span>Harga masuk</span><b>${entry.toFixed(d)}</b></div><div><span>Nilai posisi</span><b>${fmtN(size)} ${CUR_NAME[SET.cur]}</b></div><div><span>Harga likuidasi</span><b>${stake?liqPrice(S.side,entry,S.lev).toFixed(d):"–"}</b></div>`
-   +(tp>0?`<div><span>Estimasi di TP</span><b class="up">${fmtS(gain(tp),0)}</b></div>`:"")+(sl>0?`<div><span>Estimasi di SL</span><b class="dn">${fmtS(gain(sl),0)}</b></div>`:""));
-  const go=$("go"); go.classList.toggle("buy",S.side==="buy"); go.classList.toggle("sell",S.side==="sell"); const gt=(S.side==="buy"?"BELI ":"JUAL ")+I.l+" @ "+entry.toFixed(d); if(go.textContent!==gt) go.textContent=gt;
+  const gain=p=>{ const sd=p>q.mid?"buy":"sell", en=sd==="buy"?q.ask:q.bid; return size*(sd==="buy"?(p-en):(en-p))/en; };
+  setHtml($("fSum"),`<div><span>Nilai posisi</span><b>${fmtN(size)} ${CUR_NAME[SET.cur]}</b></div><div><span>Spread</span><b>${(((q.ask-q.bid)/q.mid)*1e4).toFixed(1)} bps</b></div>`
+   +(tp>0?`<div><span>Estimasi di TP</span><b class="up">${fmtS(gain(tp),0)}</b></div>`:"")+(sl>0?`<div><span>Estimasi di SL</span><b class="dn">${fmtS(gain(sl),0)}</b></div>`:"")
+   +`<div><span>Harga likuidasi <small>(beli / jual)</small></span><b>${stake?liqPrice("buy",q.ask,S.lev).toFixed(d)+" / "+liqPrice("sell",q.bid,S.lev).toFixed(d):"–"}</b></div>`);
   let pnl=0, mrg=0; POS.forEach(p=>{ if(p.cur===SET.cur){ pnl+=pnlOf(p,Q[p.sym]); mrg+=p.stake; } });
   const fp=$("fPnl"); fp.textContent=fmtS(pnl,2)+" "+CUR_NAME[SET.cur]; fp.className=pnl>=0?"up":"dn"; $("fMrg").textContent=fmtN(mrg)+" "+CUR_NAME[SET.cur];
 }
@@ -1247,7 +1277,7 @@ function setView(v){
   scrollTo({top:0});
 }
 function selectSym(s,keepView){
-  if(!BY[s]) return; S.sym=s; SET.tf = SET.tf || "1m";
+  if(!BY[s]) return; $("app").classList.remove("wl-pop"); S.sym=s; SET.tf = SET.tf || "1m";
   view.off=0; ensureHistory(s); S.tp=""; S.sl="";
   renderWatch(); renderSymHead(); renderTicket(true); updateCloseBtn(); markDirty(); saveState(false);
 }
@@ -1255,6 +1285,20 @@ $("mnav").addEventListener("click",e=>{ const b=e.target.closest("[data-v]"); if
 $("qi").addEventListener("click",()=>setView("order"));
 $("gtabs").addEventListener("click",e=>{ const b=e.target.closest("[data-g]"); if(!b) return; SET.group=b.dataset.g; saveState(false); renderWatch(); });
 $("q").addEventListener("input",e=>{ S.q=e.target.value; renderWatch(); });
+function setSearch(on){
+  $("srchBox").hidden=!on; $("srchBtn").setAttribute("aria-expanded",String(on)); $("srchBtn").classList.toggle("act",on);
+  if(on) $("q").focus(); else if(S.q){ S.q=""; $("q").value=""; renderWatch(); }
+}
+function applyWl(){
+  const a=$("app"); a.classList.toggle("wl-off",!SET.wl); if(SET.wl) a.classList.remove("wl-pop");
+  const pin=$("wlPin"); pin.classList.toggle("act",!!SET.wl); pin.title=SET.wl?"Lepas dari samping":"Sematkan di samping";
+  saveSet(); resizeCanvas();
+}
+$("symh").addEventListener("click",e=>{ if(!e.target.closest("#wlTg")) return; if(SET.wl){ SET.wl=false; applyWl(); } else $("app").classList.toggle("wl-pop"); });
+$("wlPin").onclick=()=>{ SET.wl=!SET.wl; applyWl(); };
+document.addEventListener("pointerdown",e=>{ const a=$("app"); if(a.classList.contains("wl-pop") && !e.target.closest("#wl,#wlTg")) a.classList.remove("wl-pop"); },true);
+$("srchBtn").onclick=()=>setSearch($("srchBox").hidden);
+$("srchX").onclick=()=>setSearch(false);
 $("wlist").addEventListener("click",e=>{
   const f=e.target.closest("[data-f]");
   if(f){ e.stopPropagation(); const s=f.dataset.f, i=SET.fav.indexOf(s); i>=0?SET.fav.splice(i,1):SET.fav.push(s); saveSet(); renderWatch(); }
@@ -1356,7 +1400,7 @@ async function init(){
   await loadPriceConfig();   // pengali harga dari sheet "Harga" (harus sebelum initQuote)
   INST.forEach(initQuote);
   const av=$("wlAv"); if (av) av.src=avatar(currentUser.username,currentUser.profilePic);
-  syncToolbar(); renderWatch(); renderSymHead(); renderTicket(true); renderPositions(); updateQuick(); resizeCanvas();
+  syncToolbar(); applyWl(); renderWatch(); renderSymHead(); renderTicket(true); renderPositions(); updateQuick(); resizeCanvas();
   ensureHistory(S.sym);
   if(SYNC.ready)scanSim(0, Date.now()/1000); lastMk = Date.now()/1000;       // posisi yang kena TP/SL/likuidasi selama kamu pergi
   requestAnimationFrame(frame);
