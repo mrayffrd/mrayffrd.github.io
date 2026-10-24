@@ -330,9 +330,9 @@ html.desk .app.wl-off{grid-template-columns:minmax(0,1fr) var(--cr,332px)}
         <div class="seg" id="ctype"><button data-t="candle" class="on">Candle</button><button data-t="line">Garis</button></div>
         <div class="seg" id="inds"><button data-i="ma">MA20</button><button data-i="ema">EMA50</button></div>
         <span class="sp"></span>
-        <button class="ib" id="zend" aria-label="Ke harga terkini">⇥</button>
+        <div class="seg" id="zgrp"><button type="button" id="zout" aria-label="Perkecil grafik" title="Perkecil">−</button><button type="button" id="zin" aria-label="Perbesar grafik" title="Perbesar">+</button><button type="button" id="zend" aria-label="Ke harga terkini" title="Ke harga terkini">⇥</button></div>
       </div>
-      <div class="cwrap" id="cwrap"><canvas id="cv"></canvas><div class="lg" id="lg"></div><div class="cmsg" id="cmsg" hidden></div><div class="zc" id="zc"><button type="button" id="zin" aria-label="Perbesar grafik" title="Perbesar">+</button><button type="button" id="zout" aria-label="Perkecil grafik" title="Perkecil">−</button></div><button class="cbtn" id="cclose" type="button" hidden></button></div>
+      <div class="cwrap" id="cwrap"><canvas id="cv"></canvas><div class="lg" id="lg"></div><div class="cmsg" id="cmsg" hidden></div><button class="cbtn" id="cclose" type="button" hidden></button></div>
     </div>
     <div class="qa" id="qa"><button class="s" data-go="sell"><span>Jual</span><b id="qaS">–</b></button><button class="b" data-go="buy"><span>Beli</span><b id="qaB">–</b></button><div class="qi" id="qi"></div></div>
     <div class="pnl posp" id="posp">
