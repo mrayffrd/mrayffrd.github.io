@@ -222,7 +222,8 @@ button,[role=button],.go,.sb,.wr{touch-action:manipulation;-webkit-user-select:n
 
 /* ---------- responsif ---------- */
 @media(max-width:1280px){.app{grid-template-columns:260px minmax(0,1fr) 312px}}
-@media(max-width:1020px){
+</style>
+<style id="mobCss" media="(max-width:1020px)">
   body{padding-bottom:calc(64px + var(--safe-b))}
   .app{display:block;margin:10px auto 0;padding:0 10px}
   .app>*{display:none}
@@ -249,11 +250,12 @@ button,[role=button],.go,.sb,.wr{touch-action:manipulation;-webkit-user-select:n
   .mnav button.on{color:#fff;background:rgba(var(--ac-rgb),.16)}
   .mnav .nb{position:absolute;top:2px;left:calc(50% + 8px);min-width:16px;height:16px;border-radius:8px;background:var(--ac);color:#05060d;font-size:10px;font-weight:800;line-height:16px;padding:0 4px;text-align:center}
   .toast{bottom:calc(80px + var(--safe-b))}
-}
 @media(max-width:520px){
     .plist{grid-template-columns:1fr}
   .sh-l h1{font-size:18px}
 }
+</style>
+<style>
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
 /* HP mendatar: grafik dan order selalu berdampingan. */
 .rotate-gate{display:none;position:fixed;inset:0;z-index:1000;background:var(--bg);align-items:center;justify-content:center;text-align:center;padding:24px;flex-direction:column;gap:18px}
@@ -264,6 +266,10 @@ button,[role=button],.go,.sb,.wr{touch-action:manipulation;-webkit-user-select:n
 #syncStatus{font-size:12px;color:var(--tx-2);flex:1}#syncStatus.bad{color:var(--dn)}
 @media (pointer:coarse) and (orientation:portrait) and (max-width:1020px){.rotate-gate{display:flex}body{overflow:hidden}}
 .rotate-gate{cursor:pointer}
+/* mode desktop di HP mendatar: tata letak 3 kolom dipaksa, aturan layar sempit dimatikan lewat #mobCss */
+html.desk .app{display:grid;grid-template-columns:var(--cl,292px) minmax(0,1fr) var(--cr,332px);gap:12px;margin:12px auto 24px;padding:0 12px}
+html.desk body{padding-bottom:0}
+html.desk .mnav,html.desk .qa{display:none}
 </style>
 </head>
 <body>
@@ -271,7 +277,7 @@ button,[role=button],.go,.sb,.wr{touch-action:manipulation;-webkit-user-select:n
 
 <div class="rotate-gate" id="rotateGate" role="dialog" aria-modal="true" aria-labelledby="rotateTitle">
 <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><rect x="25" y="14" width="30" height="52" rx="5" transform="rotate(-35 40 40)"/><path d="M12 36A29 29 0 0 1 60 17M60 8v10H50M68 44A29 29 0 0 1 20 63M20 72V62h10"/></svg>
-<h2 id="rotateTitle">Izinkan layar penuh &amp; mode mendatar</h2><p>Di HP, trading memakai tampilan seperti di komputer. Ketuk untuk mengizinkan layar penuh, lalu HP akan dimiringkan ke mode mendatar.</p><button id="rotateFull" type="button">⛶ Izinkan</button><p id="screenHint" role="status"></p></div>
+<h2 id="rotateTitle">Izinkan layar penuh &amp; mode mendatar</h2><p>Di HP, Forex memakai tampilan seperti di komputer. Ketuk untuk mengizinkan layar penuh, lalu HP akan dimiringkan ke mode mendatar.</p><button id="rotateFull" type="button">Izinkan</button><p id="screenHint" role="status"></p></div>
 <span id="syncStatus" hidden></span>
 <div class="app" id="app" data-view="chart">
   <!-- DAFTAR PASAR -->
@@ -856,7 +862,14 @@ function updateGate(){
  gate.style.display = block ? "flex" : "";
  document.body.style.overflow = block ? "hidden" : "";
  /* HP mendatar & layar penuh → tata letak persis seperti desktop (lebar 1280, diperkecil otomatis) */
- setViewport(phone && !block ? VP_DESK : VP_PHONE);
+ const desk = phone && !block;
+ setViewport(desk ? VP_DESK : VP_PHONE);
+ /* pengaman: walau browser tidak menerapkan lebar 1280, tetap paksa tata letak desktop 3 kolom */
+ const root=document.documentElement, w=innerWidth;
+ root.classList.toggle("desk",desk);
+ const mc=$("mobCss"); if(mc){ const m=desk?"not all":"(max-width:1020px)"; if(mc.media!==m) mc.media=m; }
+ root.style.setProperty("--cl", w>=1200?"292px":Math.round(w*.23)+"px");
+ root.style.setProperty("--cr", w>=1200?"332px":Math.round(w*.27)+"px");
  $("screenHint").textContent = needLand ? "Miringkan HP ke posisi mendatar." : "Ketuk di mana saja untuk mengizinkan layar penuh & mode mendatar.";
  if(!block) resizeCanvas();
 }
