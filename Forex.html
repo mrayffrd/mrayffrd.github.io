@@ -2,11 +2,15 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta id="vp" name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#05060d">
 <link rel="icon" href="icon.png" type="image/png">
 <link rel="apple-touch-icon" href="icon.png">
-<title>Forex</title>
+<title>Forex — Trading &amp; Pemantauan Posisi</title>
+<meta property="og:title" content="Forex — Trading &amp; Pemantauan Posisi">
+<meta property="og:description" content="Trading Mora dan Credit dengan posisi tersinkron dan pemantauan spreadsheet.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
 <meta name="description" content="Forex — trading simulasi dengan harga pasar nyata. Gunakan Mora dan Credit.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -251,11 +255,24 @@ button,[role=button],.go,.sb,.wr{touch-action:manipulation;-webkit-user-select:n
   .sh-l h1{font-size:18px}
 }
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+/* HP mendatar: grafik dan order selalu berdampingan. */
+.rotate-gate{display:none;position:fixed;inset:0;z-index:1000;background:var(--bg);align-items:center;justify-content:center;text-align:center;padding:24px;flex-direction:column;gap:18px}
+.rotate-gate svg{width:76px;height:76px;color:var(--ac)}
+.rotate-gate h2{font-size:22px}.rotate-gate p{max-width:340px;color:var(--tx-2)}
+.rotate-gate button,.screen-tools button{border:1px solid var(--line);background:var(--panel-2);border-radius:8px;padding:10px 14px}
+.screen-tools{display:flex;align-items:center;gap:8px;padding:5px 12px;max-width:1680px;margin:auto}
+#syncStatus{font-size:12px;color:var(--tx-2);flex:1}#syncStatus.bad{color:var(--dn)}
+@media (pointer:coarse) and (orientation:portrait) and (max-width:1020px){.rotate-gate{display:flex}body{overflow:hidden}}
+.rotate-gate{cursor:pointer}
 </style>
 </head>
 <body>
 <div id="boot"><div class="sp"></div><span>Menghubungkan ke pasar…</span></div>
 
+<div class="rotate-gate" id="rotateGate" role="dialog" aria-modal="true" aria-labelledby="rotateTitle">
+<svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><rect x="25" y="14" width="30" height="52" rx="5" transform="rotate(-35 40 40)"/><path d="M12 36A29 29 0 0 1 60 17M60 8v10H50M68 44A29 29 0 0 1 20 63M20 72V62h10"/></svg>
+<h2 id="rotateTitle">Izinkan layar penuh &amp; mode mendatar</h2><p>Di HP, trading memakai tampilan seperti di komputer. Ketuk untuk mengizinkan layar penuh, lalu HP akan dimiringkan ke mode mendatar.</p><button id="rotateFull" type="button">⛶ Izinkan</button><p id="screenHint" role="status"></p></div>
+<span id="syncStatus" hidden></span>
 <div class="app" id="app" data-view="chart">
   <!-- DAFTAR PASAR -->
   <aside class="pnl wl" id="wl" aria-label="Daftar pasar">
@@ -276,7 +293,7 @@ button,[role=button],.go,.sb,.wr{touch-action:manipulation;-webkit-user-select:n
         <div class="seg" id="ctype"><button data-t="candle" class="on">Candle</button><button data-t="line">Garis</button></div>
         <div class="seg" id="inds"><button data-i="ma">MA20</button><button data-i="ema">EMA50</button></div>
         <span class="sp"></span>
-        <button class="ib" id="zout" aria-label="Perkecil">−</button><button class="ib" id="zin" aria-label="Perbesar">+</button><button class="ib" id="zend" aria-label="Ke harga terkini">⇥</button>
+        <button class="ib" id="zend" aria-label="Ke harga terkini">⇥</button>
       </div>
       <div class="cwrap" id="cwrap"><canvas id="cv"></canvas><div class="lg" id="lg"></div><div class="cmsg" id="cmsg" hidden></div><button class="cbtn" id="cclose" type="button" hidden></button></div>
     </div>
@@ -306,14 +323,16 @@ button,[role=button],.go,.sb,.wr{touch-action:manipulation;-webkit-user-select:n
 const API_URL = "https://script.google.com/macros/s/AKfycbwHtatQVaip_YspROYu7Rmtm1xWG_f69yBHoahG7DoPElB08sMmKgSCXgdgF7X9_14/exec";
 const SECRET  = "popit_secret_2026";
 /* API ke-2: spreadsheet khusus Forex (grafik & riwayat). Tempel URL /exec dari deploy AppsScript-Forex.gs di sini. */
-const FOREX_API_URL = "https://script.google.com/macros/s/AKfycbzGX6fHxNGnv67D5Y6muQWxJe4AoAJl9CGqDR81ls81FsG5pGpZoZ3-6xFW3qoY0OzjYg/exec";
+const FOREX_API_URL = "https://script.google.com/macros/s/AKfycbyS-fh49G7lo7D_pwK-HzgwQH9ziVvMK7eBADYJJdLBJkGuHtialFdOC5LMYHmIZrW7zw/exec";
 let currentUser = null;
 
 async function apiCall(action, data = {}) {
+  const ac = new AbortController(), tm = setTimeout(()=>ac.abort(), 15000);
   try {
-    const res = await fetch(API_URL, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: JSON.stringify({ action, secret: SECRET, ...data }) });
+    const res = await fetch(API_URL, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: JSON.stringify({ action, secret: SECRET, ...data }), signal: ac.signal });
     return await res.json();
   } catch (err) { console.error("API Error:", err); return { success:false, message:"Gagal terhubung ke server" }; }
+  finally { clearTimeout(tm); }
 }
 async function loadSession() {
   const session = localStorage.getItem("popit_session");
@@ -723,7 +742,7 @@ function ensureHistory(sym){
 /* ---------- detak pasar: harga = f(waktu sekarang) ---------- */
 let lastMk = 0;
 function marketTick(t){
-  if (lastMk && t-lastMk>3 && POS.length) scanSim(lastMk,t);    // kejar TP/SL/likuidasi saat tab tidak aktif
+  if (SYNC.ready && !SYNC.busy && lastMk && t-lastMk>3 && POS.length) scanSim(lastMk,t);    // kejar TP/SL/likuidasi saat tab tidak aktif
   lastMk = t;
   for (const I of INST){
     const q=Q[I.s]; if (I.live && isLive(I,q)) continue;
@@ -757,49 +776,92 @@ const S = { sym: BY[SET.sym] ? SET.sym : "EURUSD", side:"buy", view:"chart", pta
 const userKey = () => "forex.state." + (currentUser ? currentUser.username : "tamu");
 function stateBlob(trim){ return { pos:POS.map(p=>({...p})), hist:HIST.slice(0,trim?60:200), ts:Date.now() }; }
 function saveSet(){ LS.set("forex.set", { ...SET, sym:S.sym, lev:S.lev, stake:S.stake, zoom:view.n }); }
-let _syncT=0;
+const SYNC={ready:false,revision:0,dirty:false,busy:false,timer:0};
+function syncStatus(text,bad){const el=$("syncStatus");el.textContent=text;el.classList.toggle("bad",!!bad);}
 function saveState(sync){
-  LS.set(userKey(), stateBlob(false)); saveSet();
-  if (sync){ clearTimeout(_syncT); _syncT=setTimeout(pushState, 300); }
+  if(sync) SYNC.dirty=true;
+  LS.set(userKey(),{...stateBlob(false),revision:SYNC.revision,pending:SYNC.dirty});saveSet();
+  if(sync){clearTimeout(SYNC.timer);SYNC.timer=setTimeout(pushState,300);}
 }
-/* Panggil API spreadsheet Forex (terpisah dari API mora/credit) */
-async function forexApi(action, data = {}) {
-  if (!FOREX_API_URL || FOREX_API_URL.indexOf("http") !== 0) return { success:false, message:"FOREX_API_URL belum diisi" };
-  try {
-    const res = await fetch(FOREX_API_URL, { method:"POST", headers:{ "Content-Type":"text/plain;charset=utf-8" }, body: JSON.stringify({ action, secret: SECRET, ...data }) });
-    return await res.json();
-  } catch (err) { console.error("Forex API Error:", err); return { success:false, message:"Gagal terhubung ke server Forex" }; }
+async function forexApi(action,data={}){
+  if(!FOREX_API_URL || !FOREX_API_URL.startsWith("http"))return {success:false,message:"Alamat API Forex belum diisi"};
+  const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),15000);
+  try{const res=await fetch(FOREX_API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action,secret:SECRET,...data}),signal:controller.signal});return await res.json();}
+  catch(e){return {success:false,message:"Tidak terhubung ke spreadsheet Forex"};}finally{clearTimeout(timer);}
 }
-/* Pengali harga per instrumen dari sheet "Harga" di spreadsheet Forex (diatur pemilik, berlaku ke semua perangkat) */
 async function loadPriceConfig(){
-  try{
-    const res = await forexApi("getPriceConfig", {});
-    if (!res || !res.success || !Array.isArray(res.prices)) return;
-    for (const r of res.prices){
-      const I = BY[r.sym], m = Number(r.mult);
-      if (I && isFinite(m) && m > 0) I.mult = m;
-    }
-  }catch(e){}
+  const res=await forexApi("getPriceConfig");
+  if(!res.success || !Array.isArray(res.prices))return;
+  for(const r of res.prices){const I=BY[r.sym],m=Number(r.mult);if(I&&!I.live&&Number.isFinite(m)&&m>0)I.mult=m;}
+}
+function parseState(value){const s=typeof value==="string"?JSON.parse(value):value;return s&&Array.isArray(s.pos)&&Array.isArray(s.hist)?s:{pos:[],hist:[]};}
+function mergeState(remote,local){
+  const history=new Map();for(const h of [...remote.hist,...local.hist])history.set(h.id,h);
+  const pos=new Map();for(const p of [...remote.pos,...local.pos])if(!history.has(p.id)){const prev=pos.get(p.id);if(!prev||(p.updatedAt||p.t0)>=(prev.updatedAt||prev.t0))pos.set(p.id,p);}
+  return {pos:[...pos.values()].sort((a,b)=>b.t0-a.t0),hist:[...history.values()].sort((a,b)=>b.t1-a.t1).slice(0,200)};
+}
+function applyState(st){POS=st.pos.filter(p=>BY[p.sym]);HIST=st.hist;}
+function syncRender(){if(!Q[S.sym]||!$("tkForm"))return;renderPositions();updateTicket();updateCloseBtn();updateQuick();markDirty();}
+async function pullState(){
+ if(!currentUser||SYNC.busy)return false;
+ SYNC.busy=true;
+ try{
+  const r=await forexApi("getForexState",{username:currentUser.username});if(!r.success)throw Error(r.message);if(r.protocol!==3)throw Error("Perbarui Apps Script ke v3");
+  const remote=parseState(r.forexState);SYNC.revision=Number(r.revision)||0;
+  applyState(SYNC.dirty?mergeState(remote,stateBlob(false)):remote);
+  SYNC.ready=true;saveState(false);syncRender();syncStatus(SYNC.dirty?"Mengirim perubahan posisi…":"Posisi tersinkron · "+new Date().toLocaleTimeString("id-ID"));return true;
+ }catch(e){SYNC.ready=false;syncStatus("Sinkron gagal · tekan ↻ untuk mencoba lagi",true);return false;}
+ finally{SYNC.busy=false;}
 }
 async function pushState(){
-  clearTimeout(_syncT);
-  if (!currentUser) return;
-  try{ const r = await forexApi("saveForexState", { username: currentUser.username, state: JSON.stringify(stateBlob(true)) }); if (!r || !r.success) console.warn("Sinkron riwayat gagal:", r && r.message); }catch(e){}
+ clearTimeout(SYNC.timer);if(!currentUser||SYNC.busy||!SYNC.dirty)return;
+ if(!SYNC.ready && !await pullState())return;
+ SYNC.busy=true;
+ try{
+  for(let attempt=0;attempt<4;attempt++){
+   const snapshot=stateBlob(false),fingerprint=JSON.stringify({pos:snapshot.pos,hist:snapshot.hist});
+   const r=await forexApi("saveForexState",{username:currentUser.username,state:JSON.stringify(snapshot),baseRevision:SYNC.revision});
+   if(!r.success)throw Error(r.message);
+   if(r.conflict){applyState(mergeState(parseState(r.forexState),stateBlob(false)));SYNC.revision=r.revision;continue;}
+   if(!Number.isFinite(r.revision))throw Error("Perbarui Apps Script ke v3");
+   SYNC.revision=r.revision;
+   SYNC.dirty=fingerprint!==JSON.stringify({pos:POS,hist:HIST});saveState(false);syncRender();
+   syncStatus(SYNC.dirty?"Mengirim perubahan posisi…":"Posisi tersinkron · "+new Date().toLocaleTimeString("id-ID"));return;
+  }
+  throw Error("Perubahan bersamaan; mencoba lagi");
+ }catch(e){syncStatus("Posisi belum terkirim · "+e.message,true);}
+ finally{SYNC.busy=false;if(SYNC.dirty)SYNC.timer=setTimeout(pushState,5000);}
 }
-async function pullState(){
-  if (!currentUser) return;
-  try{
-    const res = await forexApi("getForexState", { username: currentUser.username });
-    if (!res.success || !res.forexState) return;
-    const f = res.forexState, sv = typeof f==="string" ? JSON.parse(f) : f;
-    const st = LS.get(userKey(), null);
-    if (sv && (sv.ts||0) > ((st&&st.ts)||0)){ POS = Array.isArray(sv.pos)?sv.pos:[]; HIST = Array.isArray(sv.hist)?sv.hist:[]; LS.set(userKey(), sv); renderPositions(); updateTicket(); updateCloseBtn(); updateQuick(); markDirty(); }
-  }catch(e){}
+function loadState(){const st=LS.get(userKey(),null);if(st){applyState(parseState(st));SYNC.dirty=!!st.pending;SYNC.revision=Number(st.revision)||0;}}
+async function syncCycle(){if(SYNC.dirty)await pushState();else await pullState();}
+const FS_OK = !!document.documentElement.requestFullscreen;
+async function enterFullScreen(){
+ const hint=$("screenHint");
+ /* Browser hanya mengizinkan layar penuh & kunci orientasi setelah ada ketukan dari pengguna (persetujuan). */
+ try{ if(FS_OK && !document.fullscreenElement) await document.documentElement.requestFullscreen(); }catch(e){}
+ try{
+  if(screen.orientation && screen.orientation.lock) await screen.orientation.lock("landscape");
+  else throw Error("no-lock");
+ }catch(e){ hint.textContent="Miringkan HP ke posisi mendatar."; }
+ updateGate(); resizeCanvas();
 }
-function loadState(){
-  const st = LS.get(userKey(), null);
-  if (st){ POS = Array.isArray(st.pos)?st.pos:[]; HIST = Array.isArray(st.hist)?st.hist:[]; }
+function isPhone(){return matchMedia("(pointer:coarse)").matches && Math.min(screen.width,screen.height) < 1020;}
+const VP_PHONE="width=device-width, initial-scale=1, viewport-fit=cover", VP_DESK="width=1280, viewport-fit=cover";
+function setViewport(c){ const m=$("vp"); if(m && m.getAttribute("content")!==c) m.setAttribute("content",c); }
+function updateGate(){
+ const gate=$("rotateGate"), phone=isPhone();
+ const needFull = phone && FS_OK && !document.fullscreenElement;
+ const needLand = phone && innerHeight > innerWidth;
+ const block = needFull || needLand;
+ gate.style.display = block ? "flex" : "";
+ document.body.style.overflow = block ? "hidden" : "";
+ /* HP mendatar & layar penuh → tata letak persis seperti desktop (lebar 1280, diperkecil otomatis) */
+ setViewport(phone && !block ? VP_DESK : VP_PHONE);
+ $("screenHint").textContent = needLand ? "Miringkan HP ke posisi mendatar." : "Ketuk di mana saja untuk mengizinkan layar penuh & mode mendatar.";
+ if(!block) resizeCanvas();
 }
+$("rotateGate").onclick=enterFullScreen;
+addEventListener("online",syncCycle);addEventListener("orientationchange",()=>setTimeout(()=>{updateGate();},250));document.addEventListener("fullscreenchange",()=>{updateGate();resizeCanvas();});addEventListener("resize",updateGate);setTimeout(updateGate,0);
 const pnlOf = (p,q) => { const px = p.side==="buy" ? q.bid : q.ask; return p.size*(p.side==="buy" ? (px-p.entry) : (p.entry-px))/p.entry; };
 const liqPrice = (side,entry,lev) => side==="buy" ? entry*(1-.9/lev) : entry*(1+.9/lev);
 function trigger(p,q){
@@ -810,7 +872,7 @@ function trigger(p,q){
   return null;
 }
 function checkAll(){
-  if (!POS.length) return;
+  if (!POS.length || !SYNC.ready || SYNC.busy) return;
   for (const p of POS.slice()){ const r = trigger(p,Q[p.sym]); if (r) closePosition(p,r); }
 }
 const REASON = { manual:"Ditutup manual", tp:"Take Profit", sl:"Stop Loss", liq:"Likuidasi (stop-out)", all:"Ditutup manual" };
@@ -819,7 +881,7 @@ function pxOf(sym,snap){ if (snap && snap.q[sym] && performance.now()-snap.t<150
 function finishClose(){ saveState(true); renderPositions(); updateTicket(); updateCloseBtn(); updateQuick(); markDirty(); }
 function closePosition(p, reason, o){
   o = o || {};
-  if (!POS.includes(p)) return 0;
+  if (!SYNC.ready || SYNC.busy || !POS.includes(p)) return 0;
   const pq = o.px!=null ? { bid:o.px, ask:o.px } : pxOf(p.sym,o.snap);
   const px = p.side==="buy" ? pq.bid : pq.ask;
   const pnl = pnlOf(p,pq), payout = Math.max(0, Math.round(p.stake + pnl));
@@ -844,6 +906,7 @@ function closeMany(list, snap, reason){
 }
 function showErr(m){ const e=$("terr"); if(e) e.textContent=m; toast(m,"dn"); }
 function validateOrder(side,snap){
+  if(!SYNC.ready||SYNC.busy)return {err:"Tunggu sinkronisasi posisi sebelum trading"};
   const I=BY[S.sym], pq=pxOf(S.sym,snap), bal=currentUser?(currentUser[SET.cur]||0):0;
   const stake=Math.floor(Number(String(S.stake).replace(/[^\d.]/g,"")));
   if (!stake || stake<1) return { err:"Masukkan modal minimal 1 "+CUR_NAME[SET.cur] };
@@ -997,8 +1060,6 @@ cw.addEventListener("pointerup",e=>{ endDrag(); if(e.pointerType==="touch") setT
 cw.addEventListener("pointercancel",endDrag);
 cw.addEventListener("pointerleave",e=>{ if(e.pointerType!=="touch"){ cross=null; markDirty(); } });
 cw.addEventListener("wheel",e=>{ e.preventDefault(); view.n=clamp(Math.round(view.n*Math.exp(e.deltaY*.0015)),20,400); markDirty(); zs(); },{passive:false});
-$("zin").onclick=()=>{ view.n=clamp(Math.round(view.n*.8),20,400); markDirty(); zs(); };
-$("zout").onclick=()=>{ view.n=clamp(Math.round(view.n*1.25),20,400); markDirty(); zs(); };
 $("zend").onclick=()=>{ view.off=0; markDirty(); };
 new ResizeObserver(resizeCanvas).observe(cw);
 
@@ -1155,7 +1216,8 @@ function editPos(id){
     const tp=parseFloat($("eTp").value.replace(",","."))||0, sl=parseFloat($("eSl").value.replace(",","."))||0, q=Q[p.sym], ref=p.side==="buy"?q.bid:q.ask;
     if(tp&&(p.side==="buy"?tp<=ref:tp>=ref)) return $("eErr").textContent="Take Profit harus "+(p.side==="buy"?"di atas":"di bawah")+" harga saat ini";
     if(sl&&(p.side==="buy"?sl>=ref:sl<=ref)) return $("eErr").textContent="Stop Loss harus "+(p.side==="buy"?"di bawah":"di atas")+" harga saat ini";
-    p.tp=tp||null; p.sl=sl||null; saveState(true); closeModal(); renderPositions(); markDirty(); toast("TP/SL diperbarui");
+    if(!SYNC.ready||SYNC.busy)return $("eErr").textContent="Tunggu sinkronisasi posisi";
+    p.tp=tp||null; p.sl=sl||null; p.updatedAt=Date.now(); saveState(true); closeModal(); renderPositions(); markDirty(); toast("TP/SL diperbarui");
   };
 }
 
@@ -1254,7 +1316,7 @@ document.addEventListener("click",e=>{
 let _hiddenAt=0;
 document.addEventListener("visibilitychange",()=>{
   if(document.hidden){ _hiddenAt=Date.now(); saveState(false); pushState(); return; }
-  pullState();
+  syncCycle();
   const away=_hiddenAt?(Date.now()-_hiddenAt)/1000:0;
   if(away>15){ for(const k in klDone) delete klDone[k]; ensureHistory(S.sym); }   // tarik ulang data nyata agar tak ada celah
   if(currentUser){ const d=walDiff(); if(d.mora||d.credit) scheduleFlush(200); }
@@ -1283,16 +1345,22 @@ async function init(){
   const av=$("wlAv"); if (av) av.src=avatar(currentUser.username,currentUser.profilePic);
   syncToolbar(); renderWatch(); renderSymHead(); renderTicket(true); renderPositions(); updateQuick(); resizeCanvas();
   ensureHistory(S.sym);
-  scanSim(0, Date.now()/1000); lastMk = Date.now()/1000;       // posisi yang kena TP/SL/likuidasi selama kamu pergi
+  if(SYNC.ready)scanSim(0, Date.now()/1000); lastMk = Date.now()/1000;       // posisi yang kena TP/SL/likuidasi selama kamu pergi
   requestAnimationFrame(frame);
   setInterval(uiLoop,250);
+  if(SYNC.dirty)pushState();
+  setInterval(syncCycle,10000);
   Promise.all([loadECB(), loadBinance24h()]).then(()=>{ if(!SRC.ecb) ECBH.done=true; ensureHistory(S.sym); updateWatch(); renderSymHead(); });
   connectWS();
   setInterval(()=>{ loadECB(); }, 30*60*1000);
   $("boot").classList.add("off"); setTimeout(()=>$("boot").remove(),500);
   if (POS.length) toast("Memulihkan "+POS.length+" posisi terbuka");
 }
-init();
+init().catch(e=>{
+  console.error(e);
+  const b=document.querySelector("#boot span");
+  if(b) b.textContent="Gagal memuat: "+(e&&e.message||e)+" — muat ulang halaman";
+});
 </script>
 </body>
 </html>
