@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="icon.png" type="image/png">
+<link rel="apple-touch-icon" href="icon.png">
+<title>Mini Game Mahjong Inferno</title>
+<style>
+:root{--ac:#ff9a3d;--gold:#ffd24a;--line:#ffffff1a;--tx:#eef0ff;--mut:#98a0c8}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:#05060d;color:var(--tx);font:14px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent;font-variant-numeric:tabular-nums;display:flex;flex-direction:column;height:100dvh}
+.tb,.bt{flex:none;display:flex;align-items:center;gap:12px;padding:8px 14px;background:linear-gradient(180deg,#10142a,#090b19);z-index:5;position:relative}
+.tb{padding-top:calc(8px + env(safe-area-inset-top));border-bottom:1px solid var(--line)}
+.bt{padding-bottom:calc(8px + env(safe-area-inset-bottom));border-top:1px solid var(--line);min-height:62px}
+.tb,.bt{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+.brand{display:flex;flex-direction:column;line-height:1;font-weight:900;letter-spacing:.2em;font-size:12px;color:#ffe2c2}
+.brand span{color:var(--ac);text-shadow:0 0 12px #ff5a00;font-size:15px;margin-top:2px}
+.seats{flex:1;display:flex;justify-content:center;gap:10px;min-width:0}
+.pl{display:flex;align-items:center;gap:8px;padding:4px 12px 4px 4px;border-radius:99px;background:#ffffff0c;border:1px solid var(--line);transition:.3s;min-width:0}
+.pl i{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:13px;color:#fff;background:linear-gradient(135deg,var(--c,#5b6cff),#0008);border:2px solid #ffffff33;transition:.3s}
+.pl b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:110px}.pl small{display:block;color:var(--mut);font-size:10px;letter-spacing:.1em;margin-top:-2px}
+.pl.on{border-color:var(--gold);background:#ffd24a1c;box-shadow:0 0 18px #ffb30055}.pl.on i{border-color:var(--gold)}
+.av{flex:none;width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid #ffffff55;background:#0c0f24;display:block;transition:.3s}.pl.on .av{border-color:var(--gold)}
+#res{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:6;display:none;align-items:center;gap:14px;padding:10px 14px;background:#080a18f2;border:1px solid #ff9a3d88;border-radius:16px;box-shadow:0 10px 40px #000a;animation:pin .35s cubic-bezier(.3,.9,.3,1);max-width:96%}
+#res.on{display:flex}#res h3{margin:0;letter-spacing:.14em;color:#ffb36b;font-size:16px}#res small{display:block;color:var(--mut);font-size:11px}#res .amt{display:flex;gap:6px;align-items:center;font-size:20px;font-weight:900}#res button{height:38px;padding:0 16px;border-radius:10px;border:0;background:linear-gradient(#ff9a3d,#e0501a);color:#fff;font-weight:800;cursor:pointer;white-space:nowrap}
+.wal{display:flex;gap:8px}
+.wc{display:flex;gap:6px;align-items:center;background:#ffffff0c;border:1px solid var(--line);border-radius:99px;padding:5px 12px;font-weight:700}
+.cur-ico{width:18px;height:18px;object-fit:contain;flex:none}
+#stage{flex:1;position:relative;min-height:0;background:radial-gradient(ellipse at 50% 40%,#2a1410,#08060a)}
+#gl{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at center,transparent 58%,#000b)}
+#rot{display:none;position:absolute;top:8px;left:50%;transform:translateX(-50%);background:#000c;border:1px solid var(--line);border-radius:99px;padding:6px 14px;font-size:12px;color:var(--mut);white-space:nowrap;pointer-events:none}
+.mid{flex:1;display:flex;align-items:center;justify-content:center;gap:14px;min-width:0}
+#hint{color:var(--mut);font-size:12px;text-align:center}
+#act{display:flex;gap:8px}
+.ab{display:none;height:42px;min-width:84px;padding:0 20px;border-radius:12px;border:1px solid #ffffff33;color:#fff;font:800 15px system-ui;letter-spacing:.04em;cursor:pointer;box-shadow:0 4px 14px #0008}
+.ab.on{display:block;animation:pop .25s}.ab:active{transform:scale(.94)}
+#bW{background:linear-gradient(#ffd24a,#e08a00);color:#3a2300}#bP{background:linear-gradient(#5ee06a,#1d9a3c)}#bPl{background:linear-gradient(#4aa8ff,#1d5fd0)}#bX{background:linear-gradient(#59607e,#363b55)}
+@keyframes pop{from{transform:scale(.7);opacity:0}}
+.info{text-align:right;line-height:1.2;min-width:96px}.info small{color:var(--mut);font-size:10px;letter-spacing:.12em;text-transform:uppercase;display:block}
+.info .bet{display:flex;gap:6px;align-items:center;justify-content:flex-end;font-size:20px;font-weight:800;color:#fff}
+#st{font-size:11px;color:var(--mut)}
+#veil{position:fixed;inset:0;z-index:20;display:none;place-items:center;background:#02030acc;backdrop-filter:blur(4px);padding:14px;overflow:auto}
+#veil.on{display:grid}
+.mdl{width:100%;max-width:400px;background:#0a0d1cf8;border:1px solid #ff9a3d88;border-radius:18px;padding:22px 20px;box-shadow:0 0 40px #ff6a0030,0 20px 60px #000a;animation:pin .3s cubic-bezier(.3,.9,.3,1);max-height:100%;overflow:auto}
+@keyframes pin{from{transform:translateY(20px) scale(.94);opacity:0}}
+.mdl h2{margin:0 0 4px;text-align:center;letter-spacing:.14em;color:#ffb36b;text-shadow:0 0 14px #ff5a00;font-size:20px}
+.mdl p{color:var(--mut);font-size:12px;line-height:1.55;margin:8px 0}
+.row{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.row button{flex:1 0 60px}
+.mdl button{height:40px;border-radius:10px;background:#141934;border:1px solid #6e7dd733;color:#dfe3ff;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-size:14px}
+.mdl button.on{background:#ff9a3d33;border-color:var(--ac);color:#fff}
+.mdl button.go{width:100%;height:46px;margin-top:10px;background:linear-gradient(#ff9a3d,#e0501a);color:#fff;border:0;font-size:15px}
+.mdl input{width:100%;height:42px;border-radius:10px;background:#0b0e20;border:1px solid #6e7dd744;color:#fff;padding:0 12px;font-weight:700;font-size:16px}
+.big{font-size:30px;font-weight:900;text-align:center;margin:10px 0;display:flex;gap:8px;justify-content:center;align-items:center}
+.up{color:#58e08a}.dn{color:#ff6b6b}.ctr{text-align:center}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:50;padding:10px 18px;border-radius:12px;background:#05071ef7;border:1px solid #ff9a3d99;font-size:13px;animation:tin 3s forwards;pointer-events:none;text-align:center;max-width:90vw}
+@keyframes tin{0%{opacity:0;transform:translate(-50%,10px)}8%,85%{opacity:1;transform:translate(-50%,0)}100%{opacity:0}}
+@media(max-width:900px){.brand{display:none}.pl small{display:none}.pl b{max-width:70px}}
+@media(max-width:600px){#hint{display:none}.pl{padding-right:8px}.pl b{display:none}.wc{padding:4px 9px;font-size:13px}.ab{min-width:64px;padding:0 12px}}
+@media(max-height:520px){.tb,.bt{padding-top:4px;padding-bottom:4px;min-height:0}.tb{padding-top:calc(4px + env(safe-area-inset-top))}.bt{padding-bottom:calc(4px + env(safe-area-inset-bottom))}.pl i{width:28px;height:28px}.ab{height:36px}.info .bet{font-size:16px}}
+@media(orientation:portrait) and (max-width:700px){#rot{display:block}}
+</style></head><body>
+<header class="tb">
+ <div class="brand">MAHJONG<span>INFERNO</span></div>
+ <div class="seats">
+  <div class="pl" id="p3"><i style="--c:#ff4d6d">B</i><div><b>Bot</b></div></div>
+  <div class="pl" id="p2"><i style="--c:#8f6bff">B</i><div><b>Bot</b></div></div>
+  <div class="pl" id="p1"><i style="--c:#2fb6c9">B</i><div><b>Bot</b></div></div>
+ </div>
+ <div class="wal"><div class="wc"><span id="wm"></span><b class="mora-count">0</b></div><div class="wc"><span id="wc"></span><b class="credit-count">0</b></div></div>
+</header>
+<main id="stage"><canvas id="gl"></canvas><div id="vig"></div><div id="res"></div><div id="rot">Putar HP ke mode mendatar untuk tampilan terbaik</div></main>
+<footer class="bt">
+ <div class="pl" id="p0"><img class="av" id="av0" alt=""><div><b id="n0">Kamu</b><small>KAMU</small></div></div>
+ <div class="mid"><span id="hint"></span><div id="act"><button class="ab" id="bW">WIN</button><button class="ab" id="bP">PUNG</button><button class="ab" id="bPl">PLAY</button><button class="ab" id="bX">PASS</button></div></div>
+ <div class="info"><small>Taruhan</small><div class="bet" id="bbv">–</div><div id="st"></div></div>
+</footer>
+<div id="veil"><div class="mdl" id="mdl"></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ===== AKUN, MORA & CREDIT — sistem sama dengan Forex.html ===== */
+const API_URL="https://script.google.com/macros/s/AKfycbwHtatQVaip_YspROYu7Rmtm1xWG_f69yBHoahG7DoPElB08sMmKgSCXgdgF7X9_14/exec";
+const SECRET="popit_secret_2026";
+let currentUser=null;
+const avatar=(n,p)=>p||"https://api.dicebear.com/9.x/initials/svg?seed="+encodeURIComponent(n||"?");
+const $=id=>document.getElementById(id),fmtN=n=>Math.round(n).toLocaleString("id-ID"),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function toast(m){const e=document.createElement("div");e.className="toast";e.textContent=m;document.body.appendChild(e);setTimeout(()=>e.remove(),3000)}
+async function apiCall(action,data={}){const ac=new AbortController(),tm=setTimeout(()=>ac.abort(),15000);
+ try{const r=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action,secret:SECRET,...data}),signal:ac.signal});return await r.json()}
+ catch(e){return{success:false,message:"Gagal terhubung ke server"}}finally{clearTimeout(tm)}}
+async function loadSession(){const s=localStorage.getItem("popit_session");if(!s)return false;
+ try{const{username}=JSON.parse(s);const r=await apiCall("getUser",{username});if(r.success){currentUser=r.user;return true}}catch(e){}return false}
+function updateCurrencyDisplay(){if(!currentUser)return;
+ document.querySelectorAll(".mora-count").forEach(e=>e.textContent=fmtN(currentUser.mora||0));
+ document.querySelectorAll(".credit-count").forEach(e=>e.textContent=fmtN(currentUser.credit||0))}
+const SVG_MORA="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="#e7b64a" stroke="#fff3c4" stroke-width="3"/><circle cx="32" cy="32" r="20" fill="none" stroke="#a8781c" stroke-width="3"/><path d="M22 41V24l10 10 10-10v17" fill="none" stroke="#7a520e" stroke-width="4" stroke-linejoin="round"/></svg>');
+const SVG_CREDIT="data:image/svg+xml;utf8,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="#1c8f9c" stroke="#b8fff8" stroke-width="3"/><path d="M32 12l14 20-14 20-14-20z" fill="#5afff0" stroke="#e6fffd" stroke-width="2.5" stroke-linejoin="round"/></svg>');
+const CREDIT_LOGO="https://static.wikia.nocookie.net/houkai-star-rail/images/d/d9/Item_Credit.png/revision/latest?cb=20230722075044";
+const MORA_LOGO="https://media.printables.com/media/prints/274692/images/2440991_fbc314d8-5e72-465c-b7f6-13397d418cc8/thumbs/inside/1280x960/png/icon_mora_274692.webp";
+const ci=t=>`<img class="cur-ico" src="${t==="mora"?MORA_LOGO:CREDIT_LOGO}" alt="${t}" referrerpolicy="no-referrer" onerror="this.onerror=null;this.src='${t==="mora"?SVG_MORA:SVG_CREDIT}'">`;
+const CUR_NAME={mora:"Mora",credit:"Credit"};
+const WAL={base:{mora:0,credit:0},busy:false,timer:0,fails:0},PW_KEY="forex.pendingWallet";
+const walDiff=()=>({mora:Math.round((currentUser.mora||0)-WAL.base.mora),credit:Math.round((currentUser.credit||0)-WAL.base.credit)});
+function walPersist(extra){if(!currentUser)return;const d=walDiff();
+ if(!d.mora&&!d.credit&&!(extra&&extra.tgt)){try{localStorage.removeItem(PW_KEY)}catch(e){}return}
+ LS.set(PW_KEY,{u:currentUser.username,d,...(extra||{})})}
+function walletInit(){WAL.base={mora:currentUser.mora||0,credit:currentUser.credit||0};
+ const pw=LS.get(PW_KEY,null);
+ if(pw&&pw.u===currentUser.username&&pw.d){const landed=pw.tgt&&pw.d0&&currentUser.mora===pw.tgt.mora&&currentUser.credit===pw.tgt.credit;
+  const rem=landed?{mora:pw.d.mora-pw.d0.mora,credit:pw.d.credit-pw.d0.credit}:pw.d;
+  currentUser.mora=Math.max(0,Math.round((currentUser.mora||0)+(rem.mora||0)));currentUser.credit=Math.max(0,Math.round((currentUser.credit||0)+(rem.credit||0)))}
+ walPersist();const d=walDiff();if(d.mora||d.credit)scheduleFlush(400)}
+function walletTry(delta){if(!currentUser)return{ok:false,msg:"Belum login"};
+ for(const k in delta){if((currentUser[k]||0)+delta[k]<0)return{ok:false,msg:"Saldo "+CUR_NAME[k]+" tidak cukup"}}
+ for(const k in delta)currentUser[k]=Math.round((currentUser[k]||0)+delta[k]);
+ updateCurrencyDisplay();walPersist();scheduleFlush(350);return{ok:true}}
+function scheduleFlush(ms){clearTimeout(WAL.timer);WAL.timer=setTimeout(flushWallet,ms)}
+async function flushWallet(){if(WAL.busy||!currentUser||!1)return;
+ const d0=walDiff();if(!d0.mora&&!d0.credit)return;WAL.busy=true;
+ try{const g=await apiCall("getUser",{username:currentUser.username});if(!g||!g.success||!g.user)throw 0;
+  const tgt={mora:Math.max(0,Math.round((g.user.mora||0)+d0.mora)),credit:Math.max(0,Math.round((g.user.credit||0)+d0.credit))};
+  walPersist({d0,tgt});const r=await apiCall("updateUser",{username:currentUser.username,updates:tgt});if(!r||!r.success)throw 0;
+  const ex={mora:(currentUser.mora||0)-WAL.base.mora-d0.mora,credit:(currentUser.credit||0)-WAL.base.credit-d0.credit};
+  WAL.base={mora:tgt.mora,credit:tgt.credit};currentUser=Object.assign({},r.user||currentUser,{mora:tgt.mora+ex.mora,credit:tgt.credit+ex.credit});
+  WAL.fails=0;walPersist();updateCurrencyDisplay()}
+ catch(e){WAL.fails++;scheduleFlush(Math.min(30000,1500*Math.pow(2,Math.min(WAL.fails,5))));if(WAL.fails===3)toast("Server lambat — saldo disinkronkan otomatis nanti")}
+ WAL.busy=false;const d=walDiff();if((d.mora||d.credit)&&WAL.fails===0)scheduleFlush(200)}
+
+
+/* Login — sama seperti Forex.html: tanpa sesi → login.html; saldo tersimpan ke spreadsheet via API */
+async function requireLogin(){
+ if(!localStorage.getItem("popit_session")){location.href="login.html";return false}
+ let ok=await loadSession();if(!ok)ok=await loadSession();
+ if(!ok){modal('<h2>GAGAL MEMUAT AKUN</h2><p class="ctr">Tidak bisa terhubung ke server. Saldo tidak akan dimainkan sebelum akun termuat.</p><button class="go" id="rt">Coba Lagi</button><button class="go" id="lg" style="background:#141934;border:1px solid #6e7dd755">Ke Halaman Login</button>');
+  $("rt").onclick=()=>location.reload();$("lg").onclick=()=>location.href="login.html";return false}
+ walletInit();updateCurrencyDisplay();return true}
+
+/* ===== 3D SCENE ===== */
+const stage=$("stage"),R=new THREE.WebGLRenderer({canvas:$("gl"),antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));R.shadowMap.enabled=true;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=.9;
+const sc=new THREE.Scene();sc.background=new THREE.Color(0x0b080c);
+const cam=new THREE.PerspectiveCamera(48,1,.1,120);
+function fit(){const w=stage.clientWidth,h=stage.clientHeight;if(!w||!h)return;R.setSize(w,h,false);const a=w/h,V=Math.max(11.4,16/a),D=V/.89;
+ cam.aspect=a;cam.position.set(0,D*.73,1.4+D*.68);cam.lookAt(0,0,1.4);cam.updateProjectionMatrix()}
+new ResizeObserver(fit).observe(stage);addEventListener("resize",fit);fit();
+sc.add(new THREE.HemisphereLight(0xfff4e6,0x443026,.5));
+const dl=new THREE.DirectionalLight(0xfff0dd,.55);dl.position.set(4,13,6);dl.castShadow=true;dl.shadow.mapSize.set(1024,1024);
+Object.assign(dl.shadow.camera,{left:-11,right:11,top:11,bottom:-11});sc.add(dl);
+const glow=new THREE.PointLight(0xff7a2a,.3,18);glow.position.set(0,4,0);sc.add(glow);
+function cv(w,h){const c=document.createElement("canvas");c.width=w;c.height=h;return[c,c.getContext("2d")]}
+function feltTex(){const[c,g]=cv(512,512);g.fillStyle="#0c6a56";g.fillRect(0,0,512,512);
+ const rg=g.createRadialGradient(256,256,20,256,256,300);rg.addColorStop(0,"#ffffff18");rg.addColorStop(1,"#00000040");g.fillStyle=rg;g.fillRect(0,0,512,512);
+ for(let i=0;i<9000;i++){g.fillStyle=Math.random()<.5?"#ffffff09":"#00000012";g.fillRect(Math.random()*512,Math.random()*512,2,2)}
+ g.strokeStyle="#e7b64acc";g.lineWidth=3;g.strokeRect(34,34,444,444);g.strokeStyle="#e7b64a55";g.lineWidth=1.5;g.strokeRect(44,44,424,424);
+ g.strokeStyle="#00000038";g.lineWidth=2;g.beginPath();g.arc(256,256,92,0,7);g.stroke();
+ const t=new THREE.CanvasTexture(c);t.anisotropy=4;return t}
+function hubTex(){const[c,g]=cv(256,256);const rg=g.createRadialGradient(128,128,10,128,128,128);rg.addColorStop(0,"#3a1608");rg.addColorStop(1,"#0c0a10");g.fillStyle=rg;g.fillRect(0,0,256,256);
+ g.strokeStyle="#ff9a3d";g.lineWidth=5;g.beginPath();g.arc(128,128,96,0,7);g.stroke();g.textAlign="center";g.textBaseline="middle";g.fillStyle="#ff9a3d";g.shadowColor="#ff4500";g.shadowBlur=22;g.font="bold 104px serif";g.fillText("炎",128,128);return new THREE.CanvasTexture(c)}
+const std=(c,o={})=>new THREE.MeshStandardMaterial({color:c,roughness:.7,...o});
+const box=(w,h,d,m,x,y,z)=>{const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.receiveShadow=true;sc.add(o);return o};
+const felt=std(0xffffff,{map:feltTex(),roughness:.95}),dark=std(0x17120f);
+box(70,.2,70,std(0x1a1218),0,-.7,0);box(19,.5,19,[dark,dark,felt,dark,dark,dark],0,-.25,0);
+[[19.8,.6,.9,0,-9.6+0],[19.8,.6,.9,0,9.6],[.9,.6,19.8,-9.6,0],[.9,.6,19.8,9.6,0]].forEach(a=>{box(a[0],a[1],a[2],std(0x241a14,{roughness:.5}),a[3]||0,-.2,a[4]||0)});
+[[19,.05,.12,0,-9.2],[19,.05,.12,0,9.2],[.12,.05,19,-9.2,0],[.12,.05,19,9.2,0]].forEach(a=>box(a[0],a[1],a[2],std(0xe7b64a,{metalness:.7,roughness:.35}),a[3]||0,.04,a[4]||0));
+const YAW=[0,Math.PI/2,Math.PI,-Math.PI/2];
+const sp=(s,x,y,z)=>{const a=YAW[s],c=Math.cos(a),n=Math.sin(a);return new THREE.Vector3(x*c+z*n,y,-x*n+z*c)};
+const hub=new THREE.Mesh(new THREE.CylinderGeometry(1.25,1.25,.25,8),[std(0x1b1b22),new THREE.MeshStandardMaterial({map:hubTex(),roughness:.5}),std(0x1b1b22)]);hub.position.y=.12;hub.rotation.y=Math.PI/8;hub.receiveShadow=true;sc.add(hub);
+const bars=[0,1,2,3].map(s=>{const m=new THREE.Mesh(new THREE.BoxGeometry(.9,.05,.16),new THREE.MeshStandardMaterial({color:0x333333,emissive:0}));m.position.copy(sp(s,0,.27,.98));m.rotation.y=YAW[s];sc.add(m);return m});
+
+/* tekstur tile (resolusi 2×, pin/bambu/karakter lebih detail) */
+const LAY=[[1],[1,1],[1,1,1],[2,2],[2,1,2],[2,2,2],[1,2,2,2],[2,2,2,2],[3,3,3]],PC=["#1d4fa8","#c1121f","#12803a"];
+function rr(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+function pin(g,x,y,r,col){g.fillStyle="#0002";g.beginPath();g.arc(x+.8,y+1,r,0,7);g.fill();
+ g.fillStyle=col;g.beginPath();g.arc(x,y,r,0,7);g.fill();g.fillStyle="#e6dcc0";g.beginPath();g.arc(x,y,r*.74,0,7);g.fill();
+ g.fillStyle=col;g.beginPath();g.arc(x,y,r*.56,0,7);g.fill();g.fillStyle="#e6dcc0";g.beginPath();g.arc(x,y,r*.24,0,7);g.fill()}
+function stick(g,x,y,w,h,col){const gr=g.createLinearGradient(x-w/2,0,x+w/2,0);gr.addColorStop(0,col);gr.addColorStop(.45,"#ffffff66");gr.addColorStop(.55,col);gr.addColorStop(1,"#00000055");
+ g.fillStyle=col;rr(g,x-w/2,y-h/2,w,h,w/2.4);g.fill();g.fillStyle=gr;g.globalAlpha=.55;g.fill();g.globalAlpha=1;
+ g.fillStyle="#e6dcc0";g.fillRect(x-w/2,y-1,w,2);g.fillRect(x-w/2,y-h/2+h*.2,w,1.5);g.fillRect(x-w/2,y+h/2-h*.2,w,1.5)}
+function faceTex(id){const[c,g]=cv(256,340);g.scale(2,2);
+ const bg=g.createLinearGradient(0,0,0,170);bg.addColorStop(0,"#e6dcc0");bg.addColorStop(1,"#d3c8a8");g.fillStyle=bg;g.fillRect(0,0,128,170);
+ g.strokeStyle="#d8cdb0";g.lineWidth=2;rr(g,4,4,120,162,10);g.stroke();g.textAlign="center";g.textBaseline="middle";
+ const n=id%9+1;
+ if(id<9){g.fillStyle="#14161c";g.font="bold 66px 'Noto Serif CJK SC','Songti SC','SimSun',serif";g.fillText("一二三四五六七八九"[n-1],64,54);g.fillStyle="#c1121f";g.font="bold 62px 'Noto Serif CJK SC','Songti SC','SimSun',serif";g.fillText("萬",64,120)}
+ else if(id<27){const bam=id>=18,rows=LAY[n-1],H=rows.length,rh=130/H;
+  rows.forEach((cnt,r)=>{for(let k=0;k<cnt;k++){const x=64+(k-(cnt-1)/2)*(cnt==3?34:38),y=20+(r+.5)*rh;
+   if(bam){const col=(n==1||(n==5&&cnt==1)||(n==7&&r==0))?"#c1121f":"#12803a";stick(g,x,y,n==1?20:12,Math.min(rh*.82,n==1?112:38),col)}
+   else pin(g,x,y,n==1?38:H>=4?11.5:H==3?15.5:21,n==1?PC[1]:PC[(r+k)%3])}})}
+ else{const k=id-27;if(k==6){g.strokeStyle="#2457c5";g.lineWidth=7;rr(g,30,34,68,102,6);g.stroke();g.lineWidth=2.5;rr(g,38,42,52,86,4);g.stroke()}
+  else{g.fillStyle=k==4?"#c1121f":k==5?"#12803a":"#14161c";g.font="bold 98px 'Noto Serif CJK SC','Songti SC','SimSun',serif";g.fillText("東南西北中發"[k],64,90)}}
+ const t=new THREE.CanvasTexture(c);t.anisotropy=8;return t}
+function backTex(){const[c,g]=cv(128,170);const gr=g.createLinearGradient(0,0,128,170);gr.addColorStop(0,"#ffb030");gr.addColorStop(1,"#c9560a");g.fillStyle=gr;g.fillRect(0,0,128,170);
+ g.strokeStyle="#ffe0a066";g.lineWidth=1;for(let i=-170;i<260;i+=18){g.beginPath();g.moveTo(i,0);g.lineTo(i+170,170);g.moveTo(i+170,0);g.lineTo(i,170);g.stroke()}
+ g.strokeStyle="#fff1c8";g.lineWidth=3;rr(g,8,8,112,154,10);g.stroke();g.fillStyle="#7a2a00cc";g.textAlign="center";g.textBaseline="middle";g.font="bold 54px serif";g.fillText("炎",64,86);
+ const t=new THREE.CanvasTexture(c);t.anisotropy=4;return t}
+const BODY=new THREE.MeshPhysicalMaterial({color:0xd9cfb4,roughness:.6,clearcoat:.15,clearcoatRoughness:.5}),BACKM=new THREE.MeshStandardMaterial({map:backTex(),roughness:.7});
+const FACES=[...Array(34)].map((_,i)=>new THREE.MeshStandardMaterial({map:faceTex(i),roughness:.75}));
+const TG=(()=>{const w=.43,h=.63,r=.06,s=new THREE.Shape();s.moveTo(-w/2+r,-h/2);s.lineTo(w/2-r,-h/2);s.quadraticCurveTo(w/2,-h/2,w/2,-h/2+r);s.lineTo(w/2,h/2-r);s.quadraticCurveTo(w/2,h/2,w/2-r,h/2);s.lineTo(-w/2+r,h/2);s.quadraticCurveTo(-w/2,h/2,-w/2,h/2-r);s.lineTo(-w/2,-h/2+r);s.quadraticCurveTo(-w/2,-h/2,-w/2+r,-h/2);
+ const g=new THREE.ExtrudeGeometry(s,{depth:.26,bevelEnabled:true,bevelThickness:.04,bevelSize:.035,bevelSegments:3,curveSegments:5});g.translate(0,0,-.13);return g})();
+const DG=new THREE.PlaneGeometry(.42,.558);
+function mk(id){const m=new THREE.Mesh(TG,BODY);m.castShadow=m.receiveShadow=true;m.rotation.order="YXZ";m.userData.id=id;
+ const f=new THREE.Mesh(DG,FACES[id]);f.position.z=.172;const b=new THREE.Mesh(DG,BACKM);b.position.z=-.172;b.rotation.y=Math.PI;m.add(f,b);sc.add(m);return m}
+
+/* animasi halus */
+const TW=new Map();
+function mv(m,{p,r,d=.5,lift=0,delay=0}){return new Promise(res=>{const o=TW.get(m);if(o)o.res();const e=m.rotation,c=[e.x,e.y,e.z],rr=r||c,P2=Math.PI*2;
+ TW.set(m,{t0:performance.now()+delay*1000,d:d*1000,f:m.position.clone(),to:p||m.position.clone(),rf:c,rt:c.map((v,i)=>v+(((rr[i]-v+Math.PI*3)%P2)-Math.PI)),lift,res})})}
+let ac;function snd(f=200,v=.15){try{ac=ac||new AudioContext();const o=ac.createOscillator(),g=ac.createGain();o.type="triangle";o.frequency.value=f;g.gain.setValueAtTime(v,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.12);o.connect(g).connect(ac.destination);o.start();o.stop(ac.currentTime+.13)}catch(e){}}
+(function loop(){requestAnimationFrame(loop);const now=performance.now();
+ for(const[m,t]of TW){const u=(now-t.t0)/t.d;if(u<0)continue;const k=Math.min(1,u),e=k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+  m.position.lerpVectors(t.f,t.to,e);m.position.y+=Math.sin(Math.PI*k)*t.lift;m.rotation.set(t.rf[0]+(t.rt[0]-t.rf[0])*e,t.rf[1]+(t.rt[1]-t.rf[1])*e,t.rf[2]+(t.rt[2]-t.rf[2])*e);
+  if(k>=1){TW.delete(m);t.res()}}
+ glow.intensity=.3+Math.sin(now/500)*.05;R.render(sc,cam)})();
+
+/* ===== LOGIKA MAHJONG ===== */
+const MAXB=1000,END=118,NAMES=["Kamu","Bot","Bot","Bot"];
+let G={all:[],H:[]};
+const cnts=(s,x)=>{const c=Array(34).fill(0);G.H[s].t.forEach(m=>c[m.userData.id]++);G.H[s].m.forEach(g=>g.forEach(m=>c[m.userData.id]++));if(x!=null)c[x]++;return c};
+const conc=s=>{const c=Array(34).fill(0);G.H[s].t.forEach(m=>c[m.userData.id]++);return c};
+function sets(c,i){while(i<34&&!c[i])i++;if(i>=34)return true;
+ if(c[i]>=3){c[i]-=3;const r=sets(c,i);c[i]+=3;if(r)return true}
+ if(i<27&&i%9<7&&c[i+1]&&c[i+2]){c[i]--;c[i+1]--;c[i+2]--;const r=sets(c,i);c[i]++;c[i+1]++;c[i+2]++;if(r)return true}return false}
+function isWin(c){if(c.filter(n=>n==2).length==7&&c.every(n=>n==0||n==2))return true;
+ for(let i=0;i<34;i++)if(c[i]>=2){c[i]-=2;const r=sets(c,0);c[i]+=2;if(r)return true}return false}
+function yaku(c){const su=[0,0,0];let ho=0;c.forEach((n,i)=>{if(i<27)su[i/9|0]+=n;else ho+=n});const ns=su.filter(x=>x).length;let b=1,nm="Menang";
+ if(ns==1&&!ho){b=3;nm="Satu Warna"}else if(ns==1){b=2;nm="Setengah Warna"}else if(!ns){b=3;nm="Semua Honor"}
+ if(b<2&&c.filter(n=>n==2).length==7){b=2;nm="Tujuh Pasang"}return[b,nm]}
+/* shanten (jarak ke menang) untuk AI bot: m = jumlah meld */
+function shan(c,m){let b=8;const f=(i,s,t,p)=>{while(i<34&&!c[i])i++;
+ if(i>=34){b=Math.min(b,8-2*(s+m)-Math.min(t,4-m-s)-p);return}
+ if(s+m<4){if(c[i]>=3){c[i]-=3;f(i,s+1,t,p);c[i]+=3}if(i<27&&i%9<7&&c[i+1]&&c[i+2]){c[i]--;c[i+1]--;c[i+2]--;f(i,s+1,t,p);c[i]++;c[i+1]++;c[i+2]++}}
+ if(!p&&c[i]>=2){c[i]-=2;f(i,s,t,1);c[i]+=2}
+ if(s+t+m<4){if(c[i]>=2){c[i]-=2;f(i,s,t+1,p);c[i]+=2}if(i<27&&i%9<8&&c[i+1]){c[i]--;c[i+1]--;f(i,s,t+1,p);c[i]++;c[i+1]++}if(i<27&&i%9<7&&c[i+2]){c[i]--;c[i+2]--;f(i,s,t+1,p);c[i]++;c[i+2]++}}
+ c[i]--;f(i,s,t,p);c[i]++};f(0,0,0,0);return b}
+const suitOf=id=>id<27?id/9|0:3;
+function seen(){const c=Array(34).fill(0);G.R.forEach(r=>r.forEach(m=>c[m.userData.id]++));G.H.forEach(h=>h.m.forEach(g=>g.forEach(m=>c[m.userData.id]++)));return c}
+/* bot: minimalkan shanten, maksimalkan peluang tile berguna, hindari suit yang sedang dikumpulkan pemain */
+function botPick(s){const c=conc(s),mm=G.H[s].m.length,sn=seen();G.H[s].t.forEach(m=>sn[m.userData.id]++);
+ const ps=new Set(G.H[0].m.map(g=>suitOf(g[0].userData.id)));let cand=[];
+ for(let id=0;id<34;id++){if(!c[id])continue;c[id]--;cand.push({id,sh:shan(c,mm)});c[id]++}
+ const mn=Math.min(...cand.map(x=>x.sh));
+ cand=cand.filter(x=>x.sh==mn).map(x=>{c[x.id]--;let u=0;for(let k=0;k<34;k++){if(sn[k]>=4)continue;c[k]++;if(shan(c,mm)<mn)u+=4-sn[k];c[k]--}c[x.id]++;
+  let v=u*10+Math.random()*5;if(x.id>=27)v+=4;else if(x.id%9%8==0)v+=2;if(ps.has(suitOf(x.id))&&suitOf(x.id)<3)v-=6;x.v=v;return x});
+ cand.sort((a,b)=>b.v-a.v);const pick=cand[Math.random()<.07&&cand.length>1?1:0].id;return G.H[s].t.find(m=>m.userData.id==pick)}
+function botPung(s,id){const c=conc(s),m=G.H[s].m.length;if(c[id]<2||m>=2)return false;const s0=shan(c,m);c[id]-=2;const s1=shan(c,m+1);return s1<s0||(id>=27&&s1<=s0&&Math.random()<.6)}
+
+function reset(){TW.clear();G.all.forEach(m=>sc.remove(m));
+ const deck=[];for(let i=0;i<34;i++)for(let k=0;k<4;k++)deck.push(i);
+ for(let i=135;i>0;i--){const j=Math.random()*(i+1)|0;[deck[i],deck[j]]=[deck[j],deck[i]]}
+ G={all:[],wall:[],ptr:0,R:[[],[],[],[]],H:[0,1,2,3].map(()=>({t:[],m:[]})),bet:0,cur:"mora",over:true};
+ deck.forEach((id,p)=>{const m=mk(id),s=p/34|0,k=p%34,pos=sp(s,((k>>1)-8)*.5,.17+(1-(k&1))*.35,4.7);G.all.push(m);G.wall.push(m);
+  m.position.copy(pos).y+=8;m.rotation.set(Math.PI/2,YAW[s],0);mv(m,{p:pos,d:.8,delay:p*.007})})}
+function layout(s,keep,d0=0,st=0,lift=.25,dur=.45){const h=G.H[s],last=keep?h.t.pop():null;h.t.sort((a,b)=>a.userData.id-b.userData.id);if(last)h.t.push(last);
+ return Promise.all(h.t.map((m,i)=>{const p=sp(s,-3.4+i*.52+(last&&i==h.t.length-1?.3:0),.37,5.45);m.userData.home=p;return mv(m,{p,r:[-.35,YAW[s],0],d:dur,lift,delay:d0+i*st})}))}
+const left=()=>$("st").textContent="Sisa tile: "+Math.max(0,END-G.ptr);
+async function draw(s){const m=G.wall[G.ptr++];G.H[s].t.push(m);left();snd(380,.08);await layout(s,true,0,0,1,.5)}
+async function disc(s,m){const h=G.H[s];h.t.splice(h.t.indexOf(m),1);const k=G.R[s].length;G.R[s].push(m);G.last={s,m};
+ const p=sp(s,((k%6)-2.5)*.54+(Math.random()-.5)*.03,.17,2+Math.min(k/6|0,2)*.76);layout(s,false,.1,0,.2,.4);
+ await mv(m,{p,r:[-Math.PI/2,YAW[s]+(Math.random()-.5)*.08,0],d:.6,lift:1.4});snd(200+Math.random()*60,.2)}
+async function pung(s){const{s:f,m}=G.last,h=G.H[s],id=m.userData.id;G.R[f].pop();
+ const two=h.t.filter(x=>x.userData.id==id).slice(0,2);h.t=h.t.filter(x=>!two.includes(x));const g=[two[0],m,two[1]];h.m.push(g);const j=h.m.length-1;
+ g.forEach((x,i)=>mv(x,{p:sp(s,4.7+j*1.75+i*.52,.17,5.9),r:[-Math.PI/2,YAW[s],0],d:.6,lift:1.2,delay:i*.08}));await layout(s,false,.3,0,.2);snd(320,.2)}
+
+/* UI aksi */
+const B={W:$("bW"),P:$("bP"),Pl:$("bPl"),X:$("bX")};
+const show=o=>{B.W.classList.toggle("on",!!o.win);B.P.classList.toggle("on",!!o.pung);B.Pl.classList.toggle("on",!!o.play);B.X.classList.toggle("on",!!o.pass)};
+const hint=t=>$("hint").textContent=t;
+function human(){return new Promise(res=>{G.pick=res;G.sel=null;hint("Giliranmu · pilih tile, lalu Play");show({win:isWin(cnts(0)),play:1})})}
+function choose(m){const r=G.pick;G.pick=null;show({});r({m})}
+function ask(o){hint("Ada aksi untukmu");return new Promise(res=>{const tm=setTimeout(()=>G.ask&&G.ask("pass"),9000);G.ask=v=>{clearTimeout(tm);G.ask=null;show({});res(v)};show(o)})}
+B.W.onclick=()=>{if(G.pick){const r=G.pick;G.pick=null;show({});r({win:1})}else G.ask&&G.ask("win")};
+B.P.onclick=()=>G.ask&&G.ask("pung");B.X.onclick=()=>G.ask&&G.ask("pass");B.Pl.onclick=()=>{if(G.pick&&G.sel)choose(G.sel);else toast("Pilih tile dulu")};
+const ray=new THREE.Raycaster();
+$("gl").addEventListener("pointerdown",e=>{if(!G.pick)return;const r=$("gl").getBoundingClientRect();
+ ray.setFromCamera(new THREE.Vector2((e.clientX-r.left)/r.width*2-1,-((e.clientY-r.top)/r.height)*2+1),cam);
+ const hit=ray.intersectObjects(G.H[0].t)[0];if(!hit)return;const m=hit.object;if(G.sel===m)return choose(m);
+ if(G.sel)mv(G.sel,{p:G.sel.userData.home,d:.2});G.sel=m;mv(m,{p:m.userData.home.clone().add(new THREE.Vector3(0,.3,.15)),d:.2});snd(520,.05)});
+function turn(t){[0,1,2,3].forEach(s=>{$("p"+s).classList.toggle("on",s==t);bars[s].material.emissive.setHex(s==t?0xffb000:0)});if(t>0)hint("Bot sedang berpikir…")}
+
+/* alur permainan */
+async function run(g){let t=0,skip=0;
+ L:while(G===g){
+  if(G.ptr>=END)return end(null,"draw");
+  turn(t);if(!skip)await draw(t);skip=0;let m;
+  if(t==0){const r=await human();if(r.win)return end(0,"tsumo");m=r.m}
+  else{await sleep(600);if(isWin(cnts(t)))return end(t,"tsumo");m=botPick(t)}
+  await disc(t,m);const id=m.userData.id;
+  for(const k of[1,2,3]){const s=(t+k)%4;if(s&&isWin(cnts(s,id)))return end(s,"ron")}
+  if(t!=0){const w=isWin(cnts(0,id)),p=G.H[0].m.length<2&&cnts(0)[id]>=2;
+   if(w||p){const a=await ask({win:w,pung:p,pass:1});if(a=="win")return end(0,"ron");if(a=="pung"){await pung(0);t=0;skip=1;continue L}}}
+  for(const k of[1,2,3]){const s=(t+k)%4;if(s&&botPung(s,id)){await sleep(250);await pung(s);t=s;skip=1;continue L}}
+  t=(t+1)%4}}
+function modal(h){$("mdl").innerHTML=h;$("veil").classList.add("on")}
+async function end(w,ty){const g=G;g.over=true;g.pick=g.ask=null;show({});turn(-1);
+ [1,2,3].forEach(s=>g.H[s].t.forEach((m,i)=>mv(m,{p:sp(s,-3.4+i*.52,.17,5.9),r:[-Math.PI/2,YAW[s],0],d:.7,delay:i*.03})));
+ const cur=g.cur,I=ci(cur);let t,sub,amt;
+ if(w===0){const[b,nm]=yaku(cnts(0,ty=="ron"?g.last.m.userData.id:null)),mult=(ty=="tsumo"?3:2)*b,gain=g.bet*mult;walletTry({[cur]:g.bet+gain});
+  t="MENANG!";sub=`${ty=="tsumo"?"Tsumo":"Ron"} · ${nm} · ×${mult}`;amt=`<span class="up">+${fmtN(gain)}</span>${I}`}
+ else if(w==null){walletTry({[cur]:g.bet});t="SERI";sub="Tile habis · taruhan dikembalikan";amt=`${fmtN(g.bet)}${I}`}
+ else{t="KALAH";sub=`Bot menang (${ty=="tsumo"?"Tsumo":"Ron"}) · tile lawan terbuka di meja`;amt=`<span class="dn">−${fmtN(g.bet)}</span>${I}`}
+ hint("Lihat tile lawan di meja");await sleep(900);
+ $("res").innerHTML=`<div><h3>${t}</h3><small>${sub}</small></div><div class="amt">${amt}</div><button id="again">Main Lagi</button>`;$("res").classList.add("on");$("again").onclick=()=>{$("res").classList.remove("on");lobby()}}
+const LB={cur:"mora",bet:100};
+function lobby(){const chips=[100,250,500,1000].map(v=>`<button data-b="${v}" class="${LB.bet==v?"on":""}">${fmtN(v)}</button>`).join("");
+ modal(`<h2>MAHJONG INFERNO</h2><p class="ctr">Kamu vs 3 bot · susun 4 set + 1 pasang</p>
+ <div class="row"><button data-c="mora" class="${LB.cur=="mora"?"on":""}">${ci("mora")}Mora</button><button data-c="credit" class="${LB.cur=="credit"?"on":""}">${ci("credit")}Credit</button></div>
+ <div class="row">${chips}</div><input id="bet" type="number" inputmode="numeric" min="1" max="${MAXB}" value="${LB.bet}" aria-label="Taruhan">
+ <p>Taruhan maksimal ${fmtN(MAXB)}. Menang: Ron ×2 · Tsumo ×3. Bonus: Setengah Warna ×2, Satu Warna/Semua Honor ×3, Tujuh Pasang ×2. Kalah = taruhan hangus, seri = taruhan kembali. Klik tile untuk memilih, klik lagi (atau Play) untuk membuang. Bot bisa Pung dan bermain cukup cerdas.</p>
+ <button class="go" id="go">Mulai Main</button>`);
+ $("mdl").oninput=e=>{if(e.target.id=="bet"){let v=Math.floor(+e.target.value||0);if(v>MAXB){v=MAXB;e.target.value=v;toast("Maksimal taruhan "+fmtN(MAXB))}LB.bet=v}};
+ $("mdl").onclick=e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.c){LB.cur=b.dataset.c;lobby()}else if(b.dataset.b){LB.bet=+b.dataset.b;lobby()}else if(b.id=="go")start()}}
+async function start(){const bet=Math.floor(+$("bet").value||0),cur=LB.cur;if(bet<1)return toast("Isi taruhan dulu");
+ if(bet>MAXB){$("bet").value=MAXB;return toast("Maksimal taruhan "+fmtN(MAXB))}
+ const r=walletTry({[cur]:-bet});if(!r.ok)return toast(r.msg+" (tersedia "+fmtN(currentUser[cur]||0)+")");
+ LB.bet=bet;$("veil").classList.remove("on");$("res").classList.remove("on");reset();const g=G;g.bet=bet;g.cur=cur;g.over=false;$("bbv").innerHTML=ci(cur)+fmtN(bet);
+ hint("Mengocok tile…");await sleep(1600);for(let s=0;s<4;s++)for(let i=0;i<13;i++)g.H[s].t.push(g.wall[g.ptr++]);left();
+ await Promise.all([0,1,2,3].map(s=>layout(s,false,s*.12,.07,.9,.5)));snd(300);run(g)}
+(async()=>{$("wm").innerHTML=ci("mora");$("wc").innerHTML=ci("credit");reset();
+ if(!(await requireLogin()))return;
+ $("n0").textContent=currentUser.username;$("av0").src=avatar(currentUser.username,currentUser.profilePic);lobby()})();
+addEventListener("pagehide",()=>walPersist());
+document.addEventListener("visibilitychange",()=>{if(document.hidden){walPersist();flushWallet()}});
+</script></body></html>
