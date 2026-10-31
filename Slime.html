@@ -4925,7 +4925,7 @@ const ELD={
  dendro:{n:"Tarian Seribu Malam",s:"Tarian",q:"Illusory Heart",price:30000,cd:8,mul:0,d:"Skill Tarian Seribu Malam memunculkan kristal berketahanan tak terbatas yang memancing musuh menyerangnya sampai durasi skill habis. Ultimate Illusory Heart membuat semua musuh di tantangan saling menyerang dengan 50% damage mereka dan berhenti mengejar slime selama durasi Ultimate, ditandai partikel yang berputar mengelilingi slime.",color:0x7dff6a},
  hydro:{n:"Ketenangan yang Menebas",s:"Ketenangan",q:"Let the People Rejoice",price:20000,cd:5,mul:2.6,d:"Skill Ketenangan yang Menebas mengirim tebasan air ke arah monster. Ultimate Let the People Rejoice meledakkan banjir dan melempar semua musuh di area keluar dari ledakan.",color:0x4fb8ff},
  pyro:{n:"Panduan Menuju Alam Baka",s:"Alam Baka",q:"Hour of Burning Skies",price:35000,cd:10,mul:1.1,d:"Skill Panduan Menuju Alam Baka menyelimuti slime dengan partikel api sehingga serangan normal menjadi serangan elemental Pyro sampai durasi skill habis. Ultimate Hour of Burning Skies membuat loncatan slime 2x lebih tinggi dan jatuh perlahan; serangan normal saat di udara meledakkan damage Pyro di sekitar, berulang sampai durasi habis. Slime berubah merah kehitaman mengkilap dengan tanduk 2x lebih besar.",color:0xff4a3a}};
-const elCost=r=>[10000,15000,22000,32000,45000,60000][r];const ulCost=r=>[12000,18000,26000,38000,52000,70000][r];const ulRank=()=>P.el.eq?((P.el.qk||{})[P.el.eq]|0):0;const ultDamage=r=>Math.round(S.atk()*5.5*(1+.35*r)*(1+akrBonus('em')));const ultDmg=()=>ultDamage(ulRank());const ultDur=(el,r)=>el==="geo"?6.5+.5*r:el==="anemo"?4.2+.4*r:el==="electro"?1.6+.1*r:el==="dendro"?5+.5*r:el==="pyro"?7+.5*r:0;
+Object.values(ELD).forEach(D=>{const i=D.d.indexOf(" Ultimate ");D.sd=i>0?D.d.slice(0,i):D.d;D.qd=i>0?D.d.slice(i+1):""});const elCost=r=>[10000,15000,22000,32000,45000,60000][r];const ulCost=r=>[12000,18000,26000,38000,52000,70000][r];const ulRank=()=>P.el.eq?((P.el.qk||{})[P.el.eq]|0):0;const ultDamage=r=>Math.round(S.atk()*5.5*(1+.35*r)*(1+akrBonus('em')));const ultDmg=()=>ultDamage(ulRank());const ultDur=(el,r)=>el==="geo"?6.5+.5*r:el==="anemo"?4.2+.4*r:el==="electro"?1.6+.1*r:el==="dendro"?5+.5*r:el==="pyro"?7+.5*r:0;
 const elRank=()=>P.el.eq?(P.el.rk[P.el.eq]|0):0;
 const ELMETA={anemo:{g:"≋",n:"Anemo",c:"#3ff0c8"},geo:{g:"⬟",n:"Geo",c:"#d6a548"},electro:{g:"ϟ",n:"Electro",c:"#b98cff"},dendro:{g:"❀",n:"Dendro",c:"#7dff6a"},hydro:{g:"◈",n:"Hydro",c:"#4fb8ff"},pyro:{g:"♨",n:"Pyro",c:"#ff4a3a"}};
 const elLogo=(k,cls="")=>ELMETA[k]?`<span class="el-logo ${cls}" style="--elc:${ELMETA[k].c}" aria-hidden="true">${ELMETA[k].g}</span>`:"";
@@ -5311,12 +5311,107 @@ Object.assign(MT,{
  slimeanemo:{n:"Big Anemo Slime",hp:420,dmg:27,spd:3.6,rng:1.8,rew:80,cr:3,exp:80,r:1.1,aggro:22,cd:1.1,h:2,sk:4,t:"B",ai:"slimeg",an:"slimeg"},
  slimeelectro:{n:"Big Electro Slime",hp:440,dmg:30,spd:3.2,rng:1.8,rew:80,cr:3,exp:80,r:1.1,aggro:22,cd:1.2,h:2,sk:4.5,t:"B",ai:"slimeg",an:"slimeg"},
  scorpion:{n:"Scorpion",hp:420,dmg:30,spd:4.4,rng:1.9,rew:85,cr:3,exp:82,r:1.1,aggro:22,cd:1,h:1.6,sk:5,t:"B",ai:"spider",an:"spider"},
- wyvern:{n:"Wyvern",hp:600,dmg:36,spd:5.6,rng:2.2,rew:130,cr:5,exp:130,r:1.2,aggro:26,cd:.95,h:2.4,sk:4.5,t:"A",ai:"wolf",an:"wolf"},
+ wyvern:{n:"Wyvern",hp:600,dmg:36,spd:5.6,rng:2.2,rew:130,cr:5,exp:130,r:1.2,aggro:26,cd:.95,h:2.6,sk:4.5,t:"A",ai:"wolf",an:"wyvern"},
  titan:{n:"Titan",hp:800,dmg:40,spd:2.8,rng:2.8,rew:150,cr:6,exp:150,r:1.6,aggro:26,cd:1.4,h:4.2,sk:5,t:"A",ai:"darksk",big:true},
  whale:{n:"Primordial One",hp:900,dmg:38,spd:2.6,rng:3,rew:160,cr:6,exp:160,r:2,aggro:30,cd:1.5,h:3,sk:5,t:"A",ai:"orc",big:true},
- dragon:{n:"Eternal Dragon",hp:1800,dmg:45,spd:4,rng:3.2,rew:400,cr:20,exp:400,r:2.2,aggro:60,cd:1.2,h:4.5,sk:4,t:"A",ai:"darksk",an:"wolf",big:true}});
+ dragon:{n:"Eternal Dragon",hp:1800,dmg:45,spd:4,rng:3.2,rew:400,cr:20,exp:400,r:2.2,aggro:60,cd:1.2,h:6.4,sk:4,t:"A",ai:"darksk",an:"dragon",big:true}});
 function tintAll(o,col){const mats=new Map();o.b.traverse(c=>{if(!c.isMesh||c.material===mM.eye||c.material.isMeshBasicMaterial)return;let m=mats.get(c.material);if(!m){m=c.material.clone();m.color.lerp(new THREE.Color(col),.7);mats.set(c.material,m)}c.material=m});return o}
 function mkBigSlime(col,em){return()=>{const o=mkSlimeG();o.body.material=new THREE.MeshPhysicalMaterial({color:col,roughness:.15,clearcoat:1,transparent:true,opacity:.85,emissive:em,emissiveIntensity:.4});o.b.scale.setScalar(1.9);return o}}
+/* ===== WYVERN & ETERNAL DRAGON (desain baru) ===== */
+function mkMembrane(pts,mat){const v=[];for(let i=1;i<pts.length-1;i++)v.push(...pts[0],...pts[i],...pts[i+1]);const geo=new THREE.BufferGeometry();geo.setAttribute("position",new THREE.Float32BufferAttribute(v,3));geo.computeVertexNormals();const m=new THREE.Mesh(geo,mat);m.castShadow=true;return m}
+function mkBone(a,b,r,mat){const d=new THREE.Vector3(b[0]-a[0],b[1]-a[1],b[2]-a[2]),L=d.length();const m=mesh(new THREE.CylinderGeometry(r*.6,r,L,6),mat,(a[0]+b[0])/2,(a[1]+b[1])/2,(a[2]+b[2])/2);m.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),d.normalize());return m}
+/* sayap kelelawar bersendi: root(bahu) -> inner(lengan+membran) -> outer(jari+membran) */
+function mkBatWing(k,S,boneM,memM,clawM){const root=new THREE.Group();root.scale.x=k;
+ const inner=new THREE.Group();root.add(inner);
+ inner.add(mkBone([0,0,0],[2.2*S,.3*S,.2*S],.13*S,boneM));
+ inner.add(mkMembrane([[0,0,.25*S],[2.2*S,.3*S,.2*S],[2*S,0,-1.6*S],[1.3*S,-.05*S,-1.3*S],[.6*S,0,-1.5*S],[0,0,-1.1*S]],memM));
+ const outer=new THREE.Group();outer.position.set(2.2*S,.3*S,.2*S);inner.add(outer);
+ const tips=[[1.5*S,.35*S,.55*S],[1.9*S,0,-.5*S],[1.4*S,-.1*S,-1.5*S],[.6*S,-.2*S,-2*S]];
+ tips.forEach((p,i)=>outer.add(mkBone([0,0,0],p,(i?.07:.1)*S,boneM)));
+ const thumb=mesh(new THREE.ConeGeometry(.08*S,.4*S,5),clawM,.05*S,.25*S,.15*S);thumb.rotation.x=-.6;outer.add(thumb);
+ const tc=mesh(new THREE.ConeGeometry(.07*S,.45*S,5),clawM,tips[0][0]+.15*S,tips[0][1],tips[0][2]+.1*S);tc.rotation.z=-1.4;outer.add(tc);
+ outer.add(mkMembrane([[0,0,0],tips[0],[1.55*S,.1*S,0],tips[1],[1.35*S,0,-.85*S],tips[2],[.75*S,-.1*S,-1.55*S],tips[3],[0,-.15*S,-1.65*S],[-.2*S,-.3*S,-1.8*S]],memM));
+ return {root,inner,outer}}
+function mkChain(n,len,r0,r1,mat,parent,dir,spikeM){const segs=[];let p=parent;for(let i=0;i<n;i++){const s=new THREE.Group(),f=i/(n-1||1),r=r0+(r1-r0)*f;
+  if(i)s.position.set(dir[0]*len,dir[1]*len,dir[2]*len);p.add(s);const sg=mesh(new THREE.SphereGeometry(r,10,8),mat,0,0,0);sg.scale.set(1,.9,len/r*.75);s.add(sg);
+  if(spikeM){const sp=mesh(new THREE.ConeGeometry(r*.4,r*1.2,4),spikeM,0,r*.9,0);sp.rotation.x=Math.sign(dir[2])*-.5;s.add(sp)}
+  segs.push(s);p=s}return segs}
+function mkWyvern(){const g=new THREE.Group(),b=new THREE.Group();g.add(b);
+ const sc=std(0x2f5a3c,{roughness:.55,metalness:.15}),dk=std(0x1c3324,{roughness:.6}),bel=std(0x9aa86a,{roughness:.7}),cl=std(0xd8d0b0,{roughness:.4}),
+  mem=std(0x3d6b3a,{side:THREE.DoubleSide,roughness:.7,transparent:true,opacity:.92,emissive:0x0c2a10,emissiveIntensity:.4}),eye=new THREE.MeshBasicMaterial({color:0xc8ff3a});
+ const torso=new THREE.Group();torso.position.set(0,1.45,0);torso.rotation.x=.35;b.add(torso);
+ const body=mesh(new THREE.SphereGeometry(.45,14,10),sc,0,0,0);body.scale.set(.85,.9,1.5);torso.add(body);
+ const bb=mesh(new THREE.SphereGeometry(.4,12,8),bel,0,-.12,.08);bb.scale.set(.75,.7,1.35);torso.add(bb);
+ const neck=mkChain(4,.28,.2,.15,sc,torso,[0,.35,.85],dk);neck[0].position.set(0,.15,.55);
+ const head=new THREE.Group();head.position.set(0,.1,.3);neck[3].add(head);head.rotation.x=.5;
+ head.add(mesh(BX(.28,.22,.55),sc,0,0,.2));const jaw=new THREE.Group();jaw.position.set(0,-.1,0);jaw.add(mesh(BX(.24,.08,.5),dk,0,0,.22));head.add(jaw);
+ [-1,1].forEach(s=>{head.add(mesh(new THREE.SphereGeometry(.045,6,5),eye,s*.13,.07,.25,false));const c=mesh(new THREE.ConeGeometry(.06,.45,5),dk,s*.1,.12,-.2);c.rotation.x=-1.9;head.add(c)});
+ const legs=[-1,1].map(s=>{const l=new THREE.Group();l.position.set(s*.3,1.3,-.15);l.add(mesh(new THREE.CylinderGeometry(.16,.11,.65,7),sc,0,-.3,.1));
+  const sh=mesh(new THREE.CylinderGeometry(.09,.07,.6,6),dk,0,-.8,-.05);sh.rotation.x=-.35;l.add(sh);[-1,0,1].forEach(c=>{const t=mesh(new THREE.ConeGeometry(.04,.2,4),cl,c*.07,-1.12,.12);t.rotation.x=1.5;l.add(t)});b.add(l);return l});
+ const tail=mkChain(7,.32,.2,.05,sc,torso,[0,-.05,-1],dk);tail[0].position.set(0,0,-.6);
+ const barb=mesh(new THREE.ConeGeometry(.16,.5,3),cl,0,0,-.3);barb.rotation.x=-Math.PI/2;barb.scale.y=1;barb.scale.x=1.6;tail[6].add(barb);
+ const wings=[-1,1].map(k=>{const w=mkBatWing(k,.85,dk,mem,cl);w.root.position.set(k*.3,.3,.2);torso.add(w.root);return w});
+ b.scale.setScalar(1.25);
+ return {g,b,arm:head,legs,tail:tail[0],wy:{torso,neck,head,jaw,tailS:tail,wings,ph:Math.random()*9}}}
+function mkDragon(){const g=new THREE.Group(),b=new THREE.Group();g.add(b);
+ const sc=std(0x4a0c10,{roughness:.38,metalness:.35}),dk=std(0x1a0608,{roughness:.45,metalness:.3}),
+  bel=std(0x8a5a2a,{roughness:.5,metalness:.4}),horn=std(0x2a2420,{roughness:.3,metalness:.5}),gold=std(0xc8963a,{roughness:.25,metalness:.85}),
+  mem=std(0x5a0a10,{side:THREE.DoubleSide,roughness:.6,transparent:true,opacity:.9,emissive:0x3a0204,emissiveIntensity:.6}),
+  eye=new THREE.MeshBasicMaterial({color:0xffb020}),fire=new THREE.MeshBasicMaterial({color:0xff5a10,transparent:true,opacity:.85});
+ const rig=new THREE.Group();rig.position.y=2.2;b.add(rig);
+ const body=mesh(new THREE.SphereGeometry(1,20,14),sc,0,0,0);body.scale.set(1.05,.9,1.9);rig.add(body);
+ const chest=mesh(new THREE.SphereGeometry(.9,16,12),bel,0,-.3,.5);chest.scale.set(.95,.75,1.4);rig.add(chest);
+ const core=mesh(new THREE.SphereGeometry(.35,12,8),fire,0,-.25,1.15,false);rig.add(core);/* bara di dada, berdenyut */
+ for(let i=0;i<7;i++){const sp=mesh(new THREE.ConeGeometry(.16-i*.012,.7-i*.05,4),gold,0,.85-Math.abs(i-2)*.03,1.2-i*.42);sp.rotation.x=-.45;rig.add(sp)}
+ const neck=mkChain(7,.42,.5,.3,sc,rig,[0,.42,.9],gold);neck[0].position.set(0,.35,1.5);
+ const head=new THREE.Group();head.position.set(0,.05,.4);neck[6].add(head);
+ head.add(mesh(BX(.75,.5,.7),sc,0,.05,0));const snout=mesh(BX(.55,.34,.8),sc,0,-.02,.7);head.add(snout);
+ head.add(mesh(BX(.62,.12,.4),dk,0,.32,.1));/* alis tebal = wajah garang */
+ const jaw=new THREE.Group();jaw.position.set(0,-.18,.1);jaw.add(mesh(BX(.5,.14,1.1),dk,0,-.04,.5));head.add(jaw);
+ const mouth=mesh(BX(.4,.06,.9),fire,0,-.12,.55,false);head.add(mouth);
+ [-1,1].forEach(s=>{
+  head.add(mesh(new THREE.SphereGeometry(.07,8,6),eye,s*.3,.2,.3,false));
+  const h1=new THREE.Group();h1.position.set(s*.25,.3,-.25);h1.rotation.set(-1.1,s*.35,0);head.add(h1);
+  [[.13,.6,0],[.1,.5,.45],[.07,.45,.8]].forEach(([r,l,y],i)=>{const c=mesh(new THREE.ConeGeometry(r,l,6),horn,0,y+l/2,0);c.rotation.x=i*.35;h1.add(c)});
+  for(let i=0;i<3;i++){const c=mesh(new THREE.ConeGeometry(.05,.3,4),horn,s*.4,-.05-i*.1,-.1-i*.12);c.rotation.z=-s*1.3;head.add(c)}
+  for(let i=0;i<4;i++){const f=mesh(new THREE.ConeGeometry(.035,.14,4),gold,s*.2,-.13,.4+i*.22);f.rotation.x=Math.PI;head.add(f)}});
+ const legs=[[-1,.9],[1,.9],[-1,-.9],[1,-.9]].map(([s,z])=>{const l=new THREE.Group();l.position.set(s*.7,-.3,z);
+  l.add(mesh(new THREE.CylinderGeometry(.32,.22,1,8),sc,0,-.45,0));const sh=new THREE.Group();sh.position.set(0,-.95,0);
+  sh.add(mesh(new THREE.CylinderGeometry(.18,.14,.85,7),dk,0,-.4,.05));[-1,0,1].forEach(c=>{const t=mesh(new THREE.ConeGeometry(.07,.35,5),horn,c*.12,-.85,.25);t.rotation.x=1.6;sh.add(t)});l.add(sh);rig.add(l);l.userData.sh=sh;return l});
+ const tail=mkChain(12,.5,.55,.08,sc,rig,[0,-.02,-1],gold);tail[0].position.set(0,.05,-1.7);
+ const spade=mesh(new THREE.ConeGeometry(.4,.9,3),gold,0,0,-.45);spade.rotation.x=-Math.PI/2;spade.scale.set(1.6,1,.3);tail[11].add(spade);
+ const wings=[-1,1].map(k=>{const w=mkBatWing(k,1.75,dk,mem,horn);w.root.position.set(k*.75,.6,.7);rig.add(w.root);return w});
+ b.scale.setScalar(1.15);
+ return {g,b,arm:head,legs,tail:tail[0],dr:{rig,neck,head,jaw,core,mouth,tailS:tail,wings,ph:Math.random()*9,bank:0,yaw:null,alt:1.8}}}
+function animWyvern(m,dt,t,moving){const w=m.wy,sw=m.swing,pounce=m.act&&m.act.ph===0;
+ w.ph+=dt*(moving||pounce?7:3);const a=Math.sin(w.ph);
+ w.wings.forEach(x=>{x.inner.rotation.z=(pounce?-.2:.15)+a*(moving?.7:.25);x.outer.rotation.z=Math.sin(w.ph-.7)*(moving?.5:.2)-.1;x.inner.rotation.y=pounce?.5:0});
+ if(!pounce)m.b.position.y=moving?Math.abs(Math.sin(m.walk))*.18+Math.max(0,a)*.12:Math.sin(t*2)*.03;
+ m.legs.forEach((l,i)=>l.rotation.x=moving?(i?1:-1)*Math.sin(m.walk)*.7:0);
+ w.torso.rotation.x=.35+(moving?.15:0)-sw*.3;
+ w.neck.forEach((s,i)=>{s.rotation.y=Math.sin(t*2.2+i*.6)*.12;s.rotation.x=-sw*.25+Math.sin(t*1.6+i)*.04});
+ w.jaw.rotation.x=.15+sw*.7+Math.max(0,Math.sin(t*1.3))*.1;
+ w.tailS.forEach((s,i)=>{s.rotation.y=Math.sin(t*3.2-i*.6)*.18;s.rotation.x=Math.sin(t*2-i*.5)*.05});
+ m.b.position.z=sw*.4}
+function animDragon(m,dt,t,moving){const D=m.dr,g=m.g,sw=m.swing;
+ /* banking dari laju putar */
+ const y=g.rotation.y;if(D.yaw===null)D.yaw=y;let dy=y-D.yaw;dy=Math.atan2(Math.sin(dy),Math.cos(dy));D.yaw=y;
+ D.bank+=((Math.max(-.6,Math.min(.6,-dy/Math.max(dt,1e-3)*.35)))-D.bank)*Math.min(1,dt*3);
+ /* kepakan lambat & megah; saat menyerang: sayap terbentang lalu menukik */
+ D.ph+=dt*(moving?2.4:1.6)*(sw>.05?1.8:1);const a=Math.sin(D.ph);
+ const tgtAlt=sw>.05?.7:moving?2.1:1.6+Math.sin(t*.7)*.3;D.alt+=(tgtAlt-D.alt)*Math.min(1,dt*(sw>.05?6:1.5));
+ m.b.position.y=D.alt+Math.sin(D.ph-1.2)*.35;
+ D.wings.forEach(w=>{w.inner.rotation.z=.15+a*.8-sw*.5;w.outer.rotation.z=Math.sin(D.ph-.9)*.6-.05+sw*.3;w.inner.rotation.y=Math.sin(D.ph+.5)*.15+(moving?.1:0)});
+ D.rig.rotation.z=D.bank;D.rig.rotation.x=(moving?.14:-.04)+sw*.35+Math.cos(D.ph)*.04;
+ /* kaki dilipat saat terbang, terjulur saat menerkam */
+ m.legs.forEach((l,i)=>{l.rotation.x=(i<2?.9:1.2)*(1-sw)+(i<2?-.5:0)*sw;l.userData.sh.rotation.x=-.9*(1-sw)});
+ /* leher meliuk seperti ular, menjulur ke depan saat serangan */
+ D.neck.forEach((s,i)=>{s.rotation.y=Math.sin(t*1.1+i*.45)*.07-D.bank*.08;s.rotation.x=(i<3?.08:-.12)*(1-sw)+sw*(i<3?.2:-.05)+Math.sin(t*.9+i*.5)*.03});
+ D.head.rotation.x=.25*(1-sw)+sw*.35;D.jaw.rotation.x=.1+sw*.9+Math.max(0,Math.sin(t*.8))*.12;
+ const glow=.6+Math.sin(t*3)*.25+sw*.4;D.core.scale.setScalar(glow);D.mouth.material.opacity=Math.min(1,.4+glow*.4);
+ D.tailS.forEach((s,i)=>{s.rotation.y=Math.sin(t*1.6-i*.42)*.13+D.bank*.05;s.rotation.x=Math.sin(t*1.2-i*.35)*.06-.02});
+ m.b.position.z=sw*.8}
+
 function addWings(b,col,y,z,s){const wm=std(col,{side:THREE.DoubleSide});[-1,1].forEach(k=>{const w=mesh(new THREE.ConeGeometry(.5*s,1.6*s,3),wm,k*.9*s,y,z);w.rotation.z=k*1.4;w.scale.z=.12;b.add(w)})}
 Object.assign(MK,{
  minotaur:()=>{const o=tintAll(mkOrc(),0x6a3d22);[-1,1].forEach(s=>{const h=mesh(new THREE.ConeGeometry(.09,.55,6),mM.tusk,s*.4,2.55,.25);h.rotation.z=-s*.9;o.b.add(h)});o.b.scale.setScalar(1.08);return o},
@@ -5324,13 +5419,13 @@ Object.assign(MK,{
  darkwiz:()=>{const o=mkShaman();tintAll(o,0x1c1430);o.orb.material=mM.dark;o.b.scale.setScalar(1.3);return o},
  slimehydro:mkBigSlime(0x3fa8ff,0x0a3a7a),slimegeo:mkBigSlime(0xe0b040,0x5a3a08),slimeanemo:mkBigSlime(0x6fe8c8,0x0e5a48),slimeelectro:mkBigSlime(0xb070ff,0x3a1070),
  scorpion:()=>{const o=tintAll(mkSpider(),0x8a5a20);const tl=mesh(new THREE.ConeGeometry(.12,1.1,6),mM.spd2,0,1.15,-.85);tl.rotation.x=-.6;o.b.add(tl);o.b.scale.setScalar(1.6);return o},
- wyvern:()=>{const o=tintAll(mkWolf(),0x3a6a4a);addWings(o.b,0x2a4a3a,1.2,0,1);o.b.scale.setScalar(1.35);return o},
+ wyvern:mkWyvern,
  titan:()=>{const o=tintAll(mkOrc(),0x8a8a92);o.b.scale.setScalar(1.75);return o},
  whale:()=>{const g=new THREE.Group(),b=new THREE.Group();g.add(b);const bm=std(0x2a5aa8),bl=std(0xb8d0e8);
   const body=mesh(new THREE.SphereGeometry(1,20,14),bm,0,1.5,0);body.scale.set(1.2,1,2.4);b.add(body);const bel=mesh(new THREE.SphereGeometry(.95,18,12),bl,0,1.25,.1);bel.scale.set(1.05,.7,2.2);b.add(bel);
   const tail=mesh(BX(2,.12,.7),bm,0,1.8,-2.5);b.add(tail);[-1,1].forEach(s=>{const f=mesh(BX(1.1,.1,.5),bm,s*1.3,1.1,.6);f.rotation.z=s*.4;b.add(f);b.add(mesh(new THREE.SphereGeometry(.09,6,5),mM.eye,s*.9,1.7,1.7,false))});
   const arm=new THREE.Group();arm.position.set(0,1.5,1.8);b.add(arm);return{g,b,arm,legs:[]}},
- dragon:()=>{const o=tintAll(mkWolf(),0x8a1a1a);addWings(o.b,0x5a0a0a,1.3,0,1.3);o.b.scale.setScalar(2.4);return o}});
+ dragon:mkDragon});
 const mons=[];let bossM=null,bossPending=false;
 function monScale(type){if(typeof AB!=='undefined'&&AB.active&&AB.L>0){const i=fIdx(AB.L,AB.F);if(type==="ronova")return{hp:[1e6,1.5e6,3e6][AB.F-1]||1e6,dm:[16000,20000,25000][AB.F-1]||16000,heal:AB.F===3,h:1,d:1};return{h:300*Math.pow(1.047,i),d:60*Math.pow(1.067,i)}}return{h:120,d:40}}
 function spawnMon(type,x,z,mul=1,elite=false){const d=MT[type],o=MK[type]();o.g.position.set(x,0,z);sc.add(o.g);
@@ -5636,7 +5731,9 @@ function updMon(m,dt,t){const g=m.g,p=g.position;
  if(m.type==="ronova"&&m.heal&&!m.dead){m.healT+=dt;if(m.healT>=8){m.healT=0;if(m.hp<m.max){const hh=Math.round(m.max*.03);m.hp=Math.min(m.max,m.hp+hh);setBar(m.bar,m.hp/m.max);floatT(m.g.position,m.d.h+.9,"+"+fmtN(hh),"c")}}}
  if(m.type==="ronova"){if(m.rv&&m.rv.mixer)m.rv.mixer.update(dt*(moving?1.4:1));m.b.position.z=m.swing*.3;m.bar.quaternion.copy(cam.quaternion);m.bar.quaternion.premultiply(_q.copy(g.quaternion).invert());return}
  const AN=m.d.an||m.type;
- if(AN==="wolf"){m.legs.forEach((l,i)=>l.rotation.x=(i%2?s:-s)*.6*(moving?1:0));m.tail.rotation.y=Math.sin(t*6)*.4;if(!(m.act&&m.act.ph===0))m.b.position.y=moving?Math.abs(s)*.06:0;m.arm.rotation.x=-m.swing*.6;m.b.position.z=m.swing*.35}
+ if(AN==="dragon")animDragon(m,dt,t,moving);
+  else if(AN==="wyvern")animWyvern(m,dt,t,moving);
+  else if(AN==="wolf"){m.legs.forEach((l,i)=>l.rotation.x=(i%2?s:-s)*.6*(moving?1:0));m.tail.rotation.y=Math.sin(t*6)*.4;if(!(m.act&&m.act.ph===0))m.b.position.y=moving?Math.abs(s)*.06:0;m.arm.rotation.x=-m.swing*.6;m.b.position.z=m.swing*.35}
  else if(AN==="spider"){m.legs.forEach(l=>{l.rotation.x=Math.sin(m.walk*2+l.userData.i*1.6+(l.userData.s>0?Math.PI:0))*.4*(moving?1:.1)});if(!m.act)m.b.position.y=moving?Math.abs(s)*.03:0;m.arm.rotation.x=-m.swing*.5;m.b.position.z=m.swing*.3}
  else if(AN==="slimeg"){const q=Math.abs(Math.sin(m.walk*1.2)),mv=moving&&!m.act?1:.25;if(!m.act)m.b.position.y=moving?q*.3:0;m.body.scale.set(1.15+(.5-q)*.18*mv+m.swing*.2,.85-(.5-q)*.24*mv-m.swing*.15,1.05+m.swing*.1);m.b.position.z=m.swing*.3}
  else{const big=m.type==="orc"||m.d.big||m.boss;m.legs.forEach((l,i)=>l.position.y=(big?.3:.2)+(moving?Math.max(0,i?s:-s)*.1:0));m.b.position.y=moving?Math.abs(s)*.08:Math.sin(t*2+m.walk)*.02;m.b.rotation.z=moving?s*.06:0;
@@ -5881,7 +5978,7 @@ function floorClear(){AB.cleared=true;if(AB.L===0){AB.stars=AB.t<=90?3:AB.t<=150
  abWeek();const st=AB.t<=60?3:AB.t<=120?2:1,key=AB.L+"-"+AB.F,first=fIdx(AB.L,AB.F)>=P.abyss.c;
  P.abyss.st[key]=Math.max(P.abyss.st[key]||0,st);if(first)P.abyss.c=fIdx(AB.L,AB.F)+1;AB.stars=st;
  const wkNew=!P.abyss.cl.includes(key);if(wkNew)P.abyss.cl.push(key);
- const fi=fIdx(AB.L,AB.F)+1;const amt=2000+1000*(fi-1),moAmt=Math.min(100000,Math.round((5000+95000*(fi-1)/35)/100)*100);AB.chest=wkNew?{mo:moAmt,cr:amt}:null;addHist(AB.chest||{});if(AB.chest)spawnChest3D();
+ const fi=fIdx(AB.L,AB.F)+1;const amt=Math.round((3500+56500*(fi-1)/35)/100)*100,moAmt=Math.round((4000+56000*(fi-1)/35)/100)*100;AB.chest=wkNew?{mo:moAmt,cr:amt}:null;addHist(AB.chest||{});if(AB.chest)spawnChest3D();
  AB.reward=wkNew?`🎁 Kamu mendapatkan <b>Kotak Harta Karun</b>!`:`Hadiah Ruang ini minggu ini sudah diambil · reset Senin 06.00 WIB`;markP();saveP(true);
  setBeacon(true);SFX.build();shock({x:0,z:0},8,0x7fe0ff,.8);toast(wkNew?`Ruang ${AB.F} selesai! ${starStr(st)} — Dekati Kotak Harta Karun untuk membukanya`:`Ruang ${AB.F} selesai! ${starStr(st)} — Pergi ke Inti Suar`)}
 function abyssFail(){running=false;AB.paused=true;clearArena();if(AB.L===0){modal(`<h2>FARMING GAGAL</h2><p>Slime pingsan. ${FARM_COST} Bulan yang dipakai tidak kembali.</p><button class="go" id="aR">Main Lagi (${FARM_COST} Bulan)</button><button class="go alt" id="aL">Kembali ke Lobi</button>`);$("aR").onclick=()=>farmMenu(AB.cur);$("aL").onclick=()=>{closeModal();openLobby()};return}
@@ -5984,12 +6081,12 @@ function lobbySoon(label,icon,classes="half"){return `<button class="btn lobby-t
 function rankHTML(){const r=playerRank();return `<section class="rank-panel"><div class="rank-crest"><small>RANK</small><b>${rankStr()}</b><span>SLIME</span></div><div class="rank-details"><small>REKOR PERBURUAN</small><h3>${r<0?"Belum Berperingkat":"Rank "+RKS[r]}</h3><p>${fmtN(P.kills)} monster dikalahkan · Naik rank: kalahkan ${fmtN(RANK_NEED)} monster Rank ${RKS[r]} di Spiral Abyss</p></div><div class="rank-rail">${RKS.map((k,i)=>`<div class="${i===r?"current":i<r?"achieved":""}"><b>${k}</b><small>${i<RKS.length-1?fmtN(Math.min(P.tk[k]||0,RANK_NEED))+"/"+fmtN(RANK_NEED):fmtN(P.tk[k]||0)}</small></div>`).join("")}</div></section>`}
 function elemHTML(){const c=currentUser?currentUser.credit||0:0;
  const track=(own,r)=>`<div class="level-track">${Array.from({length:7},(_,i)=>`<i class="${own&&i<=r?"filled":""}"></i>`).join("")}</div>`;
- const row=(k,own,tag,key,name,lv,dmg,next,cost,act)=>{const max=lv>=6,no=!max&&c<cost;return `<div class="el-up"><div class="el-up-h"><kbd>${key}</kbd><div><small>${tag}</small><b>${name}</b></div><span class="el-lv">Lv ${lv+1}<small>/7</small></span></div>${track(own,lv)}<div class="el-up-f"><div class="el-dmg"><small>KERUSAKAN</small><b>${fmtN(dmg)}</b>${own&&!max?`<em>→ ${fmtN(next)}</em>`:""}</div>${own?(max?`<span class="el-max">MAKS</span>`:`<button class="el-btn" data-el="${act}:${k}" ${no?"disabled":""}>${ci("credit")}${fmtN(cost)}<span>Upgrade</span></button>`):""}</div></div>`};
+ const row=(k,own,tag,key,name,lv,dmg,next,cost,act,ds)=>{const max=lv>=6,no=!max&&c<cost;return `<div class="el-up"><div class="el-up-h"><kbd>${key}</kbd><div><small>${tag}</small><b>${name}</b></div><span class="el-lv">Lv ${lv+1}<small>/7</small></span></div><p class="el-desc">${ds||""}</p>${track(own,lv)}<div class="el-up-f"><div class="el-dmg"><small>KERUSAKAN</small><b>${fmtN(dmg)}</b>${own&&!max?`<em>→ ${fmtN(next)}</em>`:""}</div>${own?(max?`<span class="el-max">MAKS</span>`:`<button class="el-btn" data-el="${act}:${k}" ${no?"disabled":""}>${ci("credit")}${fmtN(cost)}<span>Upgrade</span></button>`):""}</div></div>`};
  return `<div class="section-heading"><small>ARSENAL / ELEMEN</small><h3>Skill &amp; Ultimate</h3><span>${ci("credit")}${fmtN(c)} Credit</span></div><div class="equipped-strip"><span>ELEMEN AKTIF</span><b>${P.el.eq?ELD[P.el.eq].n:"—"}</b><span>Skill Lv ${elRank()+1} · Ultimate Lv ${ulRank()+1}</span></div>`+
  Object.keys(ELD).map(k=>{const D=ELD[k],own=P.el.own.includes(k),r=P.el.rk[k]|0,q=(P.el.qk||{})[k]|0,eq=P.el.eq===k;
  const ft=!own?`<div class="ft2"><div class="cost ${c<D.price?"no":""}">${ci("credit")}${fmtN(D.price)}</div><button data-el="buy:${k}" ${c<D.price?"disabled":""}>Buka Elemen</button></div>`:`<div class="ft2"><span class="el-cd">Jeda skill ${D.cd} dtk</span><button class="equip-btn" data-el="eq:${k}" ${eq?"disabled":""}>${eq?"✓ Aktif":"Pakai"}</button></div>`;
- return `<article class="card element-card element-${k} ${eq?"equipped":""}"><div class="h"><span class="element-emblem">${{anemo:"≋",geo:"⬟",electro:"ϟ",dendro:"❀",hydro:"◈",pyro:"♨"}[k]}</span><div class="el-title"><small>${{anemo:"ANEMO",geo:"GEO",electro:"ELECTRO",dendro:"DENDRO",hydro:"HYDRO",pyro:"PYRO"}[k]}</small><b>${D.n}</b></div><span class="lv">${own?(eq?"Dipakai":"Dimiliki"):"Terkunci"}</span></div><p>${D.d}</p>`+
- row(k,own,"SKILL","E",D.n,r,elementDamage(k,r),elementDamage(k,r+1),r<6?elCost(r):0,"up")+row(k,own,"ULTIMATE","Q",D.q,q,ultDamage(q),ultDamage(q+1),q<6?ulCost(q):0,"uq")+ft+`</article>`}).join("")}
+ return `<article class="card element-card element-${k} ${eq?"equipped":""}"><div class="h"><span class="element-emblem">${{anemo:"≋",geo:"⬟",electro:"ϟ",dendro:"❀",hydro:"◈",pyro:"♨"}[k]}</span><div class="el-title"><small>${{anemo:"ANEMO",geo:"GEO",electro:"ELECTRO",dendro:"DENDRO",hydro:"HYDRO",pyro:"PYRO"}[k]}</small><b>${D.n}</b></div><span class="lv">${own?(eq?"Dipakai":"Dimiliki"):"Terkunci"}</span></div>`+
+ row(k,own,"SKILL","E",D.n,r,elementDamage(k,r),elementDamage(k,r+1),r<6?elCost(r):0,"up",D.sd)+row(k,own,"ULTIMATE","Q",D.q,q,ultDamage(q),ultDamage(q+1),q<6?ulCost(q):0,"uq",D.qd)+ft+`</article>`}).join("")}
 
 function skinHTML(){const c=currentUser?currentUser.credit||0:0;P.skin=P.skin||{own:[],eq:""};const sw=x=>'#'+x.toString(16).padStart(6,'0');
  return `<div class="section-heading"><small>LEMARI / SKIN</small><h3>Skin Slime</h3><span>${ci("credit")}${fmtN(c)} Credit</span></div>`+SKINS.map(S=>{const own=!S.k||P.skin.own.includes(S.k),eq=(P.skin.eq||"")===S.k;
@@ -6037,7 +6134,7 @@ function lobbyContent(){const tot=Object.values(P.abyss.st).reduce((a,b)=>a+b,0)
  if(LOBTAB==="up")return shopHTML();
  if(LOBTAB==="elem")return elemHTML();
  if(LOBTAB==="akr")return akrHTML();
- return ABYSS.map((lt,i)=>{const L=i+1,lock=!lt.floors;return `<div class="lt ${lock?"lock":""}"><div class="h"><b>${lt.n.toUpperCase()}</b><span class="lv">${lock?"Segera":[1,2,3].reduce((a,f)=>a+(P.abyss.st[L+"-"+f]||0),0)+" / 9 ★"}</span></div><p>${lt.d}</p>${lock?"":`<div class="fls">${[1,2,3].map(f=>`<button class="fl" data-lt="${L}" data-f="${f}" ${isOpen(L,f)?"":"disabled"}>Ruang ${f}<small>${isOpen(L,f)?starStr(P.abyss.st[L+"-"+f]||0):"Terkunci"}</small></button>`).join("")}</div>`}</div>`}).join("")}
+ return ABYSS.map((lt,i)=>{const L=i+1,lock=!lt.floors;return `<div class="lt ${lock?"lock":""}"><div class="h"><b>${lt.n.toUpperCase()}</b>${lock?"":`<button class="fl-info" data-info="${L}">ⓘ Deskripsi</button>`}<span class="lv">${lock?"Segera":[1,2,3].reduce((a,f)=>a+(P.abyss.st[L+"-"+f]||0),0)+" / 9 ★"}</span></div><p>${lt.d}</p>${lock?"":`<div class="fls">${[1,2,3].map(f=>`<button class="fl" data-lt="${L}" data-f="${f}" ${isOpen(L,f)?"":"disabled"}>Ruang ${f}<small>${isOpen(L,f)?starStr(P.abyss.st[L+"-"+f]||0):"Terkunci"}</small></button>`).join("")}</div>`}</div>`}).join("")}
 function renderLobby(){$("lobby").classList.toggle("artifact-manage",LOBTAB==='akr'&&(akrView==='main'||akrView==='item'));$("lobby").classList.toggle("acrylic-open",LOBTAB==="akr");if(!$("lobby").firstElementChild){$("lobby").innerHTML=`<div class="lobby-shell"><header class="lobby-toolbar"><nav class="lobby-tools" aria-label="Menu lobi"><button class="btn lobby-icon" disabled title="Pengaturan — Segera" aria-label="Pengaturan — Segera">${lobIcon("settings")}</button><button class="btn lobby-icon" disabled title="Pengumuman — Segera" aria-label="Pengumuman — Segera">${lobIcon("alert")}</button><button class="btn lobby-icon" disabled title="Pesan — Segera" aria-label="Pesan — Segera">${lobIcon("mail")}</button><button class="btn lobby-icon" disabled title="Kalender — Segera" aria-label="Kalender — Segera">${lobIcon("calendar")}</button><button class="btn lobby-icon" data-lob="help" title="Bantuan" aria-label="Bantuan">${lobIcon("help")}</button></nav><div class="lobby-wallet"><div class="chip">${ci("mora")}<b class="mora-count">0</b><span class="wallet-plus" aria-hidden="true">+</span></div><div class="chip">${ci("credit")}<b class="credit-count">0</b><span class="wallet-plus" aria-hidden="true">+</span></div><div class="chip" onclick="moonInfo()" style="cursor:pointer" title="Setiap 7 menit +1 Bulan"><span>🌙</span><b class="moon-count">0</b><small style="opacity:.6">/200</small></div></div></header><div class="lobby-brand"><small>SPIRAL ABYSS / LOBI</small><h1>SLIME</h1><span class="brand-line"></span></div><div class="lobby-level"><b id="lobLevel">F</b><span>RANK</span></div><div id="slimeView" role="img" aria-label="Slime 3D 360 derajat" tabindex="0" title="Slime 360°"></div><div class="slime-controls"><button class="btn lobby-icon" data-lob="visible" aria-label="Sembunyikan slime" title="Sembunyikan slime" aria-pressed="false">${lobIcon("eye")}</button><button class="btn lobby-icon" data-lob="rotate" aria-label="Putar otomatis" title="Putar otomatis" aria-pressed="false">${lobIcon("rotate")}</button><small>360°</small></div><div class="lobby-profile" id="lobProfile"></div><section class="lobby-right" aria-label="Pilihan lobi"><div class="lobby-menu" id="lobMenu"></div><section class="lobby-pane" id="lobPane"><header><button class="btn lobby-icon" data-lob="home" title="Kembali ke lobi" aria-label="Kembali ke lobi">${lobIcon("back")}</button><h2 id="lobTitle"></h2></header><div id="lobC"></div></section></section></div>`;setupSlimeView()}
  const tot=Object.values(P.abyss.st).reduce((a,b)=>a+b,0);
  $("lobLevel").textContent=rankStr();$("lobLevel").parentElement.style.setProperty("--rp",rankPct());$("lobLevel").parentElement.title=`Rank ${rankStr()}: ${fmtN(Math.min(P.tk[rankStr()]|0,RANK_NEED))} / ${fmtN(RANK_NEED)} monster Spiral Abyss`;$("lobProfile").innerHTML=`<small>OPERATOR / HYDRO</small><strong>${escapeLobby(currentUser?currentUser.username:"Slime")}</strong><p>RANK ${rankStr()} &nbsp; / &nbsp; HP ${S.pMax()} &nbsp; / &nbsp; ATK ${S.atk()} &nbsp; / &nbsp; ★ ${tot}</p><div class="hp"><i style="width:${rankPct()}%"></i></div>`;
@@ -6049,7 +6146,7 @@ function renderLobby(){$("lobby").classList.toggle("artifact-manage",LOBTAB==='a
 function setupSlimeView(){const view=$("slimeView");view.addEventListener("pointerdown",e=>{if(e.pointerType==="mouse"&&e.button!==0)return;LVIEW.id=e.pointerId;LVIEW.x=e.clientX;LVIEW.y=e.clientY;view.setPointerCapture(e.pointerId);e.preventDefault()});view.addEventListener("pointermove",e=>{if(e.pointerId!==LVIEW.id)return;rotateLobbyView(e.clientX-LVIEW.x,e.clientY-LVIEW.y);LVIEW.x=e.clientX;LVIEW.y=e.clientY});const end=e=>{if(e.pointerId===LVIEW.id)LVIEW.id=-1};view.addEventListener("pointerup",end);view.addEventListener("pointercancel",end);view.addEventListener("lostpointercapture",end);view.addEventListener("keydown",e=>{if(!["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(e.key))return;e.preventDefault();e.stopPropagation();rotateLobbyView(e.key==="ArrowLeft"?-20:e.key==="ArrowRight"?20:0,e.key==="ArrowUp"?-20:e.key==="ArrowDown"?20:0)})}
 $("lobby").onclick=e=>{const ak=e.target.closest("button[data-akr]");if(ak&&!ak.disabled){akrAct(ak.dataset.akr,ak.dataset.id);return}const action=e.target.closest("button[data-lob]");if(action&&!action.disabled){const a=action.dataset.lob;if(a==="help"){help(false);return}if(a==="farmm"||a==="farmc"){farmMenu(a==="farmm"?"mora":"credit");return}if(a==="rotate"){LVIEW.auto=!LVIEW.auto;renderLobby();return}if(a==="visible"){LVIEW.visible=!LVIEW.visible;renderLobby();return}LOBTAB=a;akrView='main';akrSelected='';akrSelling='';renderLobby();artModalSync();return}
  const el=e.target.closest("button[data-el]");if(el&&!el.disabled){elAct(el.dataset.el);return}
- const k=e.target.closest("button[data-k]");const ts=e.target.closest("button[data-ts]");if(ts&&!ts.disabled){talSet(ts.dataset.ts,+ts.dataset.d);return}if(e.target.closest("button[data-tr]")){talReset();return}if(k&&!k.disabled){buy(k.dataset.k);return}const f=e.target.closest("button.fl[data-f]");if(f&&!f.disabled)startFloor(+f.dataset.lt,+f.dataset.f)};
+ const k=e.target.closest("button[data-k]");const ts=e.target.closest("button[data-ts]");if(ts&&!ts.disabled){talSet(ts.dataset.ts,+ts.dataset.d);return}if(e.target.closest("button[data-tr]")){talReset();return}if(k&&!k.disabled){buy(k.dataset.k);return}const inf=e.target.closest("button[data-info]");if(inf){floorInfo(+inf.dataset.info);return}const f=e.target.closest("button.fl[data-f]");if(f&&!f.disabled)startFloor(+f.dataset.lt,+f.dataset.f)};
 $("bLobby").onclick=()=>{if(!AB.active)return openLobby();const was=running;running=false;
  modal(`<h2>TINGGALKAN TANTANGAN?</h2><p>Progres Ruang ini tidak akan disimpan.</p><button class="go" id="yL">Kembali ke Lobi</button><button class="go alt" id="nL">Batal</button>`);
  $("yL").onclick=()=>{closeModal();openLobby()};$("nL").onclick=()=>{closeModal();if(was){running=true;last=performance.now()}}};
@@ -6076,4 +6173,66 @@ try{CHB=buildChest3D();CHB.g.visible=true;CHB.g.position.set(0,-50,0);R.compile(
  hud();openLobby();hideBoot();if(!P.seen&&!LS.get("slime.rpg.seen",false))help(true);LS.set("slime.rpg.seen",true);if(!P.seen){P.seen=true;markP();saveP(true)}})();
 addEventListener("pagehide",()=>{commitGain();walPersist();beaconP()});
 document.addEventListener("visibilitychange",()=>{if(document.hidden){commitGain();walPersist();flushWallet();saveP()}});
-</script></body></html>
+</script><style>
+.el-desc{margin:8px 0 2px!important;font-size:12px;line-height:1.55;color:var(--mut)}
+.fl-info{border:1px solid #a99bff66;background:#a99bff1a;color:#e4dcff;font:700 11px system-ui;padding:4px 9px;cursor:pointer;border-radius:4px;letter-spacing:.04em}
+.fl-info:hover{background:#a99bff33}
+.mdl:has(.fi-wrap){max-width:min(780px,100%)}
+.fi-wrap{display:grid;gap:12px;margin-top:10px}
+.fi-room{border:1px solid var(--line);border-left:3px solid #a99bff;border-radius:10px;padding:12px;background:#ffffff06}
+.fi-room>header{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.fi-room>header b{color:#e4dcff;letter-spacing:.1em;font-size:14px;flex:1}
+.fi-tag{font-size:11px;color:var(--mut);border:1px solid var(--line);border-radius:20px;padding:2px 8px}
+.fi-h{font-size:10px;letter-spacing:.18em;color:#a99bff;margin:10px 0 6px;font-weight:800}
+.fi-mons{display:grid;gap:8px}
+.fi-mon{display:flex;gap:10px;align-items:flex-start;background:#0b1015aa;border:1px solid var(--line);border-radius:8px;padding:8px}
+.fi-img{width:72px;height:72px;flex:none;border-radius:8px;background:radial-gradient(circle at 50% 40%,#2a2f4a,#0b0f16);display:grid;place-items:center;font-size:30px;overflow:hidden}
+.fi-img img{width:100%;height:100%;object-fit:contain}
+.fi-mon .nm{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-weight:800;color:var(--tx);font-size:13px}
+.fi-rk{display:inline-grid;place-items:center;min-width:22px;height:20px;padding:0 5px;border-radius:4px;font:900 11px system-ui;background:#e2c58022;color:#e2c580;border:1px solid #e2c58066}
+.fi-el{font-size:10px;color:#ff8b7a;border:1px solid #ff8b7a66;border-radius:4px;padding:1px 5px}
+.fi-mon ul{margin:4px 0 0;padding-left:16px;color:var(--mut);font-size:11.5px;line-height:1.5}
+.fi-rew{display:flex;gap:8px;flex-wrap:wrap}
+.fi-rew span{background:#ffd27a14;border:1px solid #ffd27a44;color:#ffd88a;border-radius:6px;padding:5px 9px;font-size:12px;font-weight:700}
+.fi-rew span.done{opacity:.5;text-decoration:line-through}
+.fi-note{font-size:11px;color:var(--mut);margin-top:6px}
+</style>
+<script>
+(function(){
+const ATK={
+ slimeg:["Hantaman tubuh jarak dekat","Lompatan menghantam area (lingkaran peringatan)"],
+ spider:["Gigitan cepat jarak dekat","Semburan jaring dari jarak menengah"],
+ minigob:["Tusukan belati jarak dekat"],
+ goblin:["Tusukan belati jarak dekat","Lempar bom yang meledak di area"],
+ wolf:["Gigitan jarak dekat","Terkaman lurus dari jarak jauh"],
+ undead:["Pukulan berat jarak dekat","Terjangan lurus ke arah slime"],
+ bowsk:["Tembakan panah jarak jauh","Hujan panah beruntun"],
+ darksk:["Tebasan pedang","Hantaman area saat dekat","Serbuan lurus dari jauh","Mengamuk saat HP di bawah 40%"],
+ orc:["Ayunan senjata berat","Hantaman tanah area saat dekat","Mengamuk saat HP di bawah 40%"],
+ wiz:["Bola sihir gelap jarak jauh","Menjaga jarak dari slime"],
+ shaman:["Bola sihir jarak jauh","Menyembuhkan sekutu yang terluka"],
+ boss:["Hantaman tanah area besar","Serbuan lurus jarak jauh","Mengamuk saat HP di bawah 35%"],
+ ronova:["Serangan jarak dekat yang kuat","Bos terakhir dengan HP sangat besar"]};
+const ICO={slimeg:"🟢",spider:"🕷️",goblin:"👺",wolf:"🐺",undead:"🧟",bowsk:"🏹",darksk:"⚔️",orc:"👹",minotaur:"🐂",goblinlord:"👑",darkwiz:"🧙",scorpion:"🦂",wyvern:"🐉",titan:"🗿",whale:"🐋",dragon:"🐲",ronova:"👁️"};
+const PIC={};let TR=null,TS=null,TC=null;
+function pic(k){if(PIC[k])return PIC[k];try{if(k==="ronova"&&!window.__ronovaReady)return null;
+ if(!TR){TR=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});TR.setSize(160,160);TS=new THREE.Scene();TS.add(new THREE.HemisphereLight(0xffffff,0x334466,1.1));const dl=new THREE.DirectionalLight(0xffffff,1.1);dl.position.set(3,5,4);TS.add(dl);TC=new THREE.PerspectiveCamera(32,1,.05,200)}
+ const o=MK[k]();const g=o.g;TS.add(g);g.rotation.y=.6;g.updateMatrixWorld(true);
+ const box=new THREE.Box3().setFromObject(g),c=box.getCenter(new THREE.Vector3()),sz=box.getSize(new THREE.Vector3());const r=Math.max(sz.x,sz.y,sz.z)||1;
+ TC.position.set(c.x,c.y+r*.15,c.z+r*2.1);TC.lookAt(c);TR.render(TS,TC);PIC[k]=TR.domElement.toDataURL();TS.remove(g);return PIC[k]}catch(e){console.warn("thumb",k,e);return null}}
+function roomHTML(L,F){const fl=ABYSS[L-1].floors[F-1],mul=(fl.mul*(1+Math.max(0,L-1)*.5));
+ const agg={};fl.waves.forEach(w=>w.forEach(([k,n,el])=>{const a=agg[k]||(agg[k]={n:0,el:false});a.n+=n;if(el)a.el=true}));
+ const fi=fIdx(L,F)+1,cr=Math.round((3500+56500*(fi-1)/35)/100)*100,mo=Math.round((4000+56000*(fi-1)/35)/100)*100;
+ const key=L+"-"+F,claimed=(P.abyss.cl||[]).includes(key),open=isOpen(L,F),st=P.abyss.st[key]||0;
+ const mons=Object.keys(agg).map(k=>{const d=MT[k]||{n:k,t:"?"},T=d.ai||k,src=pic(k),at=ATK[k]||ATK[T]||["Serangan jarak dekat"];
+  return `<div class="fi-mon"><div class="fi-img">${src?`<img src="${src}" alt="${d.n}">`:(ICO[k]||"👾")}</div><div><div class="nm">${d.n}<span class="fi-rk">${d.t}</span>${agg[k].el?'<span class="fi-el">ELIT</span>':""}<span class="fi-tag">×${agg[k].n}</span></div><ul>${at.map(a=>`<li>${a}</li>`).join("")}</ul></div></div>`}).join("");
+ return `<section class="fi-room"><header><b>RUANG ${F}</b><span class="fi-tag">${fl.waves.length} gelombang</span><span class="fi-tag">Kekuatan ×${mul.toFixed(2).replace(".",",")}</span><span class="fi-tag">${open?starStr(st):"🔒 Terkunci"}</span></header>
+ <div class="fi-h">MUSUH</div><div class="fi-mons">${mons}</div>
+ <div class="fi-h">HADIAH (KOTAK HARTA KARUN)</div><div class="fi-rew"><span class="${claimed?"done":""}">${ci("mora")} +${fmtN(mo)} Mora</span><span class="${claimed?"done":""}">${ci("credit")} +${fmtN(cr)} Credit</span></div>
+ <div class="fi-note">${claimed?"Hadiah minggu ini sudah diambil · reset Senin 06.00 WIB. ":"Hadiah diberikan sekali per minggu. "}Bintang: ★★★ ≤ 60 dtk · ★★ ≤ 120 dtk · ★ selesai.</div></section>`}
+window.floorInfo=function(L){const lt=ABYSS[L-1];if(!lt||!lt.floors)return;
+ modal(`<h2>${lt.n.toUpperCase()}</h2><p>${lt.d}</p><div class="fi-wrap">${[1,2,3].map(f=>roomHTML(L,f)).join("")}</div><button class="go alt" id="fiX">Tutup</button>`);
+ const x=document.getElementById("fiX");if(x)x.onclick=()=>document.getElementById("veil").classList.remove("on")};
+})();
+</script>
+</body></html>
