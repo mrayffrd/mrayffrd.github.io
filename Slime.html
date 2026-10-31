@@ -5875,8 +5875,9 @@ function updAbyss(dt){if(!AB.active)return;const fl=abL(AB.L).floors[AB.F-1];
  const nr=d<3.1&&!player.dead;if(nr!==AB.near){AB.near=nr;suarBtn(nr)}}
 function suarBtn(on){const b=$("bSuar");if(b)b.classList.toggle("on",!!on)}
 function suarOpen(){if(!AB.active||!AB.cleared||!AB.near||!running)return;suarBtn(false);AB.near=false;beaconMenu()}
-function floorClear(){AB.cleared=true;if(AB.L===0){AB.stars=AB.t<=90?3:AB.t<=150?2:1;const rw=FARM.floors[AB.F-1].rew;if(AB.cur==="credit")addCredit(rw);else{addMora(rw);floatMoney(player.pos,rw)}addHist(AB.cur==="credit"?{cr:rw}:{mo:rw});
-  AB.reward=`+${rw} ${CUR_NAME[AB.cur]}`;markP();saveP(true);setBeacon(true);SFX.build();shock({x:0,z:0},8,0x7fe0ff,.8);toast(`Farming selesai! ${AB.reward} — Pergi ke Inti Suar`);return}
+function floorClear(){AB.cleared=true;if(AB.L===0){AB.stars=AB.t<=90?3:AB.t<=150?2:1;const rw=FARM.floors[AB.F-1].rew;
+  AB.chest=AB.cur==="credit"?{mo:0,cr:rw}:{mo:rw,cr:0};addHist(AB.chest);spawnChest3D();
+  AB.reward=`🎁 Kamu mendapatkan <b>Kotak Harta Karun</b>!`;markP();saveP(true);setBeacon(true);SFX.build();shock({x:0,z:0},8,0x7fe0ff,.8);toast(`Farming selesai! ${starStr(AB.stars)} — Dekati Kotak Harta Karun untuk membukanya`);return}
  abWeek();const st=AB.t<=60?3:AB.t<=120?2:1,key=AB.L+"-"+AB.F,first=fIdx(AB.L,AB.F)>=P.abyss.c;
  P.abyss.st[key]=Math.max(P.abyss.st[key]||0,st);if(first)P.abyss.c=fIdx(AB.L,AB.F)+1;AB.stars=st;
  const wkNew=!P.abyss.cl.includes(key);if(wkNew)P.abyss.cl.push(key);
@@ -5939,8 +5940,11 @@ function updChest(dt){if(!CH.g)return;CH.t+=dt;const g=CH.g;
   else{g.position.x=0;const o=Math.min(1,(q-.7)/.5);CH.lid.rotation.x=-1.9*(1-Math.pow(1-o,3));CH.glow.material.opacity=o*.9;CH.glow.scale.setScalar(1+o*1.6);CH.light.intensity=1+o*5}
   if(q>=1.25){CH.st=3;CH.t=0;shock(g.position,6,0xffd36b,.7);openChest()}}
  else if(CH.st===3){CH.glow.material.opacity=Math.max(0,.9-CH.t*.5);CH.light.intensity=Math.max(.6,6-CH.t*4)}}
-function openChest(){const c=AB.chest;if(!c)return;AB.chest=null;addMora(c.mo);floatMoney(player.pos,c.mo);addCredit(c.cr);floatMoney(player.pos,c.cr,"credit");SFX.build();AB.reward=`🎁 Isi kotak: <b>+${fmtN(c.mo)}</b> ${ci("mora")} Mora · <b>+${fmtN(c.cr)}</b> ${ci("credit")} Credit`;markP();saveP(true)}
-function beaconMenu(){running=false;if(AB.L===0){modal(`<h2>FARMING SELESAI</h2><p>Selesai dalam <b>${Math.round(AB.t)} dtk</b>.</p><p style="text-align:center">${AB.reward||""}</p><p style="text-align:center">🌙 Bulan: <b>${P.moon.v} / ${MOON_MAX}</b></p><button class="go" id="bN">Main Lagi (${FARM_COST} Bulan)</button><button class="go alt" id="bLb">Kembali ke Lobi</button><button class="go alt" id="bStay">Tetap di Arena</button>`);$("bN").onclick=()=>farmMenu(AB.cur);$("bLb").onclick=()=>{closeModal();openLobby()};$("bStay").onclick=()=>{closeModal();running=true;last=performance.now()};return}const L=AB.L,F=AB.F,nx=F<3?[L,F+1]:[L+1,1],nOpen=isOpen(nx[0],nx[1]);
+function openChest(){const c=AB.chest;if(!c)return;AB.chest=null;const parts=[];
+ if(c.mo){addMora(c.mo);floatMoney(player.pos,c.mo);parts.push(`<b>+${fmtN(c.mo)}</b> ${ci("mora")} Mora`)}
+ if(c.cr){addCredit(c.cr);floatMoney(player.pos,c.cr,"credit");parts.push(`<b>+${fmtN(c.cr)}</b> ${ci("credit")} Credit`)}
+ SFX.build();AB.reward=`🎁 Isi kotak: ${parts.join(" · ")}`;markP();saveP(true)}
+function beaconMenu(){running=false;if(AB.L===0){if(AB.chest){running=true;last=performance.now();toast("🎁 Buka Kotak Harta Karun dulu sebelum lanjut!");return}modal(`<h2>FARMING SELESAI</h2><p>Selesai dalam <b>${Math.round(AB.t)} dtk</b>.</p><p style="text-align:center">${AB.reward||""}</p><p style="text-align:center">🌙 Bulan: <b>${P.moon.v} / ${MOON_MAX}</b></p><button class="go" id="bN">Main Lagi (${FARM_COST} Bulan)</button><button class="go alt" id="bLb">Kembali ke Lobi</button><button class="go alt" id="bStay">Tetap di Arena</button>`);$("bN").onclick=()=>farmMenu(AB.cur);$("bLb").onclick=()=>{closeModal();openLobby()};$("bStay").onclick=()=>{closeModal();running=true;last=performance.now()};return}const L=AB.L,F=AB.F,nx=F<3?[L,F+1]:[L+1,1],nOpen=isOpen(nx[0],nx[1]);
  const lt=ABYSS[L-1];if(AB.chest){running=true;last=performance.now();toast("🎁 Buka Kotak Harta Karun dulu sebelum lanjut!");return}
  modal(`<h2>INTI SUAR</h2><p>${lt.n} · Ruang ${F} ditaklukkan dalam <b>${Math.round(AB.t)} dtk</b>.</p><div class="stars">${starStr(AB.stars||1)}</div><p style="text-align:center">${AB.reward||""}</p>
  <button class="go ${nOpen?"":"dis"}" id="bN">${nOpen?(F<3?`Lanjut ke Ruang ${F+1}`:`Lanjut ke ${ABYSS[nx[0]-1].n}`):(nx[0]>12?"Spiral Abyss selesai!":`${ABYSS[nx[0]-1]?ABYSS[nx[0]-1].n:""} — Segera hadir`)}</button>
