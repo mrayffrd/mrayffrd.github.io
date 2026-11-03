@@ -1,300 +1,235 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Staff — neve Enterprise</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,500;0,600;0,700;1,700&display=swap" rel="stylesheet">
-<meta name="theme-color" content="#06070d">
-<meta name="description" content="Daftar staff">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pecahan Kaca di Ruang Hampa</title>
 <style>
-  :root {
-    --bg: #06070d;
-    --text: #ffffff;
-    --muted: #8a8ea8;
-    --d: 160px; /* ukuran tile — diatur otomatis oleh JS sesuai layar */
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Chakra Petch', system-ui, sans-serif;
-    background: var(--bg); color: var(--text);
-    min-height: 100vh; min-height: 100dvh; overflow-x: hidden;
-    -webkit-text-size-adjust: 100%;
-  }
-
-  /* latar: gradasi gelap lembut + belah ketupat besar tipis senada tombol */
-  #sky {
-    position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden;
-    background:
-      radial-gradient(900px 600px at 85% 15%, rgba(255,255,255,.045), transparent 70%),
-      linear-gradient(165deg, #0e1019 0%, #07080d 60%, #050609 100%);
-  }
-  #sky::before, #sky::after {
-    content: ""; position: absolute; aspect-ratio: 1; transform: rotate(45deg);
-    border: 1px solid rgba(255,255,255,.07);
-    box-shadow: 0 0 0 26px transparent, 0 0 0 27px rgba(255,255,255,.04), 0 0 0 54px transparent, 0 0 0 55px rgba(255,255,255,.025);
-  }
-  #sky::before { width: 52vmin; right: -14vmin; top: 14vh; }
-  #sky::after  { width: 42vmin; left: -16vmin; bottom: 6vh; }
-
-  /* ===== Judul (kiri) + aksen pojok ===== */
-  header {
-    position: relative; text-align: left;
-    padding: 40px 20px 0 clamp(46px, 6vw, 84px);
-  }
-  /* aksen siku di pojok kiri atas */
-  header::before, header::after { content: ""; position: absolute; top: 20px; left: 20px; }
-  /* garis atas: segmen tebal, jeda, lalu garis tipis yang memudar */
-  header::before {
-    width: min(62vw, 520px); height: 2px;
-    background: linear-gradient(90deg, #fff 0 48px, transparent 48px 58px, rgba(255,255,255,.4) 58px, transparent);
-  }
-  /* garis kiri: pola sama ke arah bawah */
-  header::after {
-    width: 2px; height: 120px;
-    background: linear-gradient(180deg, #fff 0 48px, transparent 48px 58px, rgba(255,255,255,.4) 58px, transparent);
-  }
-
-  .brand {
-    font-size: 12px; font-weight: 600; letter-spacing: 8px; text-transform: uppercase; color: var(--muted);
-  }
-  h1 {
-    margin-top: 8px; font-size: clamp(34px, 7vw, 54px); font-weight: 600;
-    letter-spacing: .04em; text-transform: uppercase; line-height: 1; color: #fff;
-  }
-
-  /* ===== Kisi belah ketupat (posisi diatur JS) ===== */
-  .lattice {
-    position: relative; margin: calc(var(--d) * .25) auto calc(var(--d) * .7);
-    width: min(100% - 32px, 1200px);
-  }
-
-  .tile {
-    position: absolute; width: var(--d); height: var(--d);
-    display: block; text-decoration: none; color: inherit; outline: none;
-    pointer-events: none;                /* hanya bentuk belah ketupat yang peka sentuh */
-    -webkit-tap-highlight-color: transparent;
-    scale: 1; z-index: 1;
-    transition: scale .65s cubic-bezier(.2,.8,.2,1);
-    opacity: 0; animation: in .7s forwards; animation-delay: var(--delay, 0s);
-  }
-  @keyframes in { to { opacity: 1; } }
-
-  /* bayangan belah ketupat di belakang saat dibuka */
-  .tile::before {
-    content: ""; position: absolute; inset: 0; margin: auto; z-index: -1;
-    width: calc(var(--d) * .707); aspect-ratio: 1; border-radius: 2%;
-    background: #fff; opacity: 0;
-    transform: translate(15%, -13%) rotate(45deg) scale(.9);
-    transition: opacity .6s, transform .7s cubic-bezier(.2,.8,.2,1);
-  }
-
-  .dia {
-    position: absolute; inset: 0; margin: auto; overflow: hidden; pointer-events: auto;
-    width: calc(var(--d) * .707); aspect-ratio: 1; border-radius: 2%;
-    transform: rotate(45deg);
-    border: 1.5px solid #2a2d40; background: #0b0c14;
-    transition: border-color .5s, box-shadow .6s, opacity .6s;
-  }
-
-  /* isi ditegakkan kembali agar tidak ikut miring */
-  .face {
-    position: absolute; left: 50%; top: 50%; width: 142%; height: 142%;
-    transform: translate(-50%, -50%) rotate(-45deg);
-  }
-  .bg {
-    position: absolute; inset: 0;
-    background-image: var(--img, none), linear-gradient(150deg, #2b2e42, #13141f 95%);
-    background-size: cover, cover; background-position: center, center;
-    transform: scale(1.12); transition: transform 1s cubic-bezier(.2,.8,.2,1);
-  }
-  .shade {
-    position: absolute; inset: 0; opacity: 0; transition: opacity .6s;
-    background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,.7));
-  }
-  .sil {
-    position: absolute; inset: 0;
-    background: radial-gradient(circle at 50% 42%, #181a27, #0b0c14 72%);
-    transition: opacity .55s ease;
-  }
-
-  /* nama besar di bagian bawah */
-  .nm {
-    position: absolute; left: 50%; bottom: calc(var(--d) * .1);
-    transform: translate(-50%, 10px); white-space: nowrap; pointer-events: none;
-    font-size: max(14px, calc(var(--d) * .125)); font-weight: 700; font-style: italic;
-    letter-spacing: .12em; text-transform: uppercase; color: #fff;
-    text-shadow: 0 2px 14px rgba(0,0,0,.85);
-    opacity: 0; transition: opacity .5s .15s, transform .65s .15s cubic-bezier(.2,.8,.2,1);
-  }
-
-  /* ===== Tile pengisi (hiasan) ===== */
-  .tile.filler { animation-delay: .4s; }
-  .tile.filler .dia { pointer-events: none; background: transparent; border-color: #13151f; }
-  .tile.filler .face { display: none; }
-
-  /* ===== Dibuka: hover, fokus, atau ketukan pertama ===== */
-  .tile.soon:hover .dia, .tile.soon.reveal .dia { border-color: #4a4f6a; box-shadow: none; }
-  .tile.soon { cursor: default; }
-  .tile { will-change: scale; }
-  @media (prefers-reduced-motion: reduce) {
-    .tile, .tile::before, .bg, .nm, .shade, .sil, .dia { transition: none !important; animation: none !important; }
-    .tile { opacity: 1; }
-  }
-  .tile:hover, .tile:focus-visible, .tile.reveal { scale: 1.32; z-index: 10; }
-  .tile:hover::before, .tile:focus-visible::before, .tile.reveal::before {
-    opacity: .14; transform: translate(15%, -13%) rotate(45deg) scale(1);
-  }
-  .tile:hover .dia, .tile:focus-visible .dia, .tile.reveal .dia {
-    border-color: #fff; box-shadow: 0 0 40px -14px #fff;
-  }
-  .tile:hover .sil, .tile:focus-visible .sil, .tile.reveal .sil { opacity: 0; }
-  .tile:hover .bg, .tile:focus-visible .bg, .tile.reveal .bg { transform: scale(1); }
-  .tile:hover .shade, .tile:focus-visible .shade, .tile.reveal .shade { opacity: 1; }
-  .tile:hover .nm, .tile:focus-visible .nm, .tile.reveal .nm { opacity: 1; transform: translate(-50%, 0); }
-
-  /* tile lain menyempit & meredup */
-  .lattice:has(.tile:hover) .tile:not(:hover),
-  .lattice:has(.tile:focus-visible) .tile:not(:focus-visible),
-  .lattice:has(.tile.reveal) .tile:not(.reveal) { scale: .86; }
-  .lattice:has(.tile:hover) .tile:not(:hover) .dia,
-  .lattice:has(.tile:focus-visible) .tile:not(:focus-visible) .dia,
-  .lattice:has(.tile.reveal) .tile:not(.reveal) .dia { opacity: .45; }
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+  canvas { display: block; }
 </style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
 </head>
 <body>
+<script type="module">
+import * as THREE from "three";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-<div id="sky"></div>
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+document.body.appendChild(renderer.domElement);
 
-<header>
-  <div class="brand">list staff</div>
-  <h1>Staff</h1>
-</header>
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x000000);
+scene.fog = new THREE.FogExp2(0x000000, 0.035);
 
-<main class="lattice" id="lattice"></main>
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environmentIntensity = 0.6;
 
-<script>
-  /* ============================================================
-     DATA STAFF — edit di sini.
-     name : nama staff
-     img  : foto latar tombol (kosongkan "" jika belum ada),
-            contoh: "foto/owner.jpg"
-     page : file HTML masing-masing staff
-     ============================================================ */
-  const STAFF = [
-    { name: "emurice",     img: "", page: "staff.emu.rice.html" },
-    { name: "subar",   img: "", page: "staff.###.html" },
-    { name: "   ",   img: "", page: "staff.###.html" },
-    { name: "   ", img: "", page: "staff.###.html" },
-    { name: "   ",  img: "", page: "staff.###.html" },
-    { name: "   ", img: "", page: "staff.###.html" },
-    { name: "   ",   img: "", page: "staff.###.html" }
-  ];
+const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 200);
+camera.position.set(0, 0, 22);
 
-  const lattice = document.getElementById('lattice');
-  const tiles = [];
+// Lampu bergerak untuk kilau realistis
+const lights = [
+  new THREE.PointLight(0x9fd8ff, 300, 60),
+  new THREE.PointLight(0xffd6a0, 250, 60),
+  new THREE.PointLight(0xffffff, 200, 60),
+];
+lights.forEach(l => scene.add(l));
+const dir = new THREE.DirectionalLight(0xffffff, 1.5);
+dir.position.set(5, 10, 8);
+scene.add(dir);
 
-  /* Buat tile staff */
-  STAFF.forEach((s, i) => {
-    const a = document.createElement('a');
-    a.className = 'tile';
-    /* halaman yang belum dibuat (masih "###") tidak dijadikan tautan agar tidak error 404 */
-    const placeholder = /#/.test(s.page);
-    const label = /^#+$/.test(s.name) ? 'Segera' : s.name;
-    if (placeholder) { a.classList.add('soon'); a.setAttribute('aria-disabled', 'true'); a.removeAttribute('href'); }
-    else a.href = s.page;
-    a.setAttribute('aria-label', label);
-    a.style.setProperty('--delay', (i * 0.08) + 's');
-    if (s.img) a.style.setProperty('--img', `url("${s.img}")`);
-    a.innerHTML = `
-      <div class="dia">
-        <div class="face">
-          <div class="bg"></div>
-          <div class="shade"></div>
-          <div class="sil"></div>
-        </div>
-      </div>
-      <div class="nm"></div>`;
-    a.querySelector('.nm').textContent = label;
-    lattice.appendChild(a);
-    tiles.push(a);
-  });
-
-  /* Susun kisi: belah ketupat saling mengunci, tile pengisi melengkapi baris terakhir */
-  let fillers = [];
-  function layout() {
-    const vw = innerWidth, vh = innerHeight;
-    const d = Math.max(120, Math.min(230, Math.min(vw * .4, vh * .42)));
-    document.documentElement.style.setProperty('--d', d + 'px');
-
-    const W = lattice.clientWidth;
-    const px = d * 1.08;                 /* jarak antar tile dalam satu baris */
-    const n = STAFF.length;
-
-    /* jumlah tile per baris; baris ganjil lebih sedikit & bergeser setengah (susunan bata) */
-    let k = Math.floor((W - d) / px) + 1;
-    k = Math.max(1, Math.min(k, Math.max(2, Math.ceil((n + 1) / 2))));
-    const py = k === 1 ? d * 1.08 : d * .54;   /* jarak antar baris */
-
-    const rowsCap = [];
-    let placed = 0, r = 0;
-    while (placed < n) {
-      const cap = k === 1 ? 1 : (r % 2 === 0 ? k : k - 1);
-      rowsCap.push(cap); placed += cap; r++;
-    }
-
-    /* tile pengisi melengkapi baris terakhir */
-    fillers.forEach(f => f.remove());
-    fillers = [];
-    for (let i = n; i < placed; i++) {
-      const f = document.createElement('div');
-      f.className = 'tile filler';
-      f.innerHTML = '<div class="dia"></div>';
-      lattice.appendChild(f);
-      fillers.push(f);
-    }
-
-    const all = [...tiles, ...fillers];
-    let idx = 0;
-    rowsCap.forEach((cap, row) => {
-      const x0 = (W - ((cap - 1) * px + d)) / 2;   /* tiap baris berada di tengah */
-      for (let c = 0; c < cap; c++) {
-        const t = all[idx++];
-        t.style.left = (x0 + c * px) + 'px';
-        t.style.top = (row * py) + 'px';
-      }
-    });
-    lattice.style.height = ((rowsCap.length - 1) * py + d) + 'px';
+// Geometri pecahan kaca: poligon tak beraturan yang diekstrusi tipis
+function shardGeometry() {
+  const n = 3 + Math.floor(Math.random() * 3);
+  const pts = [];
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2 + (Math.random() - 0.5) * 0.9;
+    const r = 0.6 + Math.random() * 1.6;
+    pts.push(new THREE.Vector2(Math.cos(a) * r, Math.sin(a) * r * (0.4 + Math.random())));
   }
-  layout();
-  /* hemat kerja: susun ulang hanya sekali per frame, abaikan perubahan tinggi kecil (bilah alamat HP) */
-  let lastW = innerWidth, lastH = innerHeight, raf = 0;
-  addEventListener('resize', () => {
-    if (raf) return;
-    raf = requestAnimationFrame(() => {
-      raf = 0;
-      if (innerWidth === lastW && Math.abs(innerHeight - lastH) < 100) return;
-      lastW = innerWidth; lastH = innerHeight; layout();
-    });
+  const shape = new THREE.Shape(pts);
+  const g = new THREE.ExtrudeGeometry(shape, {
+    depth: 0.06 + Math.random() * 0.05,
+    bevelEnabled: true, bevelThickness: 0.015, bevelSize: 0.02, bevelSegments: 1,
   });
+  g.center();
+  return g;
+}
 
-  /* Perangkat sentuh: ketukan pertama membuka siluet, ketukan kedua pindah halaman */
-  if (window.matchMedia('(hover: none)').matches) {
-    tiles.forEach(t => {
-      t.addEventListener('click', e => {
-        if (!t.classList.contains('reveal')) {
-          e.preventDefault();
-          tiles.forEach(x => x.classList.remove('reveal'));
-          t.classList.add('reveal');
-        }
-      });
-    });
-    document.addEventListener('click', e => {
-      if (!e.target.closest('.tile')) tiles.forEach(x => x.classList.remove('reveal'));
-    });
-  }
+const glass = new THREE.MeshPhysicalMaterial({
+  color: 0xffffff,
+  metalness: 0,
+  roughness: 0.03,
+  transmission: 1,
+  thickness: 0.4,
+  ior: 1.52,
+  clearcoat: 1,
+  clearcoatRoughness: 0.02,
+  specularIntensity: 1,
+  iridescence: 0.25,
+  iridescenceIOR: 1.3,
+  attenuationColor: new THREE.Color(0xcfeee8),
+  attenuationDistance: 2.5,
+  envMapIntensity: 1.4,
+  side: THREE.DoubleSide,
+});
+
+const shards = [];
+const COUNT = 70;
+for (let i = 0; i < COUNT; i++) {
+  const m = new THREE.Mesh(shardGeometry(), glass);
+  const s = 0.4 + Math.random() * 0.9;
+  m.scale.setScalar(s);
+  m.userData = {
+    radius: 3 + Math.random() * 9,
+    speed: (0.08 + Math.random() * 0.15) * (Math.random() < 0.5 ? 1 : 1),
+    phase: Math.random() * Math.PI * 2,
+    tilt: (Math.random() - 0.5) * 1.2,
+    yAmp: 0.5 + Math.random() * 2.5,
+    spin: new THREE.Vector3((Math.random() - .5) * .8, (Math.random() - .5) * .8, (Math.random() - .5) * .8),
+  };
+  m.rotation.set(Math.random() * 6, Math.random() * 6, Math.random() * 6);
+  scene.add(m);
+  shards.push(m);
+}
+
+// Debu bintang halus di kejauhan
+const dustGeo = new THREE.BufferGeometry();
+const dp = new Float32Array(1500 * 3);
+for (let i = 0; i < dp.length; i++) dp[i] = (Math.random() - 0.5) * 120;
+dustGeo.setAttribute("position", new THREE.BufferAttribute(dp, 3));
+scene.add(new THREE.Points(dustGeo, new THREE.PointsMaterial({ color: 0x8899aa, size: 0.06, transparent: true, opacity: 0.5 })));
+
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+composer.addPass(new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.55, 0.6, 0.82));
+composer.addPass(new OutputPass());
+
+// Geser 3D
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.minDistance = 6;
+controls.maxDistance = 45;
+controls.enablePan = false;
+
+// 4 kaca berlabel yang bisa dipencet
+const LINKS = [
+  { label: "Subar", url: "subar.html" },
+  { label: "", url: "segera.html" },
+  { label: "emurice", url: "emu.rice.html" },
+  { label: "", url: "segera.html" },
+];
+function labelSprite(text) {
+  const c = document.createElement("canvas"); c.width = 512; c.height = 128;
+  const g = c.getContext("2d");
+  g.font = "600 56px 'Segoe UI', Arial, sans-serif";
+  g.textAlign = "center"; g.textBaseline = "middle";
+  g.shadowColor = "rgba(160,220,255,0.9)"; g.shadowBlur = 18;
+  g.fillStyle = "#ffffff"; g.fillText(text, 256, 64);
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+  const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false, depthTest: false }));
+  sp.scale.set(3.2, 0.8, 1); sp.renderOrder = 10;
+  return sp;
+}
+const linkShards = [];
+LINKS.forEach((L, i) => {
+  const group = new THREE.Group();
+  const geo = shardGeometry();
+  const mesh = new THREE.Mesh(geo, glass);
+  mesh.scale.setScalar(1.4);
+  const edges = new THREE.LineSegments(
+    new THREE.EdgesGeometry(geo, 20),
+    new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.85 })
+  );
+  mesh.add(edges);
+  group.add(mesh);
+  const sp = labelSprite(L.label); sp.position.y = 2.6; group.add(sp);
+  group.userData = { url: L.url, mesh, edges, phase: (i / 4) * Math.PI * 2, radius: 7, speed: 0.07 };
+  mesh.userData.link = group;
+  scene.add(group);
+  linkShards.push(group);
+});
+
+const ray = new THREE.Raycaster();
+const ptr = new THREE.Vector2();
+let hovered = null, downPos = null;
+function pick(e) {
+  ptr.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+  ray.setFromCamera(ptr, camera);
+  const hit = ray.intersectObjects(linkShards.map(g => g.userData.mesh), false)[0];
+  return hit ? hit.object.userData.link : null;
+}
+renderer.domElement.addEventListener("pointermove", e => {
+  hovered = pick(e);
+  renderer.domElement.style.cursor = hovered ? "pointer" : "grab";
+});
+renderer.domElement.addEventListener("pointerdown", e => { downPos = [e.clientX, e.clientY]; });
+renderer.domElement.addEventListener("pointerup", e => {
+  if (!downPos || Math.hypot(e.clientX - downPos[0], e.clientY - downPos[1]) > 6) return;
+  const g = pick(e);
+  if (g) (window.top || window).location.href = "/" + g.userData.url;
+});
+
+const clock = new THREE.Clock();
+function loop() {
+  const t = clock.getElapsedTime();
+  const dt = clock.getDelta();
+  shards.forEach(m => {
+    const u = m.userData;
+    const a = u.phase + t * u.speed;
+    const x = Math.cos(a) * u.radius;
+    const z = Math.sin(a) * u.radius;
+    const y = Math.sin(a * 2 + u.phase) * u.yAmp;
+    m.position.set(x, y * Math.cos(u.tilt) + z * Math.sin(u.tilt) * 0.3, z);
+    m.rotation.x += u.spin.x * 0.01;
+    m.rotation.y += u.spin.y * 0.01;
+    m.rotation.z += u.spin.z * 0.01;
+  });
+  lights[0].position.set(Math.cos(t * 0.4) * 10, Math.sin(t * 0.3) * 6, Math.sin(t * 0.4) * 10);
+  lights[1].position.set(Math.cos(-t * 0.3 + 2) * 12, Math.cos(t * 0.5) * 5, Math.sin(-t * 0.3 + 2) * 12);
+  lights[2].position.set(Math.sin(t * 0.2) * 4, 8, 6);
+
+  linkShards.forEach(g => {
+    const u = g.userData;
+    const a = u.phase + t * u.speed;
+    g.position.set(Math.cos(a) * u.radius, Math.sin(a * 1.5 + u.phase) * 1.2, Math.sin(a) * u.radius);
+    u.mesh.rotation.y = t * 0.3 + u.phase;
+    u.mesh.rotation.x = Math.sin(t * 0.4 + u.phase) * 0.4;
+    const on = g === hovered;
+    u.edges.material.opacity = on ? 1 : 0.85;
+    const s = THREE.MathUtils.lerp(u.mesh.scale.x, on ? 1.65 : 1.4, 0.15);
+    u.mesh.scale.setScalar(s);
+  });
+  controls.update();
+
+  composer.render();
+  requestAnimationFrame(loop);
+}
+loop();
+
+addEventListener("resize", () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+  composer.setSize(innerWidth, innerHeight);
+});
 </script>
 </body>
 </html>
